@@ -3,8 +3,8 @@
 #define _DLPG_WAVEGENERATOR_H
 #include <vector>
 
-#ifndef DLPG_DEFAULT_SAMPLERATE_F
-#define DLPG_DEFAULT_SAMPLERATE_F 44100.
+#ifndef DLPG_DEFAULT_SAMPLERATE_HZ_F
+#define DLPG_DEFAULT_SAMPLERATE_HZ_F 44100.
 #endif
 
 namespace dlpg{
@@ -19,16 +19,17 @@ typedef enum WaveForm_t{
 class WaveGenerator{
 
 public:
-  WaveGenerator(double fSampleRate = DLPG_DEFAULT_SAMPLERATE_F);
-
+  WaveGenerator(double fSampleRate = DLPG_DEFAULT_SAMPLERATE_HZ_F);
   ~WaveGenerator();
   /*
   @param Graphic part. Sizes and colours are based on macros defined in the header. 
   */
-  bool Generate(std::vector<double>& vBuffer, WaveForm_t kWaveForm);
+  bool Generate(std::vector<double> &vBuffer, int nSamples, double fFrequency, double fPhase = 0., WaveForm_t kWaveForm = kSine);
   bool SetSampleRate(double fSampleRate);
+  bool CalculateIncrement(double fFrequency);
 private:
   double fSampleRate;
+  double fPhaseIncrement;
 
 };
 

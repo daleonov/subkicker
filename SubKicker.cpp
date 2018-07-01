@@ -20,12 +20,18 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
 
   pGraphics->AttachControl(new IKnobMultiControl(this, kGainX, kGainY, kGain, &knob));
 
+  // Wave stuff
+  tWaveGenerator = new dlpg::WaveGenerator();
+  std::vector<double> vBuffer(0);
+  tWaveGenerator->Generate(vBuffer, 480, 200.);
+
   // Scope
-  tScope = new dlpg::IWavScopeControl(this, PLUG_ScopeIrect, kScope);
+  tScope = new dlpg::IWavScopeControl(this, PLUG_ScopeIrect, kScope, vBuffer);
   pGraphics->AttachControl(tScope);
 
   AttachGraphics(pGraphics);
 
+  //tScope->LoadWave(&vBuffer);
   //MakePreset("preset 1", ... );
   MakeDefaultPreset((char *) "-", kNumPrograms);
 }

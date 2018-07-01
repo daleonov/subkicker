@@ -3,6 +3,7 @@
 
 #include "IPlug_include_in_plug_hdr.h"
 #include "DLPG_IControlExtras.h"
+#include "DLPG_WaveGenerator.h"
 
 const int kNumPrograms = 1;
 
@@ -43,6 +44,7 @@ public:
 private:
   double mGain;
   dlpg::IWavScopeControl* tScope;
+  dlpg::WaveGenerator* tWaveGenerator;
 };
 
 #endif
