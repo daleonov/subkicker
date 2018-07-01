@@ -27,7 +27,7 @@ enum ELayout
 const IRECT PLUG_ScopeIrect(
   10,
   10,
-  510,
+  10 + DLPG_SCOPE_W_PX,
   190
 );
 

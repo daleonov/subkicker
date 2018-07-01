@@ -5,6 +5,8 @@
 #include "IControl.h"
 #include <vector>
 
+#define DLPG_SCOPE_W_PX 500
+
 const IColor DLPG_DEFAULT_SCOPE_BG_ICOLOR(255, 61, 61, 61);
 const IColor DLPG_DEFAULT_SCOPE_OUTLINE_ICOLOR(255, 85, 85, 85);
 
@@ -25,10 +27,12 @@ public:
   */
   bool Draw(IGraphics* pGraphics);
   bool LoadWave(std::vector<double> &pvBuffer);
+  bool UpdateScale(double fDuration, double fSampleRate);
 
 private:
   IRECT mScopeRect;
   std::vector<double> pvBuffer;
+  double fScale;
 
 };
 } //namespace dlpg

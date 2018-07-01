@@ -24,7 +24,18 @@ public:
   /*
   @param Graphic part. Sizes and colours are based on macros defined in the header. 
   */
-  bool Generate(std::vector<double> &vBuffer, int nSamples, double fFrequency, double fPhase = 0., WaveForm_t kWaveForm = kSine);
+  bool GenerateSamples(std::vector<double> &vBuffer, int nSamples, double fFrequency, double fPhase = 0., WaveForm_t kWaveForm = kSine);
+
+  /*
+  @brief Fills a buffer with a generated signal.
+  @param vBuffer buffer to fill with values (-1..1 range)
+  @param fDuration signal duration in seconds
+  @param fFrequency desired signal frequency in Hz
+  @param fPhase phase shift of signal in radians
+  @param kWaveForm waveform type; for suture use, in this version it's always a sine wave.
+  */
+  bool Generate(std::vector<double> &vBuffer, double fDuration, double fFrequency, double fPhase = 0., WaveForm_t kWaveForm = kSine);
+
   bool SetSampleRate(double fSampleRate);
   bool CalculateIncrement(double fFrequency);
 private:

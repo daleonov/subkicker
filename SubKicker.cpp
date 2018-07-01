@@ -20,13 +20,18 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
 
   pGraphics->AttachControl(new IKnobMultiControl(this, kGainX, kGainY, kGain, &knob));
 
+  double fDuration = 30./1000;
+  double fSampleRate = 44100.;
+  double fFrequency = 400.;
+
   // Wave stuff
   tWaveGenerator = new dlpg::WaveGenerator();
   std::vector<double> vBuffer(0);
-  tWaveGenerator->Generate(vBuffer, 480, 200.);
+  tWaveGenerator->Generate(vBuffer, fDuration, fFrequency);
 
   // Scope
   tScope = new dlpg::IWavScopeControl(this, PLUG_ScopeIrect, kScope, vBuffer);
+  tScope->UpdateScale(fDuration, fSampleRate);
   pGraphics->AttachControl(tScope);
 
   AttachGraphics(pGraphics);
