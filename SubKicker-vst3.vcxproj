@@ -113,11 +113,13 @@
     <LinkIncremental>
     </LinkIncremental>
     <TargetExt>.vst3</TargetExt>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)DLPG\</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IntDir>build-win\vst3\$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental />
     <TargetExt>.vst3</TargetExt>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)DLPG\</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>build-win\vst3\$(Platform)\bin\</OutDir>
@@ -128,10 +130,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IntDir>build-win\vst3\$(Platform)\$(Configuration)\</IntDir>
     <TargetExt>.vst3</TargetExt>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)DLPG\</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IntDir>build-win\vst3\$(Platform)\$(Configuration)\</IntDir>
     <TargetExt>.vst3</TargetExt>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)DLPG\</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Tracer|Win32'">
     <OutDir>build-win\vst3\$(Platform)\bin\</OutDir>
@@ -369,6 +373,7 @@ if exist "%programfiles(x86)%" (copy /y "$(TargetPath)" "$(VST3_64_PATH)\SubKick
     <ClCompile Include="..\..\VST3_SDK\public.sdk\source\vst\vstparameters.cpp" />
     <ClCompile Include="..\..\VST3_SDK\public.sdk\source\vst\vstsinglecomponenteffect.cpp" />
     <ClCompile Include="..\..\WDL\IPlug\IPlugVST3.cpp" />
+    <ClCompile Include="DLPG\DLPG_IControlExtras.cpp" />
     <ClCompile Include="SubKicker.cpp" />
   </ItemGroup>
   <ItemGroup>

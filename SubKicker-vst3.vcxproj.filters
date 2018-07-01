@@ -41,6 +41,9 @@
     <ClCompile Include="..\..\WDL\IPlug\IPlugVST3.cpp">
       <Filter>vst3</Filter>
     </ClCompile>
+    <ClCompile Include="DLPG\DLPG_IControlExtras.cpp">
+      <Filter>dlpg</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SubKicker.h" />
@@ -172,6 +175,9 @@
     </Filter>
     <Filter Include="vst3\VST3SDK\public.sdk\main">
       <UniqueIdentifier>{ec7b025c-4ef1-4403-956b-b3673b4715b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dlpg">
+      <UniqueIdentifier>{185ec876-38c9-4b9b-8c3f-203a174c59e6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

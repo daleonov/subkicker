@@ -3,24 +3,6 @@
 #include "IControl.h"
 #include "resource.h"
 
-const int kNumPrograms = 1;
-
-enum EParams
-{
-  kGain = 0,
-  kNumParams
-};
-
-enum ELayout
-{
-  kWidth = GUI_WIDTH,
-  kHeight = GUI_HEIGHT,
-
-  kGainX = 100,
-  kGainY = 100,
-  kKnobFrames = 60
-};
-
 SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   :	IPLUG_CTOR(kNumParams, kNumPrograms, instanceInfo), mGain(1.)
 {
@@ -31,11 +13,16 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   GetParam(kGain)->SetShape(2.);
 
   IGraphics* pGraphics = MakeGraphics(this, kWidth, kHeight);
-  pGraphics->AttachPanelBackground(&COLOR_RED);
+  const IColor *tBgColor = new IColor(255, 40, 40, 40);
+  pGraphics->AttachPanelBackground(tBgColor);
 
   IBitmap knob = pGraphics->LoadIBitmap(KNOB_ID, KNOB_FN, kKnobFrames);
 
   pGraphics->AttachControl(new IKnobMultiControl(this, kGainX, kGainY, kGain, &knob));
+
+  // Scope
+  tScope = new dlpg::IWavScopeControl(this, PLUG_ScopeIrect, kScope);
+  pGraphics->AttachControl(tScope);
 
   AttachGraphics(pGraphics);
 
