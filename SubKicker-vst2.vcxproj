@@ -152,6 +152,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
     </Link>
+    <PreBuildEvent>
+      <Command>dlpg_git_version.bat</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Generate DLPG_Version.h</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -165,6 +171,12 @@
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(x64_LIB_PATHS);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PreBuildEvent>
+      <Command>dlpg_git_version.bat</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Generate DLPG_Version.h</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -182,6 +194,12 @@
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Windows</SubSystem>
     </Link>
+    <PreBuildEvent>
+      <Command>dlpg_git_version.bat</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Generate DLPG_Version.h</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -200,6 +218,12 @@
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(x64_LIB_PATHS);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PreBuildEvent>
+      <Command>dlpg_git_version.bat</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Generate DLPG_Version.h</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Tracer|Win32'">
     <ClCompile>

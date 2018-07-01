@@ -163,10 +163,17 @@
       <ModuleDefinitionFile>$(WDL_PATH)\IPlug\IPlugVST3.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>echo Post-Build: copy 32bit binary to 32bit VST3 Plugins folder ... ...
-copy /y "$(TargetPath)" "$(VST3_32_PATH)\SubKicker.vst3"</Command>
-      <Message>Copy VST3 Binary to VST3 Plugins folder</Message>
+      <Command>
+      </Command>
+      <Message>
+      </Message>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>dlpg_git_version.bat</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Generate DLPG_Version.h</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -184,10 +191,17 @@ copy /y "$(TargetPath)" "$(VST3_32_PATH)\SubKicker.vst3"</Command>
       <ModuleDefinitionFile>$(WDL_PATH)\IPlug\IPlugVST3.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>echo Post-Build: copy 64bit binary to 64bit VST3 Plugins folder ...
-if exist "%programfiles(x86)%" (copy /y "$(TargetPath)" "$(VST3_64_PATH)\SubKicker.vst3") else (echo Not copying 64bit binary - 32bit OS detected)</Command>
-      <Message>Copy VST3 Binary to VST3 Plugins folder</Message>
+      <Command>
+      </Command>
+      <Message>
+      </Message>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>dlpg_git_version.bat</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Generate DLPG_Version.h</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -210,10 +224,17 @@ if exist "%programfiles(x86)%" (copy /y "$(TargetPath)" "$(VST3_64_PATH)\SubKick
       <ModuleDefinitionFile>$(WDL_PATH)\IPlug\IPlugVST3.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>echo Post-Build: copy 32bit binary to 32bit VST3 Plugins folder ... ...
-copy /y "$(TargetPath)" "$(VST3_32_PATH)\SubKicker.vst3"</Command>
-      <Message>Copy VST3 Binary to VST3 Plugins folder</Message>
+      <Command>
+      </Command>
+      <Message>
+      </Message>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>dlpg_git_version.bat</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Generate DLPG_Version.h</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -236,10 +257,17 @@ copy /y "$(TargetPath)" "$(VST3_32_PATH)\SubKicker.vst3"</Command>
       <ModuleDefinitionFile>$(WDL_PATH)\IPlug\IPlugVST3.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>echo Post-Build: copy 64bit binary to 64bit VST3 Plugins folder ...
-if exist "%programfiles(x86)%" (copy /y "$(TargetPath)" "$(VST3_64_PATH)\SubKicker.vst3") else (echo Not copying 64bit binary - 32bit OS detected)</Command>
-      <Message>Copy VST3 Binary to VST3 Plugins folder</Message>
+      <Command>
+      </Command>
+      <Message>
+      </Message>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>dlpg_git_version.bat</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Generate DLPG_Version.h</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Tracer|Win32'">
     <ClCompile>
