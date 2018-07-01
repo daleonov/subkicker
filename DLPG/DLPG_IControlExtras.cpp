@@ -30,16 +30,40 @@ bool IWavScopeControl::LoadWave(std::vector<double> &vBuffer){
 }
 
 bool IWavScopeControl::Draw(IGraphics* pGraphics){
+  double nWaveX;
+
   pGraphics->FillIRect(&DLPG_DEFAULT_SCOPE_BG_ICOLOR, &this->mScopeRect);
 
-  double nWaveX = 10;
+  // Assuming the buffer has at least 2 samples
+  if(pvBuffer.size()<2)
+    return true;
+
   /*
-  for(auto i = pvBuffer.begin(); i != pvBuffer.end(); ++i, nWaveX++){
-    pGraphics->ForcePixel(&DLPG_DEFAULT_SCOPE_OUTLINE_ICOLOR, nWaveX, ((double)*i)*50+100);
-  }*/
+  First fill, then outline. We have to draw them in separate loops,
+  otherwise the waveform won't look clean.
+  */
+  nWaveX = this->mScopeRect.L;
   for(std::vector<double>::size_type i = 0; i != pvBuffer.size(); i++, nWaveX+=1/fScale){
-    pGraphics->ForcePixel(&DLPG_DEFAULT_SCOPE_OUTLINE_ICOLOR, nWaveX, (pvBuffer[i])*50+100);
+    pGraphics->DrawLine(
+      &DLPG_DEFAULT_SCOPE_FILL_ICOLOR,
+      nWaveX,
+      this->mScopeRect.T + DLPG_SCOPE_SCALE_SIGNAL(0),
+      nWaveX,
+      this->mScopeRect.T + DLPG_SCOPE_SCALE_SIGNAL(pvBuffer[i])
+      );
   }
+  nWaveX = this->mScopeRect.L;
+  for(std::vector<double>::size_type i = 1; i != pvBuffer.size(); i++, nWaveX+=1/fScale){
+    pGraphics->DrawLine(
+      &DLPG_DEFAULT_SCOPE_OUTLINE_ICOLOR,
+      nWaveX,
+      this->mScopeRect.T + DLPG_SCOPE_SCALE_SIGNAL(pvBuffer[i-1]),
+      nWaveX + 1/fScale,
+      this->mScopeRect.T + DLPG_SCOPE_SCALE_SIGNAL(pvBuffer[i]),
+      0,
+      true
+      );
+    }
 
   return true;
 }

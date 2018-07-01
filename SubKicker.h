@@ -21,14 +21,17 @@ enum ELayout
 
   kGainX = 100,
   kGainY = 100,
-  kKnobFrames = 60
+  kKnobFrames = 60,
+
+  kScopeX = 10,
+  kScopeY = 10
 };
 
 const IRECT PLUG_ScopeIrect(
-  10,
-  10,
-  10 + DLPG_SCOPE_W_PX,
-  190
+  kScopeX,
+  kScopeY,
+  kScopeX + DLPG_SCOPE_W_PX,
+  kScopeY + DLPG_SCOPE_H_PX
 );
 
 class SubKicker : public IPlug
