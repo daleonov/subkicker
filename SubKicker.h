@@ -48,6 +48,7 @@ private:
   double mGain;
   dlpg::IWavScopeControl* tScope;
   dlpg::WaveGenerator* tWaveGenerator;
+  dlpg::EnvelopeGenerator* tEnvelopeGenerator;
 };
 
 #endif

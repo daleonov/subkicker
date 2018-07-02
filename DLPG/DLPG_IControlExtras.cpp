@@ -42,6 +42,7 @@ bool IWavScopeControl::Draw(IGraphics* pGraphics){
   First fill, then outline. We have to draw them in separate loops,
   otherwise the waveform won't look clean.
   */
+
   nWaveX = this->mScopeRect.L;
   for(std::vector<double>::size_type i = 0; i != pvBuffer.size(); i++, nWaveX+=1/fScale){
     pGraphics->DrawLine(
@@ -64,7 +65,6 @@ bool IWavScopeControl::Draw(IGraphics* pGraphics){
       true
       );
     }
-
   return true;
 }
 

@@ -52,4 +52,33 @@ bool WaveGenerator::CalculateIncrement(double fFrequency){
   return true;
 }
 
+EnvelopeGenerator::EnvelopeGenerator(double fSampleRate){
+  this-> fSampleRate = fSampleRate;
+}
+
+EnvelopeGenerator::~EnvelopeGenerator(){
+}
+
+bool EnvelopeGenerator::Generate(std::vector<double> &vBuffer, double fDuration, EnvelopeStage_t kEnvelopeStage, EnvelopeShape_t kEnvelopeShape){
+  int nSamples = fDuration * fSampleRate;
+  double fSampleMultiplier;
+  switch(kEnvelopeStage){
+  case kAttack:
+    for(int i=0; i<nSamples; i++) {
+      if(kEnvelopeShape == kLogarithmic)
+        // Log
+        fSampleMultiplier = log(((fExp-1)/(nSamples-1))*i + 1);
+      else
+        // Linear
+        fSampleMultiplier = (double)i/(nSamples-1);
+
+      vBuffer.push_back(fSampleMultiplier);
+    }
+    break;
+  default:
+    break;
+  } //switch
+  return true;
+}
+
 } //namespace dlpg

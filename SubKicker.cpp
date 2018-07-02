@@ -20,23 +20,30 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
 
   pGraphics->AttachControl(new IKnobMultiControl(this, kGainX, kGainY, kGain, &knob));
 
-  double fDuration = 30./1000;
+  double fDuration = 300./1000;
+  double fAttack = 50./1000;
   double fSampleRate = 44100.;
   double fFrequency = 400.;
 
   // Wave stuff
+  std::vector<double> vWaveform(0), vAttackEnvelope(0);
   tWaveGenerator = new dlpg::WaveGenerator();
-  std::vector<double> vBuffer(0);
-  tWaveGenerator->Generate(vBuffer, fDuration, fFrequency);
+  tEnvelopeGenerator = new dlpg::EnvelopeGenerator();
+  tWaveGenerator->Generate(vWaveform, fDuration, fFrequency);
+  tEnvelopeGenerator->Generate(vAttackEnvelope, fAttack, dlpg::kAttack, dlpg::kLogarithmic);
+
+  for(std::vector<double>::size_type i = 0; i != vAttackEnvelope.size(); i++){
+    vWaveform[i] *= vAttackEnvelope[i];
+  }
 
   // Scope
-  tScope = new dlpg::IWavScopeControl(this, PLUG_ScopeIrect, kScope, vBuffer);
+  tScope = new dlpg::IWavScopeControl(this, PLUG_ScopeIrect, kScope, vWaveform);
   tScope->UpdateScale(fDuration, fSampleRate);
   pGraphics->AttachControl(tScope);
 
   AttachGraphics(pGraphics);
 
-  //tScope->LoadWave(&vBuffer);
+  //tScope->LoadWave(&vWaveform);
   //MakePreset("preset 1", ... );
   MakeDefaultPreset((char *) "-", kNumPrograms);
 }
