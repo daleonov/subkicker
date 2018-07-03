@@ -44,6 +44,16 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   GetParam(kTrigInpMuteSwitch)->InitEnum("Input mute", DLPG_DEFAULT_TRIG_INPMUTE_SWITCH_STATE, DLPG_SWITCH_STATES);
   GetParam(kTrigInpMuteSwitch)->SetDisplayText(0, "don't mute");
   GetParam(kTrigInpMuteSwitch)->SetDisplayText(1, "mute");
+
+  GetParam(kOutputMeter)->InitDouble(
+    "[Output level]",
+    DLPG_OUTPUT_METER_RANGE_MIN,
+    DLPG_OUTPUT_METER_RANGE_MIN,
+    DLPG_OUTPUT_METER_RANGE_MAX,
+    0.1,
+    "dB"
+    );
+
   // Background
   IGraphics* pGraphics = MakeGraphics(this, kWidth, kHeight);
   //const IColor *tBgColor = new IColor(255, 40, 40, 40);
@@ -121,7 +131,8 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_INPMUTE_SWITCH_ID, DLPG_TRIG_INPMUTE_SWITCH_FN, DLPG_SWITCH_STATES);
   tTrigInpMuteSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(3, 2), kTrigInpMuteSwitch, &tBmp);
   pGraphics->AttachControl(tTrigInpMuteSwitch);
-
+  tTrigInputSwitch->GrayOut(true);
+  tTrigInpMuteSwitch->GrayOut(true);
   // *** Switches - end
 
   // Text label with current version of the plug
@@ -167,6 +178,18 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
       DLPG_BUGREPORT_LABEL_TEXT
       )
     );
+
+  tOutputMeter = new Plug::ILevelMeteringBar(
+    this,
+    kOutputMeterX,
+    kOutputMeterY,
+    tOutputMeterIrect,
+    kOutputMeter,
+    false,
+    &tOutputMeterFgIcolor
+    );
+  tOutputMeter->SetNotchValue(DLPG_OUTPUT_METER_NOTCH);
+  pGraphics->AttachControl(tOutputMeter);
 
   double fAttack = 20./1000;
   double fHold = 100./1000;

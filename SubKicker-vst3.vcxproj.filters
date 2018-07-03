@@ -47,6 +47,9 @@
     <ClCompile Include="DLPG\DLPG_WaveGenerator.cpp">
       <Filter>dlpg</Filter>
     </ClCompile>
+    <ClCompile Include="DLPG\PLUG_IControlExtras.cpp">
+      <Filter>dlpg</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SubKicker.h" />

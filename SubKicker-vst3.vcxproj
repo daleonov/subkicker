@@ -375,6 +375,7 @@ if exist "%programfiles(x86)%" (copy /y "$(TargetPath)" "$(VST3_64_PATH)\SubKick
     <ClCompile Include="..\..\WDL\IPlug\IPlugVST3.cpp" />
     <ClCompile Include="DLPG\DLPG_IControlExtras.cpp" />
     <ClCompile Include="DLPG\DLPG_WaveGenerator.cpp" />
+    <ClCompile Include="DLPG\PLUG_IControlExtras.cpp" />
     <ClCompile Include="SubKicker.cpp" />
   </ItemGroup>
   <ItemGroup>

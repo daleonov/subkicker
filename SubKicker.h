@@ -3,6 +3,7 @@
 
 #include "IPlug_include_in_plug_hdr.h"
 #include "DLPG_IControlExtras.h"
+#include "PLUG_IControlExtras.h"
 #include "DLPG_WaveGenerator.h"
 
 // If this file is missing, run "git_version" script from project folder,
@@ -44,6 +45,14 @@
 
 #define DLPG_SCOPE_W 440
 #define DLPG_SCOPE_H 105
+
+#define DLPG_OUTPUT_METER_RANGE_MIN -60.
+#define DLPG_OUTPUT_METER_RANGE_MAX +12.
+#define DLPG_OUTPUT_METER_NOTCH DLPG_OUTPUT_METER_RANGE_MAX
+#define DLPG_OUTPUT_METER_W 74
+#define DLPG_OUTPUT_METER_H 490
+const IRECT tOutputMeterIrect(0, 0, DLPG_OUTPUT_METER_W, DLPG_OUTPUT_METER_H);
+const IColor tOutputMeterFgIcolor(255, 0, 184, 67);
 
 #define DLPG_VERSION_TEXT_LABEL_STRING_SIZE 96
 #define DLPG_VERSION_TEXT_LABEL_COLOR_MONO 90
@@ -115,6 +124,7 @@ enum EParams
   kEnvelopeHoldKnob,
   kEnvelopeReleaseKnob,
   kVolKnob,
+  kOutputMeter,
   kNumParams
 };
 
@@ -150,6 +160,9 @@ enum ELayout
 
   kBugreporLabelX = 27,
   kBugreporLabelY = 501,
+
+  kOutputMeterX = 785,
+  kOutputMeterY = 10,
 };
 
 const IRECT tTextVersionIrect(
@@ -186,6 +199,7 @@ private:
   dlpg::IWavScopeControl* tScope;
   dlpg::WaveGenerator* tWaveGenerator;
   dlpg::EnvelopeGenerator* tEnvelopeGenerator;
+  Plug::ILevelMeteringBar* tOutputMeter;
   ISwitchControl *tBypassSwitch;
   ISwitchControl *tTrigSwitch;
   ISwitchControl *tSnapSwitch;
