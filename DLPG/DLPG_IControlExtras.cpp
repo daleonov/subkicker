@@ -31,7 +31,8 @@ bool IWavScopeControl::LoadWave(std::vector<double> &vBuffer){
 
 bool IWavScopeControl::Draw(IGraphics* pGraphics){
   double nWaveX;
-  int nHeight;
+  const int nHeight = this->mScopeRect.B - this->mScopeRect.T;
+  const int nWaveYBase = this->mScopeRect.T + DLPG_SCOPE_V_PADDING;
 
   pGraphics->FillIRect(&DLPG_DEFAULT_SCOPE_BG_ICOLOR, &this->mScopeRect);
 
@@ -39,31 +40,32 @@ bool IWavScopeControl::Draw(IGraphics* pGraphics){
   if(pvBuffer.size()<2)
     return true;
 
+  #if (DLPG_SCOPE_FILL == true)
   /*
   First fill, then outline. We have to draw them in separate loops,
   otherwise the waveform won't look clean.
   */
-  nHeight = mScopeRect.B-mScopeRect.T;
-  nWaveX = this->mScopeRect.L;
+  nWaveX = this->mScopeRect.L + DLPG_SCOPE_H_PADDING;
   for(std::vector<double>::size_type i = 0; i != pvBuffer.size(); i++, nWaveX+=1/fScale){
     pGraphics->DrawLine(
       &DLPG_DEFAULT_SCOPE_FILL_ICOLOR,
       nWaveX,
-      this->mScopeRect.T + DLPG_SCOPE_SCALE_SIGNAL(0, nHeight),
+      nWaveYBase + DLPG_SCOPE_SCALE_SIGNAL(0, nHeight),
       nWaveX,
-      this->mScopeRect.T + DLPG_SCOPE_SCALE_SIGNAL(pvBuffer[i], nHeight)
+      nWaveYBase + DLPG_SCOPE_SCALE_SIGNAL(pvBuffer[i], nHeight)
       );
   }
-  nWaveX = this->mScopeRect.L;
+  #endif //DLPG_SCOPE_FILL
+  nWaveX = this->mScopeRect.L + DLPG_SCOPE_H_PADDING;
   for(std::vector<double>::size_type i = 1; i != pvBuffer.size(); i++, nWaveX+=1/fScale){
     pGraphics->DrawLine(
       &DLPG_DEFAULT_SCOPE_OUTLINE_ICOLOR,
       nWaveX,
-      this->mScopeRect.T + DLPG_SCOPE_SCALE_SIGNAL(pvBuffer[i-1], nHeight),
+      nWaveYBase + DLPG_SCOPE_SCALE_SIGNAL(pvBuffer[i-1], nHeight),
       nWaveX + 1/fScale,
-      this->mScopeRect.T + DLPG_SCOPE_SCALE_SIGNAL(pvBuffer[i], nHeight),
+      nWaveYBase + DLPG_SCOPE_SCALE_SIGNAL(pvBuffer[i], nHeight),
       0,
-      true
+      DLPG_SCOPE_ANTIALIAS
       );
     }
   return true;
@@ -85,7 +87,8 @@ bool IWavScopeControl::UpdateScale(double fDuration, double fSampleRate){
   Dn[samples] = Ds[seconds] * Sr[Hz]
   Scl[samples/pixel] = Dn/W = Ds * Sr / W
   */
-  this->fScale = fDuration * fSampleRate / (mScopeRect.R-mScopeRect.L);
+  this->fScale = \
+    fDuration * fSampleRate / (mScopeRect.R - mScopeRect.L - 2*DLPG_SCOPE_H_PADDING);
   SetDirty(false);
   Redraw();
   return true;
