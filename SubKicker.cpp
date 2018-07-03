@@ -38,13 +38,18 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   GetParam(kFlipSwitch)->InitEnum("Phase flip", DLPG_DEFAULT_FLIP_SWITCH_STATE, DLPG_SWITCH_STATES);
   GetParam(kFlipSwitch)->SetDisplayText(0, "off");
   GetParam(kFlipSwitch)->SetDisplayText(1, "invert");
-  GetParam(kFreezeSwitch)->InitEnum("Freeze", DLPG_DEFAULT_FREEZE_SWITCH_STATE, DLPG_SWITCH_STATES);
-  GetParam(kFreezeSwitch)->SetDisplayText(0, "off");
-  GetParam(kFreezeSwitch)->SetDisplayText(1, "on");
-
+  GetParam(kTrigInputSwitch)->InitEnum("Input source", DLPG_DEFAULT_TRIG_INPUT_SWITCH_STATE, DLPG_SWITCH_STATES);
+  GetParam(kTrigInputSwitch)->SetDisplayText(0, "ch. 1-2");
+  GetParam(kTrigInputSwitch)->SetDisplayText(1, "ch. 3-4");
+  GetParam(kTrigInpMuteSwitch)->InitEnum("Input mute", DLPG_DEFAULT_TRIG_INPMUTE_SWITCH_STATE, DLPG_SWITCH_STATES);
+  GetParam(kTrigInpMuteSwitch)->SetDisplayText(0, "don't mute");
+  GetParam(kTrigInpMuteSwitch)->SetDisplayText(1, "mute");
+  // Background
   IGraphics* pGraphics = MakeGraphics(this, kWidth, kHeight);
-  const IColor *tBgColor = new IColor(255, 40, 40, 40);
-  pGraphics->AttachPanelBackground(tBgColor);
+  //const IColor *tBgColor = new IColor(255, 40, 40, 40);
+  //pGraphics->AttachPanelBackground(tBgColor);
+  pGraphics->AttachBackground(DLPG_BACKGROUND_ID, DLPG_BACKGROUND_FN);
+
 
   // *** Knobs - start
   // Trig section
@@ -98,26 +103,31 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
 
   // *** Switches - start
   tBmp = pGraphics->LoadIBitmap(DLPG_BYPASS_SWITCH_ID, DLPG_BYPASS_SWITCH_FN, DLPG_SWITCH_STATES);
-  tBypassSwitch = new ISwitchControl(this, kBypassSwitchX, kBypassSwitchY, kBypassSwitch, &tBmp);
+  tBypassSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(1, 1), kBypassSwitch, &tBmp);
   pGraphics->AttachControl(tBypassSwitch);
-  tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_SWITCH_ID, DLPG_TRIG_SWITCH_FN, DLPG_SWITCH_STATES);
-  tTrigSwitch = new ISwitchControl(this, kTrigSwitchX, kTrigSwitchY, kTrigSwitch, &tBmp);
-  pGraphics->AttachControl(tTrigSwitch);
   tBmp = pGraphics->LoadIBitmap(DLPG_SNAP_SWITCH_ID, DLPG_SNAP_SWITCH_FN, DLPG_SWITCH_STATES);
-  tSnapSwitch = new ISwitchControl(this, kSnapSwitchX, kSnapSwitchY, kSnapSwitch, &tBmp);
+  tSnapSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(2, 1), kSnapSwitch, &tBmp);
   pGraphics->AttachControl(tSnapSwitch);
   tBmp = pGraphics->LoadIBitmap(DLPG_FLIP_SWITCH_ID, DLPG_FLIP_SWITCH_FN, DLPG_SWITCH_STATES);
-  tFlipSwitch = new ISwitchControl(this, kFlipSwitchX, kFlipSwitchY, kFlipSwitch, &tBmp);
+  tFlipSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(3, 1), kFlipSwitch, &tBmp);
   pGraphics->AttachControl(tFlipSwitch);
-  tBmp = pGraphics->LoadIBitmap(DLPG_FREEZE_SWITCH_ID, DLPG_FREEZE_SWITCH_FN, DLPG_SWITCH_STATES);
-  tFreezeSwitch = new ISwitchControl(this, kFreezeSwitchX, kFreezeSwitchY, kFreezeSwitch, &tBmp);
-  pGraphics->AttachControl(tFreezeSwitch);
+
+  tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_SWITCH_ID, DLPG_TRIG_SWITCH_FN, DLPG_SWITCH_STATES);
+  tTrigSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(1, 2), kTrigSwitch, &tBmp);
+  pGraphics->AttachControl(tTrigSwitch);
+  tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_INPUT_SWITCH_ID, DLPG_TRIG_INPUT_SWITCH_FN, DLPG_SWITCH_STATES);
+  tTrigInputSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(2, 2), kTrigInputSwitch, &tBmp);
+  pGraphics->AttachControl(tTrigInputSwitch);
+  tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_INPMUTE_SWITCH_ID, DLPG_TRIG_INPMUTE_SWITCH_FN, DLPG_SWITCH_STATES);
+  tTrigInpMuteSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(3, 2), kTrigInpMuteSwitch, &tBmp);
+  pGraphics->AttachControl(tTrigInpMuteSwitch);
+
   // *** Switches - end
 
   double fDuration = 300./1000;
   double fAttack = 20./1000;
   double fSampleRate = 44100.;
-  double fFrequency = 400.;
+  double fFrequency = 100.;
 
   // Wave stuff
   std::vector<double> vWaveform(0), vAttackEnvelope(0);

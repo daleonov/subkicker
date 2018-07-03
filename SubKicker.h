@@ -7,30 +7,40 @@
 
 #define DLPG_SWITCH_STATES 2
 
-#define DLPG_SWITCH_X_BASE 520
+#define DLPG_SWITCH_X_BASE 565
+#define DLPG_SWITCH_X_STEP 110
 #define DLPG_SWITCH_Y_BASE 10
 #define DLPG_SWITCH_Y_STEP 36
+
+#define DLPG_SWITCH_GRID(row, col)\
+(DLPG_SWITCH_X_BASE + (col-1)*DLPG_SWITCH_X_STEP),\
+(DLPG_SWITCH_Y_BASE + (row-1)*DLPG_SWITCH_Y_STEP)
 
 #define DLPG_DEFAULT_BYPASS_SWITCH_STATE 0
 #define DLPG_DEFAULT_TRIG_SWITCH_STATE 0
 #define DLPG_DEFAULT_SNAP_SWITCH_STATE 1
 #define DLPG_DEFAULT_FLIP_SWITCH_STATE 0
-#define DLPG_DEFAULT_FREEZE_SWITCH_STATE 0
+#define DLPG_DEFAULT_TRIG_INPUT_SWITCH_STATE 0
+#define DLPG_DEFAULT_TRIG_INPMUTE_SWITCH_STATE 0
 
 #define DLPG_STANDARD_KNOB_FRAMES 128
 #define DLPG_TRIG_CH_KNOB_FRAMES 17
 #define DLPG_TRIG_NOTE_KNOB_FRAMES 129
 
-#define DLPG_KNOB_X_BASE 20
-#define DLPG_KNOB_X_STEP 165
-#define DLPG_KNOB_Y_BASE 200
-#define DLPG_KNOB_Y_STEP 175
+#define DLPG_KNOB_X_BASE 120
+#define DLPG_KNOB_X_STEP 167
+#define DLPG_KNOB_Y_BASE 145
+#define DLPG_KNOB_Y_STEP 198
 
 #define DLPG_KNOB_GRID(row, col)\
 (DLPG_KNOB_X_BASE + (col-1)*DLPG_KNOB_X_STEP),\
 (DLPG_KNOB_Y_BASE + (row-1)*DLPG_KNOB_Y_STEP)
 
 #define DLPG_VOL_KNOB_SHAPE 0.26
+
+
+#define DLPG_SCOPE_W 440
+#define DLPG_SCOPE_H 105
 
 const int kNumPrograms = 1;
 
@@ -42,7 +52,8 @@ enum EParams
   kTrigSwitch,
   kSnapSwitch,
   kFlipSwitch,
-  kFreezeSwitch,
+  kTrigInputSwitch,
+  kTrigInpMuteSwitch,
   kTrigNoteKnob,
   kTrigChKnob,
   kTrigAttackKnob,
@@ -65,7 +76,7 @@ enum ELayout
   kGainY = 300,
   kKnobFrames = 60,
 
-  kScopeX = 10,
+  kScopeX = 122,
   kScopeY = 10,
 
   kBypassSwitchX = DLPG_SWITCH_X_BASE,
@@ -87,8 +98,8 @@ enum ELayout
 const IRECT PLUG_ScopeIrect(
   kScopeX,
   kScopeY,
-  kScopeX + DLPG_SCOPE_W_PX,
-  kScopeY + DLPG_SCOPE_H_PX
+  kScopeX + DLPG_SCOPE_W,
+  kScopeY + DLPG_SCOPE_H
 );
 
 class SubKicker : public IPlug
@@ -110,7 +121,8 @@ private:
   ISwitchControl *tTrigSwitch;
   ISwitchControl *tSnapSwitch;
   ISwitchControl *tFlipSwitch;
-  ISwitchControl *tFreezeSwitch;
+  ISwitchControl *tTrigInputSwitch;
+  ISwitchControl *tTrigInpMuteSwitch;
   IKnobMultiControl *tTrigNoteKnob;
   IKnobMultiControl *tTrigChKnob;
   IKnobMultiControl *tTrigAttackKnob;
