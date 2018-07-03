@@ -55,9 +55,19 @@ instrument determined by PLUG _IS _INST
 
 // Unique IDs for each image resource.
 #define KNOB_ID 101
+#define DLPG_BYPASS_SWITCH_ID 102
+#define DLPG_TRIG_SWITCH_ID 103
+#define DLPG_SNAP_SWITCH_ID 104
+#define DLPG_FLIP_SWITCH_ID 105
+#define DLPG_FREEZE_SWITCH_ID 106
 
 // Image resource locations for this plug.
 #define KNOB_FN "resources/img/knob.png"
+#define DLPG_BYPASS_SWITCH_FN "resources/img/switch_bypass.png"
+#define DLPG_TRIG_SWITCH_FN "resources/img/switch_trig.png"
+#define DLPG_SNAP_SWITCH_FN "resources/img/switch_snap_alt.png"
+#define DLPG_FLIP_SWITCH_FN "resources/img/switch_flip_alt.png"
+#define DLPG_FREEZE_SWITCH_FN "resources/img/switch_freeze.png"
 
 // GUI default dimensions
 #define GUI_WIDTH 800

@@ -12,16 +12,47 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   GetParam(kGain)->InitDouble("Gain", 50., 0., 100.0, 0.01, "%");
   GetParam(kGain)->SetShape(2.);
 
+  GetParam(kBypassSwitch)->InitEnum("Bypass", DLPG_DEFAULT_BYPASS_SWITCH_STATE, DLPG_SWITCH_STATES);
+  GetParam(kBypassSwitch)->SetDisplayText(0, "Normal");
+  GetParam(kBypassSwitch)->SetDisplayText(1, "Bypassed");
+  GetParam(kTrigSwitch)->InitEnum("Trigger", DLPG_DEFAULT_TRIG_SWITCH_STATE, DLPG_SWITCH_STATES);
+  GetParam(kTrigSwitch)->SetDisplayText(0, "Internal");
+  GetParam(kTrigSwitch)->SetDisplayText(1, "External");
+  GetParam(kSnapSwitch)->InitEnum("Frequency snap", DLPG_DEFAULT_SNAP_SWITCH_STATE, DLPG_SWITCH_STATES);
+  GetParam(kSnapSwitch)->SetDisplayText(0, "to Hz");
+  GetParam(kSnapSwitch)->SetDisplayText(1, "to notes");
+  GetParam(kFlipSwitch)->InitEnum("Phase flip", DLPG_DEFAULT_FLIP_SWITCH_STATE, DLPG_SWITCH_STATES);
+  GetParam(kFlipSwitch)->SetDisplayText(0, "off");
+  GetParam(kFlipSwitch)->SetDisplayText(1, "invert");
+  GetParam(kFreezeSwitch)->InitEnum("Freeze", DLPG_DEFAULT_FREEZE_SWITCH_STATE, DLPG_SWITCH_STATES);
+  GetParam(kFreezeSwitch)->SetDisplayText(0, "off");
+  GetParam(kFreezeSwitch)->SetDisplayText(1, "on");
+
   IGraphics* pGraphics = MakeGraphics(this, kWidth, kHeight);
   const IColor *tBgColor = new IColor(255, 40, 40, 40);
   pGraphics->AttachPanelBackground(tBgColor);
 
-  IBitmap knob = pGraphics->LoadIBitmap(KNOB_ID, KNOB_FN, kKnobFrames);
+  IBitmap tBmp = pGraphics->LoadIBitmap(KNOB_ID, KNOB_FN, kKnobFrames);
+  pGraphics->AttachControl(new IKnobMultiControl(this, kGainX, kGainY, kGain, &tBmp));
 
-  pGraphics->AttachControl(new IKnobMultiControl(this, kGainX, kGainY, kGain, &knob));
+  tBmp = pGraphics->LoadIBitmap(DLPG_BYPASS_SWITCH_ID, DLPG_BYPASS_SWITCH_FN, DLPG_SWITCH_STATES);
+  tBypassSwitch = new ISwitchControl(this, kBypassSwitchX, kBypassSwitchY, kBypassSwitch, &tBmp);
+  pGraphics->AttachControl(tBypassSwitch);
+  tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_SWITCH_ID, DLPG_TRIG_SWITCH_FN, DLPG_SWITCH_STATES);
+  tTrigSwitch = new ISwitchControl(this, kTrigSwitchX, kTrigSwitchY, kTrigSwitch, &tBmp);
+  pGraphics->AttachControl(tTrigSwitch);
+  tBmp = pGraphics->LoadIBitmap(DLPG_SNAP_SWITCH_ID, DLPG_SNAP_SWITCH_FN, DLPG_SWITCH_STATES);
+  tSnapSwitch = new ISwitchControl(this, kSnapSwitchX, kSnapSwitchY, kSnapSwitch, &tBmp);
+  pGraphics->AttachControl(tSnapSwitch);
+  tBmp = pGraphics->LoadIBitmap(DLPG_FLIP_SWITCH_ID, DLPG_FLIP_SWITCH_FN, DLPG_SWITCH_STATES);
+  tFlipSwitch = new ISwitchControl(this, kFlipSwitchX, kFlipSwitchY, kFlipSwitch, &tBmp);
+  pGraphics->AttachControl(tFlipSwitch);
+  tBmp = pGraphics->LoadIBitmap(DLPG_FREEZE_SWITCH_ID, DLPG_FREEZE_SWITCH_FN, DLPG_SWITCH_STATES);
+  tFreezeSwitch = new ISwitchControl(this, kFreezeSwitchX, kFreezeSwitchY, kFreezeSwitch, &tBmp);
+  pGraphics->AttachControl(tFreezeSwitch);
 
   double fDuration = 300./1000;
-  double fAttack = 50./1000;
+  double fAttack = 20./1000;
   double fSampleRate = 44100.;
   double fFrequency = 400.;
 
