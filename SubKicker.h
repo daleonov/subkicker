@@ -5,6 +5,10 @@
 #include "DLPG_IControlExtras.h"
 #include "DLPG_WaveGenerator.h"
 
+// If this file is missing, run "git_version" script from project folder,
+// or create an empty file if you don't use git.
+#include "DLPG_Version.h"
+
 #define DLPG_SWITCH_STATES 2
 
 #define DLPG_SWITCH_X_BASE 565
@@ -38,9 +42,39 @@
 
 #define DLPG_VOL_KNOB_SHAPE 0.26
 
-
 #define DLPG_SCOPE_W 440
 #define DLPG_SCOPE_H 105
+
+#define DLPG_VERSION_TEXT_LABEL_STRING_SIZE 96
+#define DLPG_VERSION_TEXT_LABEL_COLOR_MONO 90
+#define DLPG_VERSION_TEXT_LABEL_W 160
+#define DLPG_VERSION_TEXT_LABEL_H 64
+const IColor tTextVersionColor(
+  255,
+  DLPG_VERSION_TEXT_LABEL_COLOR_MONO,
+  DLPG_VERSION_TEXT_LABEL_COLOR_MONO,
+  DLPG_VERSION_TEXT_LABEL_COLOR_MONO
+  );
+
+// Plug's info label
+#ifdef _DLPG_VERSION_H
+#define DLPG_VERSTION_TEXT \
+"SubKicker v%s\n\
+by Daniel Leonov Plugs\n\
+danielleonovplugs.com\n\
+(%s@%s)"
+#else
+#define DLPG_VERSTION_TEXT \
+"SubKicker v%s\n\
+by Daniel Leonov Plugs\n\
+danielleonovplugs.com"
+#endif
+
+#ifdef _WIN32
+#define DLPG_VERSION_TEXT_LABEL_FONT_SIZE 12
+#elif defined(__APPLE__)
+#define DLPG_VERSION_TEXT_LABEL_FONT_SIZE 13
+#endif
 
 const int kNumPrograms = 1;
 
@@ -93,7 +127,17 @@ enum ELayout
 
   kFreezeSwitchX = DLPG_SWITCH_X_BASE,
   kFreezeSwitchY = DLPG_SWITCH_Y_BASE + 4*DLPG_SWITCH_Y_STEP,
+
+  kTextVersion_X = 10,
+  kTextVersion_Y = 448,
 };
+
+const IRECT tTextVersionIrect(
+  kTextVersion_X,
+  kTextVersion_Y,
+  (kTextVersion_X + DLPG_VERSION_TEXT_LABEL_W),
+  kTextVersion_Y + DLPG_VERSION_TEXT_LABEL_H
+  );
 
 const IRECT PLUG_ScopeIrect(
   kScopeX,

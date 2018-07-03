@@ -124,11 +124,42 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
 
   // *** Switches - end
 
+  // Text label with current version of the plug
+  // TODO: Make it clickable so it leads to a website or something
+  static IText tTextVersion = IText(DLPG_VERSION_TEXT_LABEL_STRING_SIZE);
+  char sDisplayedVersion[DLPG_VERSION_TEXT_LABEL_STRING_SIZE];
+  #ifdef _DLPG_VERSION_H
+  sprintf(
+    sDisplayedVersion,
+    DLPG_VERSTION_TEXT,
+    VST3_VER_STR,
+    &sPlugVersionGitHead,
+    &sPlugVersionDate
+    );
+  #else
+  sprintf(
+    sDisplayedVersion,
+    DLPG_VERSTION_TEXT,
+    VST3_VER_STR
+    );
+  #endif
+  tTextVersion.mColor = tTextVersionColor;
+  tTextVersion.mSize = DLPG_VERSION_TEXT_LABEL_FONT_SIZE;
+  tTextVersion.mAlign = tTextVersion.kAlignNear;
+  pGraphics->AttachControl(
+    new ITextControl(
+      this,
+      tTextVersionIrect,
+      &tTextVersion,
+      (const char*)&sDisplayedVersion
+      )
+    );
+
+
   double fDuration = 300./1000;
   double fAttack = 20./1000;
   double fSampleRate = 44100.;
   double fFrequency = 100.;
-
   // Wave stuff
   std::vector<double> vWaveform(0), vAttackEnvelope(0);
   tWaveGenerator = new dlpg::WaveGenerator();
