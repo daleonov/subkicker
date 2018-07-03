@@ -75,6 +75,18 @@ bool EnvelopeGenerator::Generate(std::vector<double> &vBuffer, double fDuration,
       vBuffer.push_back(fSampleMultiplier);
     }
     break;
+  case kRelease:
+    for(int i=0; i<nSamples; i++) {
+      if(kEnvelopeShape == kLogarithmic)
+        // Log
+        fSampleMultiplier = 1.-log(((fExp-1)/(nSamples-1))*i + 1);
+      else
+        // Linear
+        fSampleMultiplier = 1.-((double)i/(nSamples-1));
+
+      vBuffer.push_back(fSampleMultiplier);
+    }
+    break;
   default:
     break;
   } //switch

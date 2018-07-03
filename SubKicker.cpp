@@ -168,19 +168,25 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
       )
     );
 
-  double fDuration = 300./1000;
   double fAttack = 20./1000;
+  double fHold = 100./1000;
+  double fRelease = 20./1000;
+  double fDuration = fAttack + fHold + fRelease;
   double fSampleRate = 44100.;
   double fFrequency = 100.;
   // Wave stuff
-  std::vector<double> vWaveform(0), vAttackEnvelope(0);
+  std::vector<double> vWaveform(0), vAttackEnvelope(0), vReleaseEnvelope(0);
   tWaveGenerator = new dlpg::WaveGenerator();
   tEnvelopeGenerator = new dlpg::EnvelopeGenerator();
   tWaveGenerator->Generate(vWaveform, fDuration, fFrequency);
-  tEnvelopeGenerator->Generate(vAttackEnvelope, fAttack, dlpg::kAttack, dlpg::kLogarithmic);
-
-  for(std::vector<double>::size_type i = 0; i != vAttackEnvelope.size(); i++){
+  tEnvelopeGenerator->Generate(vAttackEnvelope, fAttack, dlpg::kAttack, dlpg::DLPG_ENVELOPE_ATTACK_SHAPE);
+  tEnvelopeGenerator->Generate(vReleaseEnvelope, fRelease, dlpg::kRelease, dlpg::DLPG_ENVELOPE_RELEASE_SHAPE);
+  std::vector<double>::size_type i, j;
+  for(i = 0; i != vAttackEnvelope.size(); i++){
     vWaveform[i] *= vAttackEnvelope[i];
+  }
+  for(i = vWaveform.size()-vReleaseEnvelope.size(), j=0; i != vWaveform.size(); i++, j++){
+    vWaveform[i] *= vReleaseEnvelope[j];
   }
 
   // Scope

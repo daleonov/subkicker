@@ -89,6 +89,10 @@ const IColor tBugreportLabelColor(
 #endif
 #define DLPG_BUGREPORT_LABEL_FONT_SIZE DLPG_VERSION_TEXT_LABEL_FONT_SIZE
 
+// Choose between kLogarithmic or kLinear
+#define DLPG_ENVELOPE_ATTACK_SHAPE kLinear
+#define DLPG_ENVELOPE_RELEASE_SHAPE DLPG_ENVELOPE_ATTACK_SHAPE
+
 const int kNumPrograms = 1;
 
 enum EParams
