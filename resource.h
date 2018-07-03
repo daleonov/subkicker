@@ -73,7 +73,7 @@ instrument determined by PLUG _IS _INST
 #define DLPG_TRIG_INPMUTE_SWITCH_ID 117
 
 // Image resource locations for this plug.
-#define DLPG_BACKGROUND_FN "resources/img/bg_reva_placeholders.png"
+#define DLPG_BACKGROUND_FN "resources/img/bg_reva.png"
 #define DLPG_BYPASS_SWITCH_FN "resources/img/switch_bypass.png"
 #define DLPG_TRIG_SWITCH_FN "resources/img/switch_trig.png"
 #define DLPG_SNAP_SWITCH_FN "resources/img/switch_snap_alt.png"

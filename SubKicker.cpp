@@ -155,6 +155,18 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
       )
     );
 
+  static IText tBugreportLabel = IText(DLPG_BUGREPORT_LABEL_STRING_SIZE);
+  tBugreportLabel.mColor = tBugreportLabelColor;
+  tBugreportLabel.mSize = DLPG_BUGREPORT_LABEL_FONT_SIZE;
+  tBugreportLabel.mAlign = tBugreportLabel.kAlignNear;
+  pGraphics->AttachControl(
+    new ITextControl(
+      this,
+      tBugreportLabelIrect,
+      &tBugreportLabel,
+      DLPG_BUGREPORT_LABEL_TEXT
+      )
+    );
 
   double fDuration = 300./1000;
   double fAttack = 20./1000;

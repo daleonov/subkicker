@@ -70,11 +70,24 @@ by Daniel Leonov Plugs\n\
 danielleonovplugs.com"
 #endif
 
+#define DLPG_BUGREPORT_LABEL_STRING_SIZE 16
+#define DLPG_BUGREPORT_LABEL_COLOR_MONO 90
+#define DLPG_BUGREPORT_LABEL_W 100
+#define DLPG_BUGREPORT_LABEL_H 16
+const IColor tBugreportLabelColor(
+  255,
+  DLPG_BUGREPORT_LABEL_COLOR_MONO,
+  DLPG_BUGREPORT_LABEL_COLOR_MONO,
+  DLPG_BUGREPORT_LABEL_COLOR_MONO
+  );
+#define DLPG_BUGREPORT_LABEL_TEXT "Report a bug"
+
 #ifdef _WIN32
 #define DLPG_VERSION_TEXT_LABEL_FONT_SIZE 12
 #elif defined(__APPLE__)
 #define DLPG_VERSION_TEXT_LABEL_FONT_SIZE 13
 #endif
+#define DLPG_BUGREPORT_LABEL_FONT_SIZE DLPG_VERSION_TEXT_LABEL_FONT_SIZE
 
 const int kNumPrograms = 1;
 
@@ -128,17 +141,25 @@ enum ELayout
   kFreezeSwitchX = DLPG_SWITCH_X_BASE,
   kFreezeSwitchY = DLPG_SWITCH_Y_BASE + 4*DLPG_SWITCH_Y_STEP,
 
-  kTextVersion_X = 10,
-  kTextVersion_Y = 448,
+  kTextVersionX = 10,
+  kTextVersionY = 448,
+
+  kBugreporLabelX = 27,
+  kBugreporLabelY = 501,
 };
 
 const IRECT tTextVersionIrect(
-  kTextVersion_X,
-  kTextVersion_Y,
-  (kTextVersion_X + DLPG_VERSION_TEXT_LABEL_W),
-  kTextVersion_Y + DLPG_VERSION_TEXT_LABEL_H
+  kTextVersionX,
+  kTextVersionY,
+  kTextVersionX + DLPG_VERSION_TEXT_LABEL_W,
+  kTextVersionY + DLPG_VERSION_TEXT_LABEL_H
   );
-
+const IRECT tBugreportLabelIrect(
+  kBugreporLabelX,
+  kBugreporLabelY,
+  kBugreporLabelX + DLPG_BUGREPORT_LABEL_W,
+  kBugreporLabelY + DLPG_BUGREPORT_LABEL_H
+  );
 const IRECT PLUG_ScopeIrect(
   kScopeX,
   kScopeY,
