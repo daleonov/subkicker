@@ -60,17 +60,37 @@ instrument determined by PLUG _IS _INST
 #define DLPG_SNAP_SWITCH_ID 104
 #define DLPG_FLIP_SWITCH_ID 105
 #define DLPG_FREEZE_SWITCH_ID 106
+#define DLPG_TRIG_NOTE_KNOB_ID 107
+#define DLPG_TRIG_CH_KNOB_ID 108
+#define DLPG_TRIG_THRESH_KNOB_ID 109
+#define DLPG_TRIG_ATTACK_KNOB_ID 110
+#define DLPG_SUB_FREQ_KNOB_ID 111
+#define DLPG_SUB_PHASE_KNOB_ID 112
+#define DLPG_ENVELOPE_ATTACK_KNOB_ID 113
+#define DLPG_ENVELOPE_HOLD_KNOB_ID 114
+#define DLPG_ENVELOPE_RELEASE_KNOB_ID 115
+#define DLPG_VOL_KNOB_ID 116
 
 // Image resource locations for this plug.
-#define KNOB_FN "resources/img/knob.png"
+#define KNOB_FN "resources/img/knob_trig_thresh_128.png"
 #define DLPG_BYPASS_SWITCH_FN "resources/img/switch_bypass.png"
 #define DLPG_TRIG_SWITCH_FN "resources/img/switch_trig.png"
 #define DLPG_SNAP_SWITCH_FN "resources/img/switch_snap_alt.png"
 #define DLPG_FLIP_SWITCH_FN "resources/img/switch_flip_alt.png"
 #define DLPG_FREEZE_SWITCH_FN "resources/img/switch_freeze.png"
+#define DLPG_TRIG_NOTE_KNOB_FN "resources/img/knob_trig_note_129.png"
+#define DLPG_TRIG_CH_KNOB_FN "resources/img/knob_trig_ch_17.png"
+#define DLPG_TRIG_THRESH_KNOB_FN "resources/img/knob_trig_thresh_128.png"
+#define DLPG_TRIG_ATTACK_KNOB_FN "resources/img/knob_trig_attack_128.png"
+#define DLPG_SUB_FREQ_KNOB_FN "resources/img/knob_sub_freq_128.png"
+#define DLPG_SUB_PHASE_KNOB_FN "resources/img/knob_sub_phase_128.png"
+#define DLPG_ENVELOPE_ATTACK_KNOB_FN "resources/img/knob_envelope_attack_128.png"
+#define DLPG_ENVELOPE_HOLD_KNOB_FN "resources/img/knob_envelope_hold_128.png"
+#define DLPG_ENVELOPE_RELEASE_KNOB_FN "resources/img/knob_envelope_release_128.png"
+#define DLPG_VOL_KNOB_FN "resources/img/knob_vol_128.png"
 
 // GUI default dimensions
-#define GUI_WIDTH 800
+#define GUI_WIDTH 900
 #define GUI_HEIGHT 600
 
 // on MSVC, you must define SA_API in the resource editor preprocessor macros as well as the c++ ones

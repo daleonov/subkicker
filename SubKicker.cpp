@@ -7,10 +7,24 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   :	IPLUG_CTOR(kNumParams, kNumPrograms, instanceInfo), mGain(1.)
 {
   TRACE;
+  IBitmap tBmp;
 
   //arguments are: name, defaultVal, minVal, maxVal, step, label
-  GetParam(kGain)->InitDouble("Gain", 50., 0., 100.0, 0.01, "%");
-  GetParam(kGain)->SetShape(2.);
+  GetParam(kTrigNoteKnob)->InitInt("Trigger (ext) | Midi note", -1, -1, 127, "");
+  GetParam(kTrigChKnob)->InitInt("Trigger (ext) | Midi channel", 0, 0, 16, "");
+  GetParam(kTrigAttackKnob)->InitDouble("Trigger (int) | Attack", 10., 0.1, 100., 0.1, "ms");
+  GetParam(kTrigThreshKnob)->InitDouble("Trigger (int) | Threshold", -6., -60., 0., 0.1, "dB");
+
+  GetParam(kSubFreqKnob)->InitDouble("Sub | Frequency", 100., 20., 500., 0.1, "Hz");
+  // And another freq knob for snapped mode?
+  GetParam(kSubPhaseKnob)->InitDouble("Sub | Phase", 0., -180., 180., 0.1, "Deg");
+
+  GetParam(kEnvelopeAttackKnob)->InitDouble("Envelope | Attack", 10., 0.1, 100., 0.1, "ms");
+  GetParam(kEnvelopeHoldKnob)->InitDouble("Envelope | Hold", 100., 0.1, 1000., 0.1, "ms");
+  GetParam(kEnvelopeReleaseKnob)->InitDouble("Envelope | Release", 10., 0.1, 100., 0.1, "ms");
+
+  GetParam(kVolKnob)->InitDouble("Volume", 0., -60., 12., 0.1, "dB");
+  GetParam(kVolKnob)->SetShape(DLPG_VOL_KNOB_SHAPE);
 
   GetParam(kBypassSwitch)->InitEnum("Bypass", DLPG_DEFAULT_BYPASS_SWITCH_STATE, DLPG_SWITCH_STATES);
   GetParam(kBypassSwitch)->SetDisplayText(0, "Normal");
@@ -32,9 +46,57 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   const IColor *tBgColor = new IColor(255, 40, 40, 40);
   pGraphics->AttachPanelBackground(tBgColor);
 
-  IBitmap tBmp = pGraphics->LoadIBitmap(KNOB_ID, KNOB_FN, kKnobFrames);
-  pGraphics->AttachControl(new IKnobMultiControl(this, kGainX, kGainY, kGain, &tBmp));
+  // *** Knobs - start
+  // Trig section
 
+  tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_NOTE_KNOB_ID, DLPG_TRIG_NOTE_KNOB_FN, DLPG_TRIG_NOTE_KNOB_FRAMES);
+  tTrigNoteKnob = new IKnobMultiControl(this, DLPG_KNOB_GRID(1, 1), kTrigNoteKnob, &tBmp);
+  pGraphics->AttachControl(tTrigNoteKnob);
+
+  tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_CH_KNOB_ID, DLPG_TRIG_CH_KNOB_FN, DLPG_TRIG_CH_KNOB_FRAMES);
+  tTrigChKnob = new IKnobMultiControl(this, DLPG_KNOB_GRID(1, 2), kTrigChKnob, &tBmp);
+  pGraphics->AttachControl(tTrigChKnob);
+
+  tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_THRESH_KNOB_ID, DLPG_TRIG_THRESH_KNOB_FN, DLPG_STANDARD_KNOB_FRAMES);
+  tTrigThreshKnob = new IKnobMultiControl(this, DLPG_KNOB_GRID(1, 1), kTrigThreshKnob, &tBmp);
+  pGraphics->AttachControl(tTrigThreshKnob);
+  tTrigThreshKnob->Hide(true);
+
+  tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_ATTACK_KNOB_ID, DLPG_TRIG_ATTACK_KNOB_FN, DLPG_STANDARD_KNOB_FRAMES);
+  tTrigAttackKnob = new IKnobMultiControl(this, DLPG_KNOB_GRID(1, 2), kTrigAttackKnob, &tBmp);
+  pGraphics->AttachControl(tTrigAttackKnob);
+  tTrigAttackKnob->Hide(true);
+
+  // Sub section
+  tBmp = pGraphics->LoadIBitmap(DLPG_SUB_FREQ_KNOB_ID, DLPG_SUB_FREQ_KNOB_FN, DLPG_STANDARD_KNOB_FRAMES);
+  tSubFreqKnob = new IKnobMultiControl(this, DLPG_KNOB_GRID(1, 3), kSubFreqKnob, &tBmp);
+  pGraphics->AttachControl(tSubFreqKnob);
+
+  tBmp = pGraphics->LoadIBitmap(DLPG_SUB_PHASE_KNOB_ID, DLPG_SUB_PHASE_KNOB_FN, DLPG_STANDARD_KNOB_FRAMES);
+  tSubPhaseKnob = new IKnobMultiControl(this, DLPG_KNOB_GRID(1, 4), kSubPhaseKnob, &tBmp);
+  pGraphics->AttachControl(tSubPhaseKnob);
+
+  // Envelope section
+  tBmp = pGraphics->LoadIBitmap(DLPG_ENVELOPE_ATTACK_KNOB_ID, DLPG_ENVELOPE_ATTACK_KNOB_FN, DLPG_STANDARD_KNOB_FRAMES);
+  tEnvelopeAttackKnob = new IKnobMultiControl(this, DLPG_KNOB_GRID(2, 1), kEnvelopeAttackKnob, &tBmp);
+  pGraphics->AttachControl(tEnvelopeAttackKnob);
+
+  tBmp = pGraphics->LoadIBitmap(DLPG_ENVELOPE_HOLD_KNOB_ID, DLPG_ENVELOPE_HOLD_KNOB_FN, DLPG_STANDARD_KNOB_FRAMES);
+  tEnvelopeHoldKnob = new IKnobMultiControl(this, DLPG_KNOB_GRID(2, 2), kEnvelopeHoldKnob, &tBmp);
+  pGraphics->AttachControl(tEnvelopeHoldKnob);
+
+  tBmp = pGraphics->LoadIBitmap(DLPG_ENVELOPE_RELEASE_KNOB_ID, DLPG_ENVELOPE_RELEASE_KNOB_FN, DLPG_STANDARD_KNOB_FRAMES);
+  tEnvelopeReleaseKnob = new IKnobMultiControl(this, DLPG_KNOB_GRID(2, 3), kEnvelopeReleaseKnob, &tBmp);
+  pGraphics->AttachControl(tEnvelopeReleaseKnob);
+
+  // Volume
+  tBmp = pGraphics->LoadIBitmap(DLPG_VOL_KNOB_ID, DLPG_VOL_KNOB_FN, DLPG_STANDARD_KNOB_FRAMES);
+  tVolKnob = new IKnobMultiControl(this, DLPG_KNOB_GRID(2, 4), kVolKnob, &tBmp);
+  pGraphics->AttachControl(tVolKnob);
+
+  // *** Knobs - end
+
+  // *** Switches - start
   tBmp = pGraphics->LoadIBitmap(DLPG_BYPASS_SWITCH_ID, DLPG_BYPASS_SWITCH_FN, DLPG_SWITCH_STATES);
   tBypassSwitch = new ISwitchControl(this, kBypassSwitchX, kBypassSwitchY, kBypassSwitch, &tBmp);
   pGraphics->AttachControl(tBypassSwitch);
@@ -50,6 +112,7 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tBmp = pGraphics->LoadIBitmap(DLPG_FREEZE_SWITCH_ID, DLPG_FREEZE_SWITCH_FN, DLPG_SWITCH_STATES);
   tFreezeSwitch = new ISwitchControl(this, kFreezeSwitchX, kFreezeSwitchY, kFreezeSwitch, &tBmp);
   pGraphics->AttachControl(tFreezeSwitch);
+  // *** Switches - end
 
   double fDuration = 300./1000;
   double fAttack = 20./1000;

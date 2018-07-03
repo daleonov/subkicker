@@ -17,6 +17,21 @@
 #define DLPG_DEFAULT_FLIP_SWITCH_STATE 0
 #define DLPG_DEFAULT_FREEZE_SWITCH_STATE 0
 
+#define DLPG_STANDARD_KNOB_FRAMES 128
+#define DLPG_TRIG_CH_KNOB_FRAMES 17
+#define DLPG_TRIG_NOTE_KNOB_FRAMES 129
+
+#define DLPG_KNOB_X_BASE 20
+#define DLPG_KNOB_X_STEP 165
+#define DLPG_KNOB_Y_BASE 200
+#define DLPG_KNOB_Y_STEP 175
+
+#define DLPG_KNOB_GRID(row, col)\
+(DLPG_KNOB_X_BASE + (col-1)*DLPG_KNOB_X_STEP),\
+(DLPG_KNOB_Y_BASE + (row-1)*DLPG_KNOB_Y_STEP)
+
+#define DLPG_VOL_KNOB_SHAPE 0.26
+
 const int kNumPrograms = 1;
 
 enum EParams
@@ -28,6 +43,16 @@ enum EParams
   kSnapSwitch,
   kFlipSwitch,
   kFreezeSwitch,
+  kTrigNoteKnob,
+  kTrigChKnob,
+  kTrigAttackKnob,
+  kTrigThreshKnob,
+  kSubFreqKnob,
+  kSubPhaseKnob,
+  kEnvelopeAttackKnob,
+  kEnvelopeHoldKnob,
+  kEnvelopeReleaseKnob,
+  kVolKnob,
   kNumParams
 };
 
@@ -37,7 +62,7 @@ enum ELayout
   kHeight = GUI_HEIGHT,
 
   kGainX = 100,
-  kGainY = 100,
+  kGainY = 300,
   kKnobFrames = 60,
 
   kScopeX = 10,
@@ -86,6 +111,16 @@ private:
   ISwitchControl *tSnapSwitch;
   ISwitchControl *tFlipSwitch;
   ISwitchControl *tFreezeSwitch;
+  IKnobMultiControl *tTrigNoteKnob;
+  IKnobMultiControl *tTrigChKnob;
+  IKnobMultiControl *tTrigAttackKnob;
+  IKnobMultiControl *tTrigThreshKnob;
+  IKnobMultiControl *tSubFreqKnob;
+  IKnobMultiControl *tSubPhaseKnob;
+  IKnobMultiControl *tEnvelopeAttackKnob;
+  IKnobMultiControl *tEnvelopeHoldKnob;
+  IKnobMultiControl *tEnvelopeReleaseKnob;
+  IKnobMultiControl *tVolKnob;
 };
 
 #endif
