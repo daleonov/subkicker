@@ -31,6 +31,7 @@ bool IWavScopeControl::LoadWave(std::vector<double> &vBuffer){
 
 bool IWavScopeControl::Draw(IGraphics* pGraphics){
   double nWaveX;
+  int nHeight;
 
   pGraphics->FillIRect(&DLPG_DEFAULT_SCOPE_BG_ICOLOR, &this->mScopeRect);
 
@@ -42,15 +43,15 @@ bool IWavScopeControl::Draw(IGraphics* pGraphics){
   First fill, then outline. We have to draw them in separate loops,
   otherwise the waveform won't look clean.
   */
-
+  nHeight = mScopeRect.B-mScopeRect.T;
   nWaveX = this->mScopeRect.L;
   for(std::vector<double>::size_type i = 0; i != pvBuffer.size(); i++, nWaveX+=1/fScale){
     pGraphics->DrawLine(
       &DLPG_DEFAULT_SCOPE_FILL_ICOLOR,
       nWaveX,
-      this->mScopeRect.T + DLPG_SCOPE_SCALE_SIGNAL(0),
+      this->mScopeRect.T + DLPG_SCOPE_SCALE_SIGNAL(0, nHeight),
       nWaveX,
-      this->mScopeRect.T + DLPG_SCOPE_SCALE_SIGNAL(pvBuffer[i])
+      this->mScopeRect.T + DLPG_SCOPE_SCALE_SIGNAL(pvBuffer[i], nHeight)
       );
   }
   nWaveX = this->mScopeRect.L;
@@ -58,9 +59,9 @@ bool IWavScopeControl::Draw(IGraphics* pGraphics){
     pGraphics->DrawLine(
       &DLPG_DEFAULT_SCOPE_OUTLINE_ICOLOR,
       nWaveX,
-      this->mScopeRect.T + DLPG_SCOPE_SCALE_SIGNAL(pvBuffer[i-1]),
+      this->mScopeRect.T + DLPG_SCOPE_SCALE_SIGNAL(pvBuffer[i-1], nHeight),
       nWaveX + 1/fScale,
-      this->mScopeRect.T + DLPG_SCOPE_SCALE_SIGNAL(pvBuffer[i]),
+      this->mScopeRect.T + DLPG_SCOPE_SCALE_SIGNAL(pvBuffer[i], nHeight),
       0,
       true
       );
@@ -84,7 +85,7 @@ bool IWavScopeControl::UpdateScale(double fDuration, double fSampleRate){
   Dn[samples] = Ds[seconds] * Sr[Hz]
   Scl[samples/pixel] = Dn/W = Ds * Sr / W
   */
-  this->fScale = fDuration * fSampleRate / DLPG_SCOPE_W_PX;
+  this->fScale = fDuration * fSampleRate / (mScopeRect.R-mScopeRect.L);
   SetDirty(false);
   Redraw();
   return true;

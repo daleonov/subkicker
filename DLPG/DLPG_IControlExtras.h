@@ -5,11 +5,9 @@
 #include "IControl.h"
 #include <vector>
 
-#define DLPG_SCOPE_W_PX 500
-#define DLPG_SCOPE_H_PX 180
 // Scope range is from -DLPG_SCOPE_V_RANGE to +DLPG_SCOPE_V_RANGE
 #define DLPG_SCOPE_V_RANGE 1.
-#define DLPG_SCOPE_SCALE_SIGNAL(s) ((s+DLPG_SCOPE_V_RANGE)*(double)DLPG_SCOPE_H_PX/2)
+#define DLPG_SCOPE_SCALE_SIGNAL(s, h) ((s+DLPG_SCOPE_V_RANGE)*(double)h/2)
 
 const IColor DLPG_DEFAULT_SCOPE_BG_ICOLOR(255, 61, 61, 61);
 const IColor DLPG_DEFAULT_SCOPE_OUTLINE_ICOLOR(255, 247, 147, 30);
