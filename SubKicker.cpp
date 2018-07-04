@@ -10,8 +10,8 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   IBitmap tBmp;
 
   //arguments are: name, defaultVal, minVal, maxVal, step, label
-  GetParam(kTrigNoteKnob)->InitInt("Trigger (ext) | Midi note", -1, -1, 127, "");
-  GetParam(kTrigChKnob)->InitInt("Trigger (ext) | Midi channel", 0, 0, 16, "");
+  GetParam(kTrigNoteKnob)->InitInt("Trigger (ext) | Midi note", DLPG_TRIG_ANY_NOTE, DLPG_TRIG_NOTE_RANGE, "");
+  GetParam(kTrigChKnob)->InitInt("Trigger (ext) | Midi channel", DLPG_TRIG_ANY_CHANNEL, DLPG_TRIG_CH_RANGE, "");
   GetParam(kTrigAttackKnob)->InitDouble("Trigger (int) | Attack", 10., 0.1, 100., 0.1, "ms");
   GetParam(kTrigThreshKnob)->InitDouble("Trigger (int) | Threshold", -6., -60., 0., 0.1, "dB");
 
@@ -190,6 +190,38 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
     );
   tOutputMeter->SetNotchValue(DLPG_OUTPUT_METER_NOTCH);
   pGraphics->AttachControl(tOutputMeter);
+
+  // *** Knob labels - begin
+  IText tKnobLabelCommon = IText(DLPG_KNOB_LABEL_STRING_SIZE);
+  tKnobLabelCommon.mColor = tKnobLabelColor;
+  tKnobLabelCommon.mSize = DLPG_KNOB_LABEL_FONT_SIZE;
+  tKnobLabelCommon.mAlign = tKnobLabelCommon.DLPG_KNOB_LABEL_ALIGN;
+  // Trig section
+  tTrigNoteLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 1), &tKnobLabelCommon, "Trig Note");
+  tTrigChLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 2), &tKnobLabelCommon, "Trig Ch");
+  tTrigAttackLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 1), &tKnobLabelCommon, "Trig Attack");
+  tTrigThreshLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 2), &tKnobLabelCommon, "Trig Thresh");
+  pGraphics->AttachControl(tTrigNoteLabel);
+  pGraphics->AttachControl(tTrigChLabel);
+  pGraphics->AttachControl(tTrigAttackLabel);
+  pGraphics->AttachControl(tTrigThreshLabel);
+  tTrigAttackLabel->Hide(true);
+  tTrigThreshLabel->Hide(true);
+  // Sub section
+  tSubFreqLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 3), &tKnobLabelCommon, "Sub Freq");
+  tSubPhaseLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 4), &tKnobLabelCommon, "Sub Phase");
+  pGraphics->AttachControl(tSubFreqLabel);
+  pGraphics->AttachControl(tSubPhaseLabel);
+  // Envelope section
+  tEnvelopeAttackLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(2, 1), &tKnobLabelCommon, "Envelope Attack");
+  tEnvelopeHoldLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(2, 2), &tKnobLabelCommon, "Envelope Hold");
+  tEnvelopeReleaseLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(2, 3), &tKnobLabelCommon, "Envelope Release");
+  pGraphics->AttachControl(tEnvelopeAttackLabel);
+  pGraphics->AttachControl(tEnvelopeHoldLabel);
+  pGraphics->AttachControl(tEnvelopeReleaseLabel);
+  // Volume
+  tVolLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(2, 4), &tKnobLabelCommon, "Volume");
+  pGraphics->AttachControl(tVolLabel);
 
   double fAttack = 20./1000;
   double fHold = 100./1000;

@@ -38,6 +38,15 @@ fo some reason, plus it's not that needed there anyway.
 #define DLPG_TRIG_CH_KNOB_FRAMES 17
 #define DLPG_TRIG_NOTE_KNOB_FRAMES 129
 
+// Should be outside of respective standard midi ranges
+// 0 or 17
+#define DLPG_TRIG_ANY_CHANNEL 17
+// -1 or 128
+#define DLPG_TRIG_ANY_NOTE 128
+
+#define DLPG_TRIG_CH_RANGE 1, DLPG_TRIG_ANY_CHANNEL
+#define DLPG_TRIG_NOTE_RANGE 0, DLPG_TRIG_ANY_NOTE
+
 #define DLPG_KNOB_X_BASE 120
 #define DLPG_KNOB_X_STEP 167
 #define DLPG_KNOB_Y_BASE 145
@@ -97,9 +106,40 @@ const IColor tBugreportLabelColor(
   );
 #define DLPG_BUGREPORT_LABEL_TEXT "Report a bug"
 
+
+#define DLPG_KNOB_LABEL_STRING_SIZE 28
+#define DLPG_KNOB_LABEL_COLOR_MONO 110
+#define DLPG_KNOB_LABEL_W 155
+#define DLPG_KNOB_LABEL_H 16
+#define DLPG_KNOB_LABEL_ALIGN kAlignCenter
+const IColor tKnobLabelColor(
+  255,
+  DLPG_KNOB_LABEL_COLOR_MONO,
+  DLPG_KNOB_LABEL_COLOR_MONO,
+  DLPG_KNOB_LABEL_COLOR_MONO
+  );
+
+#define DLPG_KNOB_LABEL_X_BASE DLPG_KNOB_X_BASE
+#define DLPG_KNOB_LABEL_X_STEP DLPG_KNOB_X_STEP
+#define DLPG_KNOB_LABEL_Y_BASE 145+155
+#define DLPG_KNOB_LABEL_Y_STEP DLPG_KNOB_Y_STEP
+
+#define DLPG_KNOB_LABEL_GRID(row, col)\
+(DLPG_KNOB_LABEL_X_BASE + (col-1)*DLPG_KNOB_LABEL_X_STEP),\
+(DLPG_KNOB_LABEL_Y_BASE + (row-1)*DLPG_KNOB_LABEL_Y_STEP)
+
+#define DLPG_KNOB_LABEL_GRID_IRECT(row, col) \
+IRECT(\
+(DLPG_KNOB_LABEL_X_BASE + (col-1)*DLPG_KNOB_LABEL_X_STEP),\
+(DLPG_KNOB_LABEL_Y_BASE + (row-1)*DLPG_KNOB_LABEL_Y_STEP),\
+(DLPG_KNOB_LABEL_X_BASE + (col-1)*DLPG_KNOB_LABEL_X_STEP) + DLPG_KNOB_LABEL_W,\
+(DLPG_KNOB_LABEL_Y_BASE + (row-1)*DLPG_KNOB_LABEL_Y_STEP) + DLPG_KNOB_LABEL_H)
+
 #ifdef _WIN32
+#define DLPG_KNOB_LABEL_FONT_SIZE 13
 #define DLPG_VERSION_TEXT_LABEL_FONT_SIZE 12
 #elif defined(__APPLE__)
+#define DLPG_KNOB_LABEL_FONT_SIZE 14
 #define DLPG_VERSION_TEXT_LABEL_FONT_SIZE 13
 #endif
 #define DLPG_BUGREPORT_LABEL_FONT_SIZE DLPG_VERSION_TEXT_LABEL_FONT_SIZE
@@ -131,7 +171,17 @@ enum EParams
   kEnvelopeReleaseKnob,
   kVolKnob,
   kOutputMeter,
-  kNumParams
+  kNumParams,
+  kTrigNoteLabel,
+  kTrigChLabel,
+  kTrigAttackLabel,
+  kTrigThreshLabel,
+  kSubFreqLabel,
+  kSubPhaseKLabel,
+  kEnvelopeAttackLabel,
+  kEnvelopeHoldLabel,
+  kEnvelopeReleaseLabel,
+  kVolLabel,
 };
 
 enum ELayout
@@ -222,6 +272,16 @@ private:
   IKnobMultiControl *tEnvelopeHoldKnob;
   IKnobMultiControl *tEnvelopeReleaseKnob;
   IKnobMultiControl *tVolKnob;
+  ITextControl *tTrigNoteLabel;
+  ITextControl *tTrigChLabel;
+  ITextControl *tTrigAttackLabel;
+  ITextControl *tTrigThreshLabel;
+  ITextControl *tSubFreqLabel;
+  ITextControl *tSubPhaseLabel;
+  ITextControl *tEnvelopeAttackLabel;
+  ITextControl *tEnvelopeHoldLabel;
+  ITextControl *tEnvelopeReleaseLabel;
+  ITextControl *tVolLabel;
 };
 
 #endif
