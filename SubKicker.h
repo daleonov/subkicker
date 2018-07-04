@@ -135,6 +135,36 @@ IRECT(\
 (DLPG_KNOB_LABEL_X_BASE + (col-1)*DLPG_KNOB_LABEL_X_STEP) + DLPG_KNOB_LABEL_W,\
 (DLPG_KNOB_LABEL_Y_BASE + (row-1)*DLPG_KNOB_LABEL_Y_STEP) + DLPG_KNOB_LABEL_H)
 
+/*
+  ITextControl *tTrigNoteLabel;
+  ITextControl *tTrigChLabel;
+  ITextControl *tTrigAttackLabel;
+  ITextControl *tTrigThreshLabel;
+  ITextControl *tSubFreqLabel;
+  ITextControl *tSubPhaseLabel;
+  ITextControl *tEnvelopeAttackLabel;
+  ITextControl *tEnvelopeHoldLabel;
+  ITextControl *tEnvelopeReleaseLabel;
+  ITextControl *tVolLabel;
+*/
+#define DLPG_ENVELOPE_GENERIC_STR "%5.2fms"
+#define DLPG_LEVEL_GENERIC_STR "%+5.1fdB"
+
+#define DLPG_TRIG_NOTE_LABEL_STR "%d (%s)"
+#define DLPG_TRIG_CH_LABEL_STR "%02d"
+#define DLPG_TRIG_ATTACK_LABEL_STR DLPG_ENVELOPE_GENERIC_STR
+#define DLPG_TRIG_THRESH_LABEL_STR DLPG_LEVEL_GENERIC_STR
+#define DLPG_SUB_FREQ_LABEL_STR "%5.2fHz"
+#define DLPG_SUB_PHASE_LABEL_STR "%5.1f\xB0"
+#define DLPG_ENVELOPE_ATTACK_LABEL_STR DLPG_ENVELOPE_GENERIC_STR
+#define DLPG_ENVELOPE_HOLD_LABEL_STR DLPG_ENVELOPE_GENERIC_STR
+#define DLPG_ENVELOPE_RELEASE_LABEL_STR DLPG_ENVELOPE_GENERIC_STR
+#define DLPG_VOL_LABEL_STR DLPG_LEVEL_GENERIC_STR
+
+#define DLPG_SET_LABEL_GENERIC(buf, str, id, obj)\
+sprintf(buf, str, GetParam(id)->Value());\
+obj->SetTextFromPlug(buf)
+
 #ifdef _WIN32
 #define DLPG_KNOB_LABEL_FONT_SIZE 13
 #define DLPG_VERSION_TEXT_LABEL_FONT_SIZE 12

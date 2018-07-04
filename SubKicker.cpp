@@ -283,11 +283,43 @@ void SubKicker::Reset()
 void SubKicker::OnParamChange(int paramIdx)
 {
   IMutexLock lock(this);
+  char sKnobLabelString[DLPG_KNOB_LABEL_STRING_SIZE];
 
   switch (paramIdx)
   {
-    case kGain:
-      mGain = GetParam(kGain)->Value() / 100.;
+    case kTrigNoteKnob:
+      // Display knob's value with a text label
+      sprintf(sKnobLabelString, DLPG_TRIG_NOTE_LABEL_STR, GetParam(kTrigNoteKnob)->Int(), "Xx");
+      tTrigNoteLabel->SetTextFromPlug(sKnobLabelString);
+      break;
+    case kTrigChKnob:
+      // Display knob's value with a text label
+      sprintf(sKnobLabelString, DLPG_TRIG_CH_LABEL_STR, GetParam(kTrigChKnob)->Int());
+      tTrigChLabel->SetTextFromPlug(sKnobLabelString);
+      break;
+    case kSubFreqKnob:
+      // Display knob's value with a text label
+      DLPG_SET_LABEL_GENERIC(sKnobLabelString, DLPG_SUB_FREQ_LABEL_STR, kSubFreqKnob, tSubFreqLabel);
+      break;
+    case kSubPhaseKnob:
+      // Display knob's value with a text label
+      DLPG_SET_LABEL_GENERIC(sKnobLabelString, DLPG_SUB_PHASE_LABEL_STR, kSubPhaseKnob, tSubPhaseLabel);
+      break;
+    case kEnvelopeAttackKnob:
+      // Display knob's value with a text label
+      DLPG_SET_LABEL_GENERIC(sKnobLabelString, DLPG_ENVELOPE_ATTACK_LABEL_STR, kEnvelopeAttackKnob, tEnvelopeAttackLabel);
+      break;
+    case kEnvelopeHoldKnob:
+      // Display knob's value with a text label
+      DLPG_SET_LABEL_GENERIC(sKnobLabelString, DLPG_ENVELOPE_HOLD_LABEL_STR, kEnvelopeHoldKnob, tEnvelopeHoldLabel);
+      break;
+    case kEnvelopeReleaseKnob:
+      // Display knob's value with a text label
+      DLPG_SET_LABEL_GENERIC(sKnobLabelString, DLPG_ENVELOPE_RELEASE_LABEL_STR, kEnvelopeReleaseKnob, tEnvelopeReleaseLabel);
+      break;
+    case kVolKnob:
+      // Display knob's value with a text label
+      DLPG_SET_LABEL_GENERIC(sKnobLabelString, DLPG_VOL_LABEL_STR, kVolKnob, tVolLabel);
       break;
 
     default:
