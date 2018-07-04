@@ -6,9 +6,15 @@
 #include "PLUG_IControlExtras.h"
 #include "DLPG_WaveGenerator.h"
 
+/*
+This header causes multiple inclusions in macOS's APP build
+fo some reason, plus it's not that needed there anyway.
+*/
+#if !(defined(SA_API) && defined(__APPLE__))
 // If this file is missing, run "git_version" script from project folder,
 // or create an empty file if you don't use git.
 #include "DLPG_Version.h"
+#endif
 
 #define DLPG_SWITCH_STATES 2
 

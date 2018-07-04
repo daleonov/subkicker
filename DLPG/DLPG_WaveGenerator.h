@@ -2,6 +2,7 @@
 #ifndef _DLPG_WAVEGENERATOR_H
 #define _DLPG_WAVEGENERATOR_H
 #include <vector>
+#include <math.h>
 
 #ifndef DLPG_DEFAULT_SAMPLERATE_HZ_F
 #define DLPG_DEFAULT_SAMPLERATE_HZ_F 44100.
