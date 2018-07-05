@@ -325,7 +325,7 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
 
       tMidiQueue.Remove();
     }
-    if((nCurrentWaveformSample <= vSubkickWaveform.size()) && bPlay){
+    if((nCurrentWaveformSample < vSubkickWaveform.size()) && bPlay){
       *pfOutL = vSubkickWaveform[nCurrentWaveformSample];
       *pfOutR = vSubkickWaveform[nCurrentWaveformSample];
       nCurrentWaveformSample++;
