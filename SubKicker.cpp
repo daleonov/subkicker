@@ -224,28 +224,8 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   // Volume
   tVolLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(2, 4), &tKnobLabelCommon, "Volume");
   pGraphics->AttachControl(tVolLabel);
-/*
-  double fAttack = 20./1000;
-  double fHold = 100./1000;
-  double fRelease = 20./1000;
-  double fDuration = fAttack + fHold + fRelease;
-  double fSampleRate = 44100.;
-  double fFrequency = 100.;
-  // Wave stuff
-  std::vector<double> vWaveform(0), vAttackEnvelope(0), vReleaseEnvelope(0);
-  tWaveGenerator = new dlpg::WaveGenerator();
-  tEnvelopeGenerator = new dlpg::EnvelopeGenerator();
-  tWaveGenerator->Generate(vWaveform, fDuration, fFrequency);
-  tEnvelopeGenerator->Generate(vAttackEnvelope, fAttack, dlpg::kAttack, dlpg::DLPG_ENVELOPE_ATTACK_SHAPE);
-  tEnvelopeGenerator->Generate(vReleaseEnvelope, fRelease, dlpg::kRelease, dlpg::DLPG_ENVELOPE_RELEASE_SHAPE);
-  std::vector<double>::size_type i, j;
-  for(i = 0; i != vAttackEnvelope.size(); i++){
-    vWaveform[i] *= vAttackEnvelope[i];
-  }
-  for(i = vWaveform.size()-vReleaseEnvelope.size(), j=0; i != vWaveform.size(); i++, j++){
-    vWaveform[i] *= vReleaseEnvelope[j];
-  }
-*/
+  // *** Knob labels - end
+
   // Scope
   tScope = new dlpg::IWavScopeControl(this, PLUG_ScopeIrect, kScope, vSubkickWaveform);
   tScope->UpdateScale(0.1, 44100.);
@@ -298,41 +278,55 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
   // Mutex is already locked for us.
   double* pfOutL = outputs[0];
   double* pfOutR = outputs[1];
-  int nTargetNote = GetParam(kTrigNoteKnob)->Int();
-  int nCurrentNote = -1;
+  int nTargetNote, nTargetCh;
+  int nCurrentNote, nCurrentCh, nCurrentVelocity;
   static int nCurrentWaveformSample = 0;
-  static bool bPlay = true;
+  static bool bPlay = false;
 
-  for (int nOffset = 0; nOffset < nFrames; ++nOffset, /*++in1, ++in2,*/ ++pfOutL, ++pfOutR)
-  {
-    while (!tMidiQueue.Empty())
-    {
+  for (int nOffset = 0; nOffset < nFrames; ++nOffset, ++pfOutL, ++pfOutR){
+    while (!tMidiQueue.Empty()){
       IMidiMsg* pMsg = tMidiQueue.Peek();
       if (pMsg->mOffset > nOffset) break;
 
-      // TODO: make this work on win sa
+      /* Kept this from Oli Larkin's example, but we
+      don't need to run it standalone in Wndows anyway */
       #if !defined(OS_WIN) && !defined(SA_API)
       SendMidiMsg(pMsg);
       #endif
 
       int nStatusMsg = pMsg->StatusMsg();
-
+      // We only care about 'note on' messages
       if (nStatusMsg == IMidiMsg::kNoteOn){
-        //nCurrentNote = pMsg->NoteNumber();
-        //if (nCurrentNote == nTargetNote)
+        nTargetCh = GetParam(kTrigChKnob)->Int();
+        nTargetNote = GetParam(kTrigNoteKnob)->Int();
+        nCurrentCh = DLPG_MIDI_IPLUG_INDEX_TO_CH(pMsg->Channel());
+        nCurrentNote = pMsg->NoteNumber();
+        nCurrentVelocity = pMsg->Velocity();
+        // Play the waveform if MIDI input equals to what we're looking for
+        if( \
+          ((nCurrentCh == nTargetCh) || (nTargetCh == DLPG_TRIG_ANY_CH)) && \
+          ((nCurrentNote == nTargetNote) || (nTargetNote == DLPG_TRIG_ANY_NOTE)) && \
+          (nCurrentVelocity >= DLPG_REQUIRED_VELOCITY) \
+          ){
           bPlay = true;
+        }
       }
 
       tMidiQueue.Remove();
     }
     if((nCurrentWaveformSample < vSubkickWaveform.size()) && bPlay){
+      // Start or resume playback
       *pfOutL = vSubkickWaveform[nCurrentWaveformSample];
       *pfOutR = vSubkickWaveform[nCurrentWaveformSample];
+      if(nCurrentWaveformSample == 1)
+        tScope->Highlight(true);
       nCurrentWaveformSample++;
     }
     else{
+      // Stop playback
       nCurrentWaveformSample = 0;
       bPlay = false;
+      tScope->Highlight(false);
     }
   }
 
@@ -344,6 +338,7 @@ void SubKicker::Reset()
 {
   TRACE;
   IMutexLock lock(this);
+  tMidiQueue.Resize(GetBlockSize());
 }
 
 bool SubKicker::UpdateWaveform(){
@@ -383,7 +378,7 @@ bool SubKicker::UpdateWaveform(){
 
   tScope->UpdateScale(fDuration, fSampleRate);
   tScope->LoadWave(vSubkickWaveform);
-  tScope->SetDirty(true);
+  tScope->SetDirty(false);
   return true;
 }
 
@@ -392,7 +387,9 @@ void SubKicker::OnParamChange(int paramIdx)
   IMutexLock lock(this);
   char sKnobLabelString[DLPG_KNOB_LABEL_STRING_SIZE];
   int nKnobValue;
+  int nPreviewNote, nPreviewCh;
   IMidiMsg tMidiMsg;
+  static bool bIsInit = true;
 
   switch (paramIdx)
   {
@@ -457,14 +454,30 @@ void SubKicker::OnParamChange(int paramIdx)
       tScope->Hide(bIsBypassed);
       break;
     case kSnapSwitch:
-      // For debug purposes
-      tMidiMsg.MakeNoteOnMsg(1, 2, 0);
+      break;
+    case kScope:
+      // Do not send a note during startup
+      if(bIsInit) break;
+      // Clicking a scope triggers the waveform output (for preview purposes)
+      nKnobValue = GetParam(kTrigChKnob)->Int();
+      nPreviewCh = (nKnobValue == DLPG_TRIG_ANY_CH) ? \
+        DLPG_MIDI_CH_TO_IPLUG_INDEX(DLPG_DEFAULT_PREVIEW_CH) : 
+        DLPG_MIDI_CH_TO_IPLUG_INDEX(nKnobValue);
+      nKnobValue = GetParam(kTrigNoteKnob)->Int();
+      nPreviewNote = (nKnobValue == DLPG_TRIG_ANY_NOTE) ? \
+        DLPG_DEFAULT_PREVIEW_NOTE : \
+        nKnobValue;
+      // Emulate pressing a midi key to play a waveform
+      tMidiMsg.MakeNoteOnMsg(nPreviewNote, DLPG_PREVIEW_VELOCITY, 0, nPreviewCh);
       tMidiQueue.Add(&tMidiMsg);
-      tMidiMsg.MakeNoteOffMsg(1, 2, 0);
+      tMidiMsg.MakeNoteOffMsg(nPreviewNote, 0, nPreviewCh);
       tMidiQueue.Add(&tMidiMsg);
       break;
 
     default:
       break;
   }
+  /* All params are triggered during the startup, so the following
+  flag is a workaround against 'false' triggering */
+  bIsInit = false;
 }

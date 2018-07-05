@@ -15,6 +15,7 @@ IWavScopeControl::IWavScopeControl(
   this->pvBuffer = vBuffer;
   memcpy(&this->mScopeRect, &pR, sizeof(pR));
   fScale = 1.;
+  bHighlightState = false;
 }
 
 
@@ -33,6 +34,7 @@ bool IWavScopeControl::Draw(IGraphics* pGraphics){
   double nWaveX;
   const int nHeight = this->mScopeRect.B - this->mScopeRect.T;
   const int nWaveYBase = this->mScopeRect.T + DLPG_SCOPE_V_PADDING;
+  IColor *pBgColor;
 
   pGraphics->FillIRect(&DLPG_DEFAULT_SCOPE_BG_ICOLOR, &this->mScopeRect);
 
@@ -68,6 +70,19 @@ bool IWavScopeControl::Draw(IGraphics* pGraphics){
       DLPG_SCOPE_ANTIALIAS
       );
     }
+
+  if(bHighlightState){
+    pGraphics->FillIRect(&DLPG_SCOPE_ONCLICK_ICOLOR, &this->mScopeRect);
+  }
+  SetDirty(false);
+
+  return true;
+}
+
+bool IWavScopeControl::Highlight(bool bHighlightState){
+  this->bHighlightState = bHighlightState;
+  SetDirty(false);
+  Redraw();
   return true;
 }
 
@@ -92,6 +107,14 @@ bool IWavScopeControl::UpdateScale(double fDuration, double fSampleRate){
   SetDirty(false);
   Redraw();
   return true;
+}
+
+void IWavScopeControl::OnMouseDown(int x, int y, IMouseMod* pMod){
+  SetDirty(true);
+}
+
+void IWavScopeControl::OnMouseUp(int x, int y, IMouseMod* pMod){
+  SetDirty(false);
 }
 
 } //namespace dlpg

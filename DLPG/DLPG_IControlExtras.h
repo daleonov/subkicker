@@ -27,6 +27,7 @@ const IColor DLPG_DEFAULT_SCOPE_OUTLINE_ICOLOR(255, 255, 255, 255);
 #if (DLPG_SCOPE_FILL == true)
 const IColor DLPG_DEFAULT_SCOPE_FILL_ICOLOR(255, 55, 55, 55);
 #endif
+const IColor DLPG_SCOPE_ONCLICK_ICOLOR(20, 255, 255, 255);
 
 namespace dlpg{
 class IWavScopeControl: public IControl{
@@ -40,18 +41,22 @@ public:
     );
 
   ~IWavScopeControl();
-  /*
-  @param Graphic part. Sizes and colours are based on macros defined in the header. 
-  */
   bool Draw(IGraphics* pGraphics);
+  void OnMouseDown(int x, int y, IMouseMod* pMod);
+  void OnMouseUp(int x, int y, IMouseMod* pMod);
   bool LoadWave(std::vector<double> &pvBuffer);
   bool UpdateScale(double fDuration, double fSampleRate);
+  /*
+  @brief Highlight (literally) the scope - for clicking etc
+  @param bHighlightState true = highlighted, false = normal
+  */
+  bool Highlight(bool bHighlightState);
 
 private:
   IRECT mScopeRect;
   std::vector<double> pvBuffer;
   double fScale;
-
+  bool bHighlightState;
 };
 } //namespace dlpg
 
