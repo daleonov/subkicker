@@ -2,6 +2,7 @@
 #define __SUBKICKER__
 
 #include "IPlug_include_in_plug_hdr.h"
+#include "IMidiQueue.h"
 #include "DLPG_IControlExtras.h"
 #include "PLUG_IControlExtras.h"
 #include "DLPG_WaveGenerator.h"
@@ -158,6 +159,8 @@ obj->SetTextFromPlug(buf)
 #define DLPG_ENVELOPE_ATTACK_SHAPE kLinear
 #define DLPG_ENVELOPE_RELEASE_SHAPE DLPG_ENVELOPE_ATTACK_SHAPE
 
+#define DLPG_MIDI_NOTES_TOTAL 128
+
 const int kNumPrograms = 1;
 
 enum EParams
@@ -295,6 +298,11 @@ private:
   ITextControl *tEnvelopeHoldLabel;
   ITextControl *tEnvelopeReleaseLabel;
   ITextControl *tVolLabel;
+  // Midi stuff
+  void ProcessMidiMsg(IMidiMsg* pMsg);
+  IMidiQueue tMidiQueue;
+  bool abKeyStatus[DLPG_MIDI_NOTES_TOTAL];
+  int nNumKeysPressed;
 };
 
 #endif

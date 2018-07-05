@@ -253,6 +253,10 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
 
   AttachGraphics(pGraphics);
 
+  // Midi shenanigans
+  memset(abKeyStatus, 0, DLPG_MIDI_NOTES_TOTAL * sizeof(bool));
+  nNumKeysPressed = 0;
+
   //tScope->LoadWave(&vWaveform);
   //MakePreset("preset 1", ... );
   MakeDefaultPreset((char *) "-", kNumPrograms);
@@ -260,21 +264,81 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
 
 SubKicker::~SubKicker() {}
 
+void SubKicker::ProcessMidiMsg(IMidiMsg* pMsg){
+
+  int nStatusMsg = pMsg->StatusMsg();
+  int nVelocity = pMsg->Velocity();
+
+  switch (nStatusMsg)
+  {
+    case IMidiMsg::kNoteOn:
+    case IMidiMsg::kNoteOff:
+      // We care only about note on/off messages
+      if (nStatusMsg == IMidiMsg::kNoteOn && nVelocity)
+      {
+        abKeyStatus[pMsg->NoteNumber()] = true;
+        nNumKeysPressed += 1;
+      }
+      else
+      {
+        abKeyStatus[pMsg->NoteNumber()] = false;
+        nNumKeysPressed -= 1;
+      }
+      break;
+    default:
+      // Ignore other MIDI messages
+      return;
+  }
+
+  tMidiQueue.Add(pMsg);
+}
+
 void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nFrames)
 {
   // Mutex is already locked for us.
+  double* pfOutL = outputs[0];
+  double* pfOutR = outputs[1];
+  int nTargetNote = GetParam(kTrigNoteKnob)->Int();
+  int nCurrentNote = -1;
+  static int nCurrentWaveformSample = 0;
+  static bool bPlay = true;
 
-  double* in1 = inputs[0];
-  double* in2 = inputs[1];
-  double* out1 = outputs[0];
-  double* out2 = outputs[1];
-
-  for (int s = 0; s < nFrames; ++s, ++in1, ++in2, ++out1, ++out2)
+  for (int nOffset = 0; nOffset < nFrames; ++nOffset, /*++in1, ++in2,*/ ++pfOutL, ++pfOutR)
   {
-    *out1 = *in1 * mGain;
-    *out2 = *in2 * mGain;
+    while (!tMidiQueue.Empty())
+    {
+      IMidiMsg* pMsg = tMidiQueue.Peek();
+      if (pMsg->mOffset > nOffset) break;
+
+      // TODO: make this work on win sa
+      #if !defined(OS_WIN) && !defined(SA_API)
+      SendMidiMsg(pMsg);
+      #endif
+
+      int nStatusMsg = pMsg->StatusMsg();
+
+      if (nStatusMsg == IMidiMsg::kNoteOn){
+        //nCurrentNote = pMsg->NoteNumber();
+        //if (nCurrentNote == nTargetNote)
+          bPlay = true;
+      }
+
+      tMidiQueue.Remove();
+    }
+    if((nCurrentWaveformSample <= vSubkickWaveform.size()) && bPlay){
+      *pfOutL = vSubkickWaveform[nCurrentWaveformSample];
+      *pfOutR = vSubkickWaveform[nCurrentWaveformSample];
+      nCurrentWaveformSample++;
+    }
+    else{
+      nCurrentWaveformSample = 0;
+      bPlay = false;
+    }
   }
+
+  tMidiQueue.Flush(nFrames);
 }
+
 
 void SubKicker::Reset()
 {
@@ -328,6 +392,7 @@ void SubKicker::OnParamChange(int paramIdx)
   IMutexLock lock(this);
   char sKnobLabelString[DLPG_KNOB_LABEL_STRING_SIZE];
   int nKnobValue;
+  IMidiMsg tMidiMsg;
 
   switch (paramIdx)
   {
@@ -390,6 +455,15 @@ void SubKicker::OnParamChange(int paramIdx)
     case kBypassSwitch:
       bIsBypassed = GetParam(kBypassSwitch)->Bool();
       tScope->Hide(bIsBypassed);
+      break;
+    case kSnapSwitch:
+      // For debug purposes
+      tMidiMsg.MakeNoteOnMsg(1, 2, 0);
+      tMidiQueue.Add(&tMidiMsg);
+      tMidiMsg.MakeNoteOffMsg(1, 2, 0);
+      tMidiQueue.Add(&tMidiMsg);
+      break;
+
     default:
       break;
   }
