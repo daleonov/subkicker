@@ -387,7 +387,9 @@ void SubKicker::OnParamChange(int paramIdx)
     case kFlipSwitch:
       UpdateWaveform();
       break;
-
+    case kBypassSwitch:
+      bIsBypassed = GetParam(kBypassSwitch)->Bool();
+      tScope->Hide(bIsBypassed);
     default:
       break;
   }

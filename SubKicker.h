@@ -264,6 +264,7 @@ private:
   bool UpdateWaveform();
   std::vector<double> vSubkickWaveform;
   double mGain;
+  bool bIsBypassed;
   dlpg::IWavScopeControl* tScope;
   dlpg::WaveGenerator* tWaveGenerator;
   dlpg::EnvelopeGenerator* tEnvelopeGenerator;
