@@ -5,16 +5,15 @@
 #include "DLPG_IControlExtras.h"
 #include "PLUG_IControlExtras.h"
 #include "DLPG_WaveGenerator.h"
-
 /*
 This header causes multiple inclusions in macOS's APP build
 fo some reason, plus it's not that needed there anyway.
 */
-#if !(defined(SA_API) && defined(__APPLE__))
+//#if !(defined(SA_API) && defined(__APPLE__))
 // If this file is missing, run "git_version" script from project folder,
 // or create an empty file if you don't use git.
-#include "DLPG_Version.h"
-#endif
+//#include "DLPG_Version.h"
+//#endif
 
 #define DLPG_SWITCH_STATES 2
 
@@ -40,11 +39,13 @@ fo some reason, plus it's not that needed there anyway.
 
 // Should be outside of respective standard midi ranges
 // 0 or 17
-#define DLPG_TRIG_ANY_CHANNEL 17
+#define DLPG_TRIG_ANY_CH 17
+#define DLPG_TRIG_ANY_CH_STR "Any"
 // -1 or 128
 #define DLPG_TRIG_ANY_NOTE 128
+#define DLPG_TRIG_ANY_NOTE_STR "Any"
 
-#define DLPG_TRIG_CH_RANGE 1, DLPG_TRIG_ANY_CHANNEL
+#define DLPG_TRIG_CH_RANGE 1, DLPG_TRIG_ANY_CH
 #define DLPG_TRIG_NOTE_RANGE 0, DLPG_TRIG_ANY_NOTE
 
 #define DLPG_KNOB_X_BASE 120
@@ -150,7 +151,7 @@ IRECT(\
 #define DLPG_ENVELOPE_GENERIC_STR "%5.2fms"
 #define DLPG_LEVEL_GENERIC_STR "%+5.1fdB"
 
-#define DLPG_TRIG_NOTE_LABEL_STR "%d (%s)"
+#define DLPG_TRIG_NOTE_LABEL_STR "%d (%s%d)"
 #define DLPG_TRIG_CH_LABEL_STR "%02d"
 #define DLPG_TRIG_ATTACK_LABEL_STR DLPG_ENVELOPE_GENERIC_STR
 #define DLPG_TRIG_THRESH_LABEL_STR DLPG_LEVEL_GENERIC_STR

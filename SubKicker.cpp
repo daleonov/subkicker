@@ -1,3 +1,5 @@
+#include "DLPG_Version.h"
+#include "DLPG_NoteNames.h"
 #include "SubKicker.h"
 #include "IPlug_include_in_plug_src.h"
 #include "IControl.h"
@@ -11,7 +13,7 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
 
   //arguments are: name, defaultVal, minVal, maxVal, step, label
   GetParam(kTrigNoteKnob)->InitInt("Trigger (ext) | Midi note", DLPG_TRIG_ANY_NOTE, DLPG_TRIG_NOTE_RANGE, "");
-  GetParam(kTrigChKnob)->InitInt("Trigger (ext) | Midi channel", DLPG_TRIG_ANY_CHANNEL, DLPG_TRIG_CH_RANGE, "");
+  GetParam(kTrigChKnob)->InitInt("Trigger (ext) | Midi channel", DLPG_TRIG_ANY_CH, DLPG_TRIG_CH_RANGE, "");
   GetParam(kTrigAttackKnob)->InitDouble("Trigger (int) | Attack", 10., 0.1, 100., 0.1, "ms");
   GetParam(kTrigThreshKnob)->InitDouble("Trigger (int) | Threshold", -6., -60., 0., 0.1, "dB");
 
@@ -284,17 +286,32 @@ void SubKicker::OnParamChange(int paramIdx)
 {
   IMutexLock lock(this);
   char sKnobLabelString[DLPG_KNOB_LABEL_STRING_SIZE];
+  int nKnobValue;
 
   switch (paramIdx)
   {
     case kTrigNoteKnob:
       // Display knob's value with a text label
-      sprintf(sKnobLabelString, DLPG_TRIG_NOTE_LABEL_STR, GetParam(kTrigNoteKnob)->Int(), "Xx");
+      nKnobValue = GetParam(kTrigNoteKnob)->Int();
+      if(nKnobValue == DLPG_TRIG_ANY_NOTE)
+        sprintf(sKnobLabelString, DLPG_TRIG_ANY_NOTE_STR);
+      else
+        sprintf(
+          sKnobLabelString,
+          DLPG_TRIG_NOTE_LABEL_STR,
+          nKnobValue,
+          DLPG_MIDI_NOTE_NAME(nKnobValue),
+          DLPG_MIDI_OCTAVE_NUMBER(nKnobValue)
+        );
       tTrigNoteLabel->SetTextFromPlug(sKnobLabelString);
       break;
     case kTrigChKnob:
       // Display knob's value with a text label
-      sprintf(sKnobLabelString, DLPG_TRIG_CH_LABEL_STR, GetParam(kTrigChKnob)->Int());
+      nKnobValue = GetParam(kTrigChKnob)->Int();
+      if(nKnobValue == DLPG_TRIG_ANY_CH)
+        sprintf(sKnobLabelString, DLPG_TRIG_ANY_CH_STR);
+      else
+        sprintf(sKnobLabelString, DLPG_TRIG_CH_LABEL_STR, nKnobValue);
       tTrigChLabel->SetTextFromPlug(sKnobLabelString);
       break;
     case kSubFreqKnob:
