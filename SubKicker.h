@@ -5,15 +5,6 @@
 #include "DLPG_IControlExtras.h"
 #include "PLUG_IControlExtras.h"
 #include "DLPG_WaveGenerator.h"
-/*
-This header causes multiple inclusions in macOS's APP build
-fo some reason, plus it's not that needed there anyway.
-*/
-//#if !(defined(SA_API) && defined(__APPLE__))
-// If this file is missing, run "git_version" script from project folder,
-// or create an empty file if you don't use git.
-//#include "DLPG_Version.h"
-//#endif
 
 #define DLPG_SWITCH_STATES 2
 
@@ -109,7 +100,7 @@ const IColor tBugreportLabelColor(
 
 
 #define DLPG_KNOB_LABEL_STRING_SIZE 28
-#define DLPG_KNOB_LABEL_COLOR_MONO 110
+#define DLPG_KNOB_LABEL_COLOR_MONO 196
 #define DLPG_KNOB_LABEL_W 155
 #define DLPG_KNOB_LABEL_H 16
 #define DLPG_KNOB_LABEL_ALIGN kAlignCenter
@@ -136,18 +127,6 @@ IRECT(\
 (DLPG_KNOB_LABEL_X_BASE + (col-1)*DLPG_KNOB_LABEL_X_STEP) + DLPG_KNOB_LABEL_W,\
 (DLPG_KNOB_LABEL_Y_BASE + (row-1)*DLPG_KNOB_LABEL_Y_STEP) + DLPG_KNOB_LABEL_H)
 
-/*
-  ITextControl *tTrigNoteLabel;
-  ITextControl *tTrigChLabel;
-  ITextControl *tTrigAttackLabel;
-  ITextControl *tTrigThreshLabel;
-  ITextControl *tSubFreqLabel;
-  ITextControl *tSubPhaseLabel;
-  ITextControl *tEnvelopeAttackLabel;
-  ITextControl *tEnvelopeHoldLabel;
-  ITextControl *tEnvelopeReleaseLabel;
-  ITextControl *tVolLabel;
-*/
 #define DLPG_ENVELOPE_GENERIC_STR "%5.2fms"
 #define DLPG_LEVEL_GENERIC_STR "%+5.1fdB"
 
@@ -167,10 +146,10 @@ sprintf(buf, str, GetParam(id)->Value());\
 obj->SetTextFromPlug(buf)
 
 #ifdef _WIN32
-#define DLPG_KNOB_LABEL_FONT_SIZE 13
+#define DLPG_KNOB_LABEL_FONT_SIZE 14
 #define DLPG_VERSION_TEXT_LABEL_FONT_SIZE 12
 #elif defined(__APPLE__)
-#define DLPG_KNOB_LABEL_FONT_SIZE 14
+#define DLPG_KNOB_LABEL_FONT_SIZE 15
 #define DLPG_VERSION_TEXT_LABEL_FONT_SIZE 13
 #endif
 #define DLPG_BUGREPORT_LABEL_FONT_SIZE DLPG_VERSION_TEXT_LABEL_FONT_SIZE
