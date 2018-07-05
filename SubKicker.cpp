@@ -293,6 +293,8 @@ bool SubKicker::UpdateWaveform(){
   double fDuration = fAttack + fHold + fRelease;
   double fSampleRate = GetSampleRate();
   double fFrequency = GetParam(kSubFreqKnob)->Value();
+  double fPhaseFlip = GetParam(kFlipSwitch)->Bool() ? dlpg::fPi : 0.;
+  double fPhase = DLPG_DEG_TO_RADIANS(GetParam(kSubPhaseKnob)->Value()) + fPhaseFlip;
 
   // Delete old waveform
   vSubkickWaveform.clear();
@@ -302,7 +304,7 @@ bool SubKicker::UpdateWaveform(){
   tEnvelopeGenerator = new dlpg::EnvelopeGenerator();
 
   // Generate wave
-  tWaveGenerator->Generate(vSubkickWaveform, fDuration, fFrequency);
+  tWaveGenerator->Generate(vSubkickWaveform, fDuration, fFrequency, fPhase);
 
   // Apply Attack and Release envelopes 
   tEnvelopeGenerator->Generate(vAttackEnvelope, fAttack, dlpg::kAttack, dlpg::DLPG_ENVELOPE_ATTACK_SHAPE);
@@ -381,6 +383,9 @@ void SubKicker::OnParamChange(int paramIdx)
     case kVolKnob:
       // Display knob's value with a text label
       DLPG_SET_LABEL_GENERIC(sKnobLabelString, DLPG_VOL_LABEL_STR, kVolKnob, tVolLabel);
+      break;
+    case kFlipSwitch:
+      UpdateWaveform();
       break;
 
     default:

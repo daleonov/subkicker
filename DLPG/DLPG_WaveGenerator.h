@@ -14,6 +14,10 @@ const double fPi = 3.14159265359;
 const double fTwoPi = 6.28318530718;
 const double fExp = 2.718281828;
 
+#ifndef DLPG_DEG_TO_RADIANS
+#define DLPG_DEG_TO_RADIANS(alpha) (alpha * dlpg::fPi/180.)
+#endif
+
 typedef enum WaveForm_t{
   kSine = 1,
 }WaveForm_t;
