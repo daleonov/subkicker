@@ -261,6 +261,8 @@ public:
   void ProcessDoubleReplacing(double** inputs, double** outputs, int nFrames);
 
 private:
+  bool UpdateWaveform();
+  std::vector<double> vSubkickWaveform;
   double mGain;
   dlpg::IWavScopeControl* tScope;
   dlpg::WaveGenerator* tWaveGenerator;

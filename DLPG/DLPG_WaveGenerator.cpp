@@ -12,6 +12,7 @@ WaveGenerator::~WaveGenerator(){
 bool WaveGenerator::SetSampleRate(double fSampleRate){
   this-> fSampleRate = fSampleRate;
   this-> fPhaseIncrement = 0.;
+  return true;
 }
 
 bool WaveGenerator::GenerateSamples(std::vector<double> &vBuffer, int nSamples, double fFrequency, double fPhaseShift, WaveForm_t kWaveForm){

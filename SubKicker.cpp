@@ -224,7 +224,7 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   // Volume
   tVolLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(2, 4), &tKnobLabelCommon, "Volume");
   pGraphics->AttachControl(tVolLabel);
-
+/*
   double fAttack = 20./1000;
   double fHold = 100./1000;
   double fRelease = 20./1000;
@@ -245,10 +245,10 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   for(i = vWaveform.size()-vReleaseEnvelope.size(), j=0; i != vWaveform.size(); i++, j++){
     vWaveform[i] *= vReleaseEnvelope[j];
   }
-
+*/
   // Scope
-  tScope = new dlpg::IWavScopeControl(this, PLUG_ScopeIrect, kScope, vWaveform);
-  tScope->UpdateScale(fDuration, fSampleRate);
+  tScope = new dlpg::IWavScopeControl(this, PLUG_ScopeIrect, kScope, vSubkickWaveform);
+  tScope->UpdateScale(0.1, 44100.);
   pGraphics->AttachControl(tScope);
 
   AttachGraphics(pGraphics);
@@ -280,6 +280,45 @@ void SubKicker::Reset()
 {
   TRACE;
   IMutexLock lock(this);
+}
+
+bool SubKicker::UpdateWaveform(){
+  /*
+  Note: do not forget to convert all velues to Si! 
+  e.g. ms -> s, kHz -> Hz etc.
+  */
+  double fAttack = GetParam(kEnvelopeAttackKnob)->Value() / 1000.;
+  double fHold = GetParam(kEnvelopeHoldKnob)->Value() / 1000.;
+  double fRelease = GetParam(kEnvelopeReleaseKnob)->Value() / 1000.;
+  double fDuration = fAttack + fHold + fRelease;
+  double fSampleRate = GetSampleRate();
+  double fFrequency = GetParam(kSubFreqKnob)->Value();
+
+  // Delete old waveform
+  vSubkickWaveform.clear();
+
+  std::vector<double> vAttackEnvelope(0), vReleaseEnvelope(0);
+  tWaveGenerator = new dlpg::WaveGenerator();
+  tEnvelopeGenerator = new dlpg::EnvelopeGenerator();
+
+  // Generate wave
+  tWaveGenerator->Generate(vSubkickWaveform, fDuration, fFrequency);
+
+  // Apply Attack and Release envelopes 
+  tEnvelopeGenerator->Generate(vAttackEnvelope, fAttack, dlpg::kAttack, dlpg::DLPG_ENVELOPE_ATTACK_SHAPE);
+  tEnvelopeGenerator->Generate(vReleaseEnvelope, fRelease, dlpg::kRelease, dlpg::DLPG_ENVELOPE_RELEASE_SHAPE);
+  std::vector<double>::size_type i, j;
+  for(i = 0; i != vAttackEnvelope.size(); i++){
+    vSubkickWaveform[i] *= vAttackEnvelope[i];
+  }
+  for(i = vSubkickWaveform.size()-vReleaseEnvelope.size(), j=0; i != vSubkickWaveform.size(); i++, j++){
+    vSubkickWaveform[i] *= vReleaseEnvelope[j];
+  }
+
+  tScope->UpdateScale(fDuration, fSampleRate);
+  tScope->LoadWave(vSubkickWaveform);
+  tScope->SetDirty(true);
+  return true;
 }
 
 void SubKicker::OnParamChange(int paramIdx)
@@ -317,22 +356,27 @@ void SubKicker::OnParamChange(int paramIdx)
     case kSubFreqKnob:
       // Display knob's value with a text label
       DLPG_SET_LABEL_GENERIC(sKnobLabelString, DLPG_SUB_FREQ_LABEL_STR, kSubFreqKnob, tSubFreqLabel);
+      UpdateWaveform();
       break;
     case kSubPhaseKnob:
       // Display knob's value with a text label
       DLPG_SET_LABEL_GENERIC(sKnobLabelString, DLPG_SUB_PHASE_LABEL_STR, kSubPhaseKnob, tSubPhaseLabel);
+      UpdateWaveform();
       break;
     case kEnvelopeAttackKnob:
       // Display knob's value with a text label
       DLPG_SET_LABEL_GENERIC(sKnobLabelString, DLPG_ENVELOPE_ATTACK_LABEL_STR, kEnvelopeAttackKnob, tEnvelopeAttackLabel);
+      UpdateWaveform();
       break;
     case kEnvelopeHoldKnob:
       // Display knob's value with a text label
       DLPG_SET_LABEL_GENERIC(sKnobLabelString, DLPG_ENVELOPE_HOLD_LABEL_STR, kEnvelopeHoldKnob, tEnvelopeHoldLabel);
+      UpdateWaveform();
       break;
     case kEnvelopeReleaseKnob:
       // Display knob's value with a text label
       DLPG_SET_LABEL_GENERIC(sKnobLabelString, DLPG_ENVELOPE_RELEASE_LABEL_STR, kEnvelopeReleaseKnob, tEnvelopeReleaseLabel);
+      UpdateWaveform();
       break;
     case kVolKnob:
       // Display knob's value with a text label
