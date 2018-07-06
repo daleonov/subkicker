@@ -7,6 +7,9 @@
 #include "PLUG_IControlExtras.h"
 #include "DLPG_WaveGenerator.h"
 
+#define DLPG_LOG_TO_LINEAR(v) (pow(10, v/20.))
+#define DLPG_LINEAR_TO_LOG(v) (20.*log10(v))
+
 #define DLPG_SWITCH_STATES 2
 
 #define DLPG_SWITCH_X_BASE 565
@@ -214,7 +217,6 @@ const int kNumPrograms = 1;
 
 enum EParams
 {
-  kGain,
   kScope,
   kBypassSwitch,
   kTrigSwitch,
@@ -252,10 +254,6 @@ enum ELayout
 {
   kWidth = GUI_WIDTH,
   kHeight = GUI_HEIGHT,
-
-  kGainX = 100,
-  kGainY = 300,
-  kKnobFrames = 60,
 
   kScopeX = 122,
   kScopeY = 10,
@@ -317,7 +315,6 @@ public:
 private:
   bool UpdateWaveform();
   std::vector<double> vSubkickWaveform;
-  double mGain;
   bool bIsBypassed;
   dlpg::IWavScopeControl* tScope;
   dlpg::WaveGenerator* tWaveGenerator;
@@ -358,6 +355,7 @@ private:
   int nNumKeysPressed;
   // For switching from Hz mode to note snap mode of Sub Frequency knob
   inline int HzToSubNoteKnobValue(double fFrequency);
+  double fOutputGainLinear;
 };
 
 #endif

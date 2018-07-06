@@ -7,7 +7,7 @@
 #include "resource.h"
 
 SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
-  :	IPLUG_CTOR(kNumParams, kNumPrograms, instanceInfo), mGain(1.)
+  :	IPLUG_CTOR(kNumParams, kNumPrograms, instanceInfo), fOutputGainLinear(1.)
 {
   TRACE;
   IBitmap tBmp;
@@ -344,8 +344,8 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
     }
     if((nCurrentWaveformSample < vSubkickWaveform.size()) && bPlay){
       // Start or resume playback
-      *pfOutL = vSubkickWaveform[nCurrentWaveformSample];
-      *pfOutR = vSubkickWaveform[nCurrentWaveformSample];
+      *pfOutL = vSubkickWaveform[nCurrentWaveformSample] * fOutputGainLinear;
+      *pfOutR = *pfOutL;
       if(nCurrentWaveformSample == 1)
         tScope->Highlight(true);
       nCurrentWaveformSample++;
@@ -511,6 +511,10 @@ void SubKicker::OnParamChange(int paramIdx)
     case kVolKnob:
       // Display knob's value with a text label
       DLPG_SET_LABEL_GENERIC(sKnobLabelString, DLPG_VOL_LABEL_STR, kVolKnob, tVolLabel);
+      /* Output gain is only being applied in DSP thread, so the
+         scope wouldn't (and shouldn't) reflect the volume changes. */
+      fKnobValue = GetParam(kVolKnob)->Value();
+      this->fOutputGainLinear = DLPG_LOG_TO_LINEAR(fKnobValue);
       break;
     case kFlipSwitch:
       UpdateWaveform();
@@ -562,7 +566,6 @@ void SubKicker::OnParamChange(int paramIdx)
       tMidiMsg.MakeNoteOffMsg(nPreviewNote, 0, nPreviewCh);
       tMidiQueue.Add(&tMidiMsg);
       break;
-
     default:
       break;
   }
