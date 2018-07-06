@@ -32,6 +32,7 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
       );
     GetParam(kBypassSwitch)->SetDisplayText(i, sEnumText);
   }
+  GetParam(kSubFreqKnob)->SetShape(DLPG_SUB_FREQ_KNOB_SHAPE);
 
   GetParam(kEnvelopeAttackKnob)->InitDouble("Envelope | Attack", DLPG_ENVELOPE_ATTACK_DEFAULT, DLPG_ENVELOPE_ATTACK_RANGE, 0.1, "ms");
   GetParam(kEnvelopeHoldKnob)->InitDouble("Envelope | Hold", DLPG_ENVELOPE_HOLD_DEFAULT, DLPG_ENVELOPE_HOLD_RANGE, 0.1, "ms");
@@ -249,10 +250,14 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tScope->UpdateScale(0.1, 44100.);
   pGraphics->AttachControl(tScope);
 
+  /*
+  Those two knobs (and switches) are mutually exclusive, so we
+  hide both of them and figure out later which one to show.
+  */
   tSubFreqKnob->Hide(true);
-  //tSubNoteKnob->Hide(true);
+  tSubNoteKnob->Hide(true);
   tSubFreqLabel->Hide(true);
-  //tSubNoteLabel->Hide(true);
+  tSubNoteLabel->Hide(true);
 
   AttachGraphics(pGraphics);
 
@@ -413,6 +418,8 @@ void SubKicker::OnParamChange(int paramIdx)
   int nPreviewNote, nPreviewCh;
   IMidiMsg tMidiMsg;
   static bool bIsInit = true;
+  bool bSwitchState;
+  double fKnobValue, fNormalizedKnobValue;
 
   switch (paramIdx)
   {
@@ -488,6 +495,20 @@ void SubKicker::OnParamChange(int paramIdx)
       tScope->Hide(bIsBypassed);
       break;
     case kSnapSwitch:
+      bSwitchState = GetParam(kSnapSwitch)->Bool();
+      //DLPG_SUB_NOTE_KNOB_VALUE_TO_HZ(nKnobValue)
+      if(true){
+        nKnobValue = GetParam(kSubNoteKnob)->Int();
+        fKnobValue = DLPG_SUB_NOTE_KNOB_VALUE_TO_HZ(nKnobValue);
+        fNormalizedKnobValue = DLPG_SUB_FREQ_KNOB_NORMALIZE(fKnobValue);
+        GetGUI()->SetParameterFromPlug(kSubFreqKnob, fNormalizedKnobValue, true);
+        InformHostOfParamChange(kSubFreqKnob, fNormalizedKnobValue);
+        tSubFreqKnob->SetDirty(true);
+      }
+      tSubFreqKnob->Hide(bSwitchState);
+      tSubNoteKnob->Hide(!bSwitchState);
+      tSubFreqLabel->Hide(bSwitchState);
+      tSubNoteLabel->Hide(!bSwitchState);
       break;
     case kScope:
       // Do not send a note during startup
