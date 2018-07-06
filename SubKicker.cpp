@@ -379,9 +379,12 @@ bool SubKicker::UpdateWaveform(){
   double fRelease = GetParam(kEnvelopeReleaseKnob)->Value() / 1000.;
   double fDuration = fAttack + fHold + fRelease;
   double fSampleRate = GetSampleRate();
-  double fFrequency = GetParam(kSubFreqKnob)->Value();
   double fPhaseFlip = GetParam(kFlipSwitch)->Bool() ? dlpg::fPi : 0.;
   double fPhase = DLPG_DEG_TO_RADIANS(GetParam(kSubPhaseKnob)->Value()) + fPhaseFlip;
+  double fFrequency = GetParam(kSnapSwitch)->Bool() ? \
+    DLPG_SUB_NOTE_KNOB_VALUE_TO_HZ(GetParam(kSubNoteKnob)->Int()) : \
+    GetParam(kSubFreqKnob)->Value();
+
 
   // Delete old waveform
   vSubkickWaveform.clear();
@@ -408,6 +411,27 @@ bool SubKicker::UpdateWaveform(){
   tScope->LoadWave(vSubkickWaveform);
   tScope->SetDirty(false);
   return true;
+}
+
+/*
+@brief Finds closest note to an arbitrary frequency
+@param fFrequency Frequency in Hz
+@retval index of a "Sub Note" knob value
+*/
+inline int SubKicker::HzToSubNoteKnobValue(double fFrequency){
+  double fDelta, fClosestDelta = 20000.;
+  int nClosestIndex = -1;
+  for(
+    int i = 0;
+    i < DLPG_SUB_NOTE_STATES;
+    i++){
+    fDelta = fabs(DLPG_SUB_NOTE_KNOB_VALUE_TO_HZ(i) - fFrequency);
+    if(fDelta < fClosestDelta){
+      fClosestDelta = fDelta;
+      nClosestIndex = i;
+    }
+  }
+  return nClosestIndex;
 }
 
 void SubKicker::OnParamChange(int paramIdx)
@@ -457,6 +481,7 @@ void SubKicker::OnParamChange(int paramIdx)
         DLPG_SUB_NOTE_KNOB_VALUE_TO_HZ(nKnobValue)
         );
       tSubNoteLabel->SetTextFromPlug(sKnobLabelString);
+      UpdateWaveform();
       break;
     case kSubFreqKnob:
       // Display knob's value with a text label
@@ -496,8 +521,8 @@ void SubKicker::OnParamChange(int paramIdx)
       break;
     case kSnapSwitch:
       bSwitchState = GetParam(kSnapSwitch)->Bool();
-      //DLPG_SUB_NOTE_KNOB_VALUE_TO_HZ(nKnobValue)
-      if(true){
+      // Convert value of Sub Freq knob to Sub Note or vice versa
+      if(!bSwitchState){
         nKnobValue = GetParam(kSubNoteKnob)->Int();
         fKnobValue = DLPG_SUB_NOTE_KNOB_VALUE_TO_HZ(nKnobValue);
         fNormalizedKnobValue = DLPG_SUB_FREQ_KNOB_NORMALIZE(fKnobValue);
@@ -505,6 +530,15 @@ void SubKicker::OnParamChange(int paramIdx)
         InformHostOfParamChange(kSubFreqKnob, fNormalizedKnobValue);
         tSubFreqKnob->SetDirty(true);
       }
+      else{
+        fKnobValue = GetParam(kSubFreqKnob)->Value();
+        nKnobValue = HzToSubNoteKnobValue(fKnobValue);
+        fNormalizedKnobValue = DLPG_SUB_NOTE_KNOB_NORMALIZE((double)nKnobValue);
+        GetGUI()->SetParameterFromPlug(kSubNoteKnob, fNormalizedKnobValue, true);
+        InformHostOfParamChange(kSubNoteKnob, fNormalizedKnobValue);
+        tSubNoteKnob->SetDirty(true);
+      }
+      // Display only relevant controls
       tSubFreqKnob->Hide(bSwitchState);
       tSubNoteKnob->Hide(!bSwitchState);
       tSubFreqLabel->Hide(bSwitchState);

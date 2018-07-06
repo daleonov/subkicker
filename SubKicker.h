@@ -31,7 +31,7 @@
 #define DLPG_SUB_NOTE_KNOB_FRAMES 25
 
 #define DLPG_VOL_KNOB_SHAPE 0.26
-#define DLPG_SUB_FREQ_KNOB_SHAPE 1.75
+#define DLPG_SUB_FREQ_KNOB_SHAPE 1.45
 
 // Should be outside of respective standard midi ranges
 // 0 or 17
@@ -42,6 +42,7 @@
 #define DLPG_TRIG_ANY_NOTE_STR "Any"
 
 // Sub frequency knobs
+// Lowest note and range:
 // E-1 = 20.6 Hz = Note 16, range 2 octaves up
 #define DLPG_MIDI_NOTE_NUMBER_TO_FREQ_INDEX(n) (n)
 #define DLPG_MIDI_FREQ_INDEX_TO_NOTE_NUMBER(n) (n)
@@ -56,6 +57,8 @@
 #define DLPG_SUB_FREQ_DEFAULT DLPG_SUB_NOTE_KNOB_VALUE_TO_HZ(DLPG_DEFAULT_SUB_NOTE_STATE)
 #define DLPG_SUB_FREQ_RANGE DLPG_SUB_FREQ_MIN, DLPG_SUB_FREQ_MAX
 #define DLPG_SUB_FREQ_KNOB_NORMALIZE(v) ToNormalizedParam(v, DLPG_SUB_FREQ_MIN, DLPG_SUB_FREQ_MAX, DLPG_SUB_FREQ_KNOB_SHAPE)
+#define DLPG_SUB_NOTE_KNOB_NORMALIZE(v) ToNormalizedParam(v, 0, DLPG_SUB_NOTE_STATES - 1, 1.)
+// For Hz to Note knob value conversion, use HzToSubNoteKnobValue()
 
 // Other knobs
 #define DLPG_TRIG_CH_RANGE 1, DLPG_TRIG_ANY_CH
@@ -353,6 +356,8 @@ private:
   IMidiQueue tMidiQueue;
   bool abKeyStatus[DLPG_MIDI_NOTES_TOTAL];
   int nNumKeysPressed;
+  // For switching from Hz mode to note snap mode of Sub Frequency knob
+  inline int HzToSubNoteKnobValue(double fFrequency);
 };
 
 #endif
