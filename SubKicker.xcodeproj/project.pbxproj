@@ -269,6 +269,20 @@
 		4FF016F8134E14E2001447BA /* ptrlist.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FF016F5134E14E2001447BA /* ptrlist.h */; };
 		4FF016F9134E14E2001447BA /* wdlstring.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FF016F6134E14E2001447BA /* wdlstring.h */; };
 		4FF0171A134E153A001447BA /* heapbuf.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FF01719134E153A001447BA /* heapbuf.h */; };
+		CE06F9AE20ED6BA400C18BEC /* lice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE06F9AC20ED6BA400C18BEC /* lice.a */; };
+		CE06F9AF20ED6BA400C18BEC /* lice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE06F9AC20ED6BA400C18BEC /* lice.a */; };
+		CE06F9B020ED6BA400C18BEC /* lice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE06F9AC20ED6BA400C18BEC /* lice.a */; };
+		CE06F9B120ED6BA400C18BEC /* lice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE06F9AC20ED6BA400C18BEC /* lice.a */; };
+		CE06F9B220ED6BA400C18BEC /* lice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE06F9AC20ED6BA400C18BEC /* lice.a */; };
+		CE06F9B320ED6BA400C18BEC /* lice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE06F9AC20ED6BA400C18BEC /* lice.a */; };
+		CE06F9B420ED6BA500C18BEC /* lice32.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE06F9AD20ED6BA400C18BEC /* lice32.a */; };
+		CE06F9B520ED6BA500C18BEC /* lice32.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE06F9AD20ED6BA400C18BEC /* lice32.a */; };
+		CE06F9B620ED6BA500C18BEC /* lice32.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE06F9AD20ED6BA400C18BEC /* lice32.a */; };
+		CE06F9B720ED6BA500C18BEC /* lice32.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE06F9AD20ED6BA400C18BEC /* lice32.a */; };
+		CE06F9B820ED6BA500C18BEC /* lice32.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE06F9AD20ED6BA400C18BEC /* lice32.a */; };
+		CE06F9B920ED6BA500C18BEC /* lice32.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE06F9AD20ED6BA400C18BEC /* lice32.a */; };
+		CE06F9C820ED8C2200C18BEC /* DLPG_NoteNames.h in Headers */ = {isa = PBXBuildFile; fileRef = CE06F9C720ED8C2200C18BEC /* DLPG_NoteNames.h */; };
+		CE06F9C920ED8C2200C18BEC /* DLPG_NoteNames.h in Headers */ = {isa = PBXBuildFile; fileRef = CE06F9C720ED8C2200C18BEC /* DLPG_NoteNames.h */; };
 		CE8EA03B20ED40170031E883 /* bg_reva_placeholders.png in Resources */ = {isa = PBXBuildFile; fileRef = CE8EA01D20ED40170031E883 /* bg_reva_placeholders.png */; };
 		CE8EA03C20ED40170031E883 /* bg_reva_placeholders.png in Resources */ = {isa = PBXBuildFile; fileRef = CE8EA01D20ED40170031E883 /* bg_reva_placeholders.png */; };
 		CE8EA03D20ED40170031E883 /* bg_reva_placeholders.png in Resources */ = {isa = PBXBuildFile; fileRef = CE8EA01D20ED40170031E883 /* bg_reva_placeholders.png */; };
@@ -475,6 +489,14 @@
 		CE8EA10C20ED57EC0031E883 /* PLUG_IControlExtras.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8EA0F420ED57EC0031E883 /* PLUG_IControlExtras.h */; };
 		CE8EA10E20ED5C0E0031E883 /* DLPG_Version.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8EA10D20ED5C0E0031E883 /* DLPG_Version.h */; };
 		CE8EA10F20ED5C0E0031E883 /* DLPG_Version.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8EA10D20ED5C0E0031E883 /* DLPG_Version.h */; };
+		CEAF71E520EFDDAC0016CA18 /* DLPG_NoteFrequencies.h in Headers */ = {isa = PBXBuildFile; fileRef = CEAF71E420EFDDAC0016CA18 /* DLPG_NoteFrequencies.h */; };
+		CEAF71E620EFDDAC0016CA18 /* DLPG_NoteFrequencies.h in Headers */ = {isa = PBXBuildFile; fileRef = CEAF71E420EFDDAC0016CA18 /* DLPG_NoteFrequencies.h */; };
+		CEAF71E820EFEB220016CA18 /* knob_sub_note_25.png in Resources */ = {isa = PBXBuildFile; fileRef = CEAF71E720EFEB220016CA18 /* knob_sub_note_25.png */; };
+		CEAF71E920EFEB220016CA18 /* knob_sub_note_25.png in Resources */ = {isa = PBXBuildFile; fileRef = CEAF71E720EFEB220016CA18 /* knob_sub_note_25.png */; };
+		CEAF71EA20EFEB220016CA18 /* knob_sub_note_25.png in Resources */ = {isa = PBXBuildFile; fileRef = CEAF71E720EFEB220016CA18 /* knob_sub_note_25.png */; };
+		CEAF71EB20EFEB220016CA18 /* knob_sub_note_25.png in Resources */ = {isa = PBXBuildFile; fileRef = CEAF71E720EFEB220016CA18 /* knob_sub_note_25.png */; };
+		CEAF71EC20EFEB220016CA18 /* knob_sub_note_25.png in Resources */ = {isa = PBXBuildFile; fileRef = CEAF71E720EFEB220016CA18 /* knob_sub_note_25.png */; };
+		CEAF71ED20EFEB220016CA18 /* knob_sub_note_25.png in Resources */ = {isa = PBXBuildFile; fileRef = CEAF71E720EFEB220016CA18 /* knob_sub_note_25.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -848,6 +870,9 @@
 		52FBBED00D0CF139001C8B8A /* SubKicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; path = SubKicker.cpp; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		52FBBED20D0CF13D001C8B8A /* SubKicker.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SubKicker.h; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		52FBBED30D0CF143001C8B8A /* resource.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = resource.h; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
+		CE06F9AC20ED6BA400C18BEC /* lice.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = lice.a; path = "../../WDL/lice/build-mac/lice.a"; sourceTree = "<group>"; };
+		CE06F9AD20ED6BA400C18BEC /* lice32.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = lice32.a; path = "../../WDL/lice/build-mac/lice32.a"; sourceTree = "<group>"; };
+		CE06F9C720ED8C2200C18BEC /* DLPG_NoteNames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLPG_NoteNames.h; path = DLPG/DLPG_NoteNames.h; sourceTree = SOURCE_ROOT; };
 		CE8EA01D20ED40170031E883 /* bg_reva_placeholders.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bg_reva_placeholders.png; path = resources/img/bg_reva_placeholders.png; sourceTree = "<group>"; };
 		CE8EA01E20ED40170031E883 /* bg_reva.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bg_reva.png; path = resources/img/bg_reva.png; sourceTree = "<group>"; };
 		CE8EA01F20ED40170031E883 /* knob_envelope_attack_128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = knob_envelope_attack_128.png; path = resources/img/knob_envelope_attack_128.png; sourceTree = "<group>"; };
@@ -885,6 +910,8 @@
 		CE8EA0F320ED57EC0031E883 /* PLUG_IControlExtras.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PLUG_IControlExtras.cpp; path = DLPG/PLUG_IControlExtras.cpp; sourceTree = "<group>"; };
 		CE8EA0F420ED57EC0031E883 /* PLUG_IControlExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLUG_IControlExtras.h; path = DLPG/PLUG_IControlExtras.h; sourceTree = "<group>"; };
 		CE8EA10D20ED5C0E0031E883 /* DLPG_Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLPG_Version.h; sourceTree = "<group>"; };
+		CEAF71E420EFDDAC0016CA18 /* DLPG_NoteFrequencies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLPG_NoteFrequencies.h; path = DLPG/DLPG_NoteFrequencies.h; sourceTree = "<group>"; };
+		CEAF71E720EFEB220016CA18 /* knob_sub_note_25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = knob_sub_note_25.png; path = resources/img/knob_sub_note_25.png; sourceTree = "<group>"; };
 		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -895,6 +922,8 @@
 			files = (
 				4F8D4C2F13E97806004F7633 /* lice.a in Frameworks */,
 				4F20EF2D132C69FE0030E34C /* Cocoa.framework in Frameworks */,
+				CE06F9B520ED6BA500C18BEC /* lice32.a in Frameworks */,
+				CE06F9AF20ED6BA400C18BEC /* lice.a in Frameworks */,
 				4F20EF2E132C69FE0030E34C /* Carbon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -905,6 +934,8 @@
 			files = (
 				4F8D4C2813E9778D004F7633 /* lice.a in Frameworks */,
 				4F3AE1D412C0E5E2001FD7A4 /* Carbon.framework in Frameworks */,
+				CE06F9B720ED6BA500C18BEC /* lice32.a in Frameworks */,
+				CE06F9B120ED6BA400C18BEC /* lice.a in Frameworks */,
 				4F3AE1D512C0E5E2001FD7A4 /* Cocoa.framework in Frameworks */,
 				4F3AE1D612C0E5E2001FD7A4 /* AudioToolbox.framework in Frameworks */,
 				4F3AE1D712C0E5E2001FD7A4 /* AudioUnit.framework in Frameworks */,
@@ -918,9 +949,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F8B6766158B4F74002FC25B /* libPluginLibrary.a in Frameworks */,
+				CE06F9B820ED6BA500C18BEC /* lice32.a in Frameworks */,
 				4F8D4C2913E97794004F7633 /* lice32.a in Frameworks */,
 				4F7F5C6213E95EC8002918FD /* Cocoa.framework in Frameworks */,
 				4F7F5C6313E95EC8002918FD /* Carbon.framework in Frameworks */,
+				CE06F9B220ED6BA400C18BEC /* lice.a in Frameworks */,
 				4F7F5CF713E96564002918FD /* System.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -929,10 +962,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE06F9B020ED6BA400C18BEC /* lice.a in Frameworks */,
 				4F9828F6140A9EEE00F3FCC1 /* lice.a in Frameworks */,
 				4F9828D8140A9EB700F3FCC1 /* libbase.a in Frameworks */,
 				4F9828DA140A9EB700F3FCC1 /* Cocoa.framework in Frameworks */,
 				4F9828DB140A9EB700F3FCC1 /* Carbon.framework in Frameworks */,
+				CE06F9B620ED6BA500C18BEC /* lice32.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -940,10 +975,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE06F9B320ED6BA400C18BEC /* lice.a in Frameworks */,
 				4F3B0B44158B50A5001B0CEF /* libAAXLibrary.a in Frameworks */,
 				4FB600551567CBF90020189A /* lice.a in Frameworks */,
 				4FB6002C1567CB0A0020189A /* Cocoa.framework in Frameworks */,
 				4FB6002D1567CB0A0020189A /* Carbon.framework in Frameworks */,
+				CE06F9B920ED6BA500C18BEC /* lice32.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -953,6 +990,8 @@
 			files = (
 				4F8D4BCD13E97671004F7633 /* lice.a in Frameworks */,
 				4F78D87513B637E50032E0F3 /* Carbon.framework in Frameworks */,
+				CE06F9B420ED6BA500C18BEC /* lice32.a in Frameworks */,
+				CE06F9AE20ED6BA400C18BEC /* lice.a in Frameworks */,
 				4F78D7D013B637790032E0F3 /* CoreMIDI.framework in Frameworks */,
 				4F78D70B13B637340032E0F3 /* CoreFoundation.framework in Frameworks */,
 				4F78D86E13B637A20032E0F3 /* CoreData.framework in Frameworks */,
@@ -974,9 +1013,11 @@
 				CE8EA0F020ED57EC0031E883 /* DLPG_IControlExtras.h */,
 				CE8EA0F120ED57EC0031E883 /* DLPG_WaveGenerator.cpp */,
 				CE8EA0F220ED57EC0031E883 /* DLPG_WaveGenerator.h */,
+				CEAF71E420EFDDAC0016CA18 /* DLPG_NoteFrequencies.h */,
 				CE8EA0F320ED57EC0031E883 /* PLUG_IControlExtras.cpp */,
 				CE8EA10D20ED5C0E0031E883 /* DLPG_Version.h */,
 				CE8EA0F420ED57EC0031E883 /* PLUG_IControlExtras.h */,
+				CE06F9C720ED8C2200C18BEC /* DLPG_NoteNames.h */,
 				089C167CFE841241C02AAC07 /* Resources */,
 				32C88E010371C26100C91783 /* Other Sources */,
 				089C1671FE841209C02AAC07 /* Frameworks and Libraries */,
@@ -1415,6 +1456,8 @@
 			isa = PBXGroup;
 			children = (
 				4F8D4BC413E97664004F7633 /* lice.xcodeproj */,
+				CE06F9AC20ED6BA400C18BEC /* lice.a */,
+				CE06F9AD20ED6BA400C18BEC /* lice32.a */,
 				4F78D62313B637200032E0F3 /* CoreFoundation.framework */,
 				D2F7E65807B2D6F200F64583 /* CoreData.framework */,
 				089C1672FE841209C02AAC07 /* Foundation.framework */,
@@ -1509,6 +1552,7 @@
 				CE8EA02820ED40170031E883 /* knob_trig_note_129.png */,
 				CE8EA02920ED40170031E883 /* knob_trig_thresh_128.png */,
 				CE8EA02A20ED40170031E883 /* knob_vol_128.png */,
+				CEAF71E720EFEB220016CA18 /* knob_sub_note_25.png */,
 				CE8EA02B20ED40170031E883 /* knob.png */,
 				CE8EA02C20ED40170031E883 /* overlay_in.png */,
 				CE8EA02D20ED40170031E883 /* overlay_out.png */,
@@ -1635,10 +1679,12 @@
 				4F78D95A13B63BA50032E0F3 /* IPlug_Prefix.pch in Headers */,
 				CE8EA10420ED57EC0031E883 /* DLPG_WaveGenerator.h in Headers */,
 				4F78D95B13B63BA50032E0F3 /* IParam.h in Headers */,
+				CE06F9C920ED8C2200C18BEC /* DLPG_NoteNames.h in Headers */,
 				4F78D95D13B63BA50032E0F3 /* IMidiQueue.h in Headers */,
 				CE8EA10C20ED57EC0031E883 /* PLUG_IControlExtras.h in Headers */,
 				4F78D95F13B63BA50032E0F3 /* IGraphicsCarbon.h in Headers */,
 				4F78D96013B63BA50032E0F3 /* IGraphics.h in Headers */,
+				CEAF71E620EFDDAC0016CA18 /* DLPG_NoteFrequencies.h in Headers */,
 				4F78DA0713B63CD90032E0F3 /* IPlugAU.h in Headers */,
 				4F3EE94913B65A350097B791 /* IPlugOSDetect.h in Headers */,
 				4FDA440913F3E4F2000B4551 /* IBitmapMonoText.h in Headers */,
@@ -1677,6 +1723,7 @@
 				4F78DA9413B640050032E0F3 /* aeffectx.h in Headers */,
 				4F78DA9513B640050032E0F3 /* IPlug_include_in_plug_hdr.h in Headers */,
 				4F78DA9613B640050032E0F3 /* IPlug_include_in_plug_src.h in Headers */,
+				CE06F9C820ED8C2200C18BEC /* DLPG_NoteNames.h in Headers */,
 				4F78DA9713B640050032E0F3 /* IControl.h in Headers */,
 				4F78DA9813B640050032E0F3 /* IKeyboardControl.h in Headers */,
 				4F78DA9913B640050032E0F3 /* IPlugBase.h in Headers */,
@@ -1684,6 +1731,7 @@
 				4F78DA9C13B640050032E0F3 /* Containers.h in Headers */,
 				4F78DA9D13B640050032E0F3 /* Hosts.h in Headers */,
 				4F78DA9E13B640050032E0F3 /* IGraphicsCocoa.h in Headers */,
+				CEAF71E520EFDDAC0016CA18 /* DLPG_NoteFrequencies.h in Headers */,
 				4F78DA9F13B640050032E0F3 /* Log.h in Headers */,
 				4F78DAA013B640050032E0F3 /* IPopupMenu.h in Headers */,
 				4F78DAA113B640050032E0F3 /* IPlugStructs.h in Headers */,
@@ -1954,6 +2002,7 @@
 				CE8EA09020ED40170031E883 /* knob.png in Resources */,
 				CE8EA0DE20ED40170031E883 /* switch_trig_input.png in Resources */,
 				CE8EA0AE20ED40170031E883 /* switch_flip_alt.png in Resources */,
+				CEAF71E920EFEB220016CA18 /* knob_sub_note_25.png in Resources */,
 				CE8EA03C20ED40170031E883 /* bg_reva_placeholders.png in Resources */,
 				CE8EA06620ED40170031E883 /* knob_sub_phase_128.png in Resources */,
 				CE8EA0A820ED40170031E883 /* switch_curve.png in Resources */,
@@ -1991,6 +2040,7 @@
 				CE8EA09220ED40170031E883 /* knob.png in Resources */,
 				CE8EA0E020ED40170031E883 /* switch_trig_input.png in Resources */,
 				CE8EA0B020ED40170031E883 /* switch_flip_alt.png in Resources */,
+				CEAF71EB20EFEB220016CA18 /* knob_sub_note_25.png in Resources */,
 				CE8EA03E20ED40170031E883 /* bg_reva_placeholders.png in Resources */,
 				CE8EA06820ED40170031E883 /* knob_sub_phase_128.png in Resources */,
 				CE8EA0AA20ED40170031E883 /* switch_curve.png in Resources */,
@@ -2028,6 +2078,7 @@
 				CE8EA09320ED40170031E883 /* knob.png in Resources */,
 				CE8EA0E120ED40170031E883 /* switch_trig_input.png in Resources */,
 				CE8EA0B120ED40170031E883 /* switch_flip_alt.png in Resources */,
+				CEAF71EC20EFEB220016CA18 /* knob_sub_note_25.png in Resources */,
 				CE8EA03F20ED40170031E883 /* bg_reva_placeholders.png in Resources */,
 				CE8EA06920ED40170031E883 /* knob_sub_phase_128.png in Resources */,
 				CE8EA0AB20ED40170031E883 /* switch_curve.png in Resources */,
@@ -2065,6 +2116,7 @@
 				CE8EA09120ED40170031E883 /* knob.png in Resources */,
 				CE8EA0DF20ED40170031E883 /* switch_trig_input.png in Resources */,
 				CE8EA0AF20ED40170031E883 /* switch_flip_alt.png in Resources */,
+				CEAF71EA20EFEB220016CA18 /* knob_sub_note_25.png in Resources */,
 				CE8EA03D20ED40170031E883 /* bg_reva_placeholders.png in Resources */,
 				CE8EA06720ED40170031E883 /* knob_sub_phase_128.png in Resources */,
 				CE8EA0A920ED40170031E883 /* switch_curve.png in Resources */,
@@ -2102,6 +2154,7 @@
 				CE8EA09420ED40170031E883 /* knob.png in Resources */,
 				CE8EA0E220ED40170031E883 /* switch_trig_input.png in Resources */,
 				CE8EA0B220ED40170031E883 /* switch_flip_alt.png in Resources */,
+				CEAF71ED20EFEB220016CA18 /* knob_sub_note_25.png in Resources */,
 				CE8EA04020ED40170031E883 /* bg_reva_placeholders.png in Resources */,
 				CE8EA06A20ED40170031E883 /* knob_sub_phase_128.png in Resources */,
 				CE8EA0AC20ED40170031E883 /* switch_curve.png in Resources */,
@@ -2142,6 +2195,7 @@
 				CE8EA0A120ED40170031E883 /* switch_bypass.png in Resources */,
 				CE8EA0E320ED40170031E883 /* switch_trig_l.png in Resources */,
 				CE8EA07120ED40170031E883 /* knob_trig_ch_17.png in Resources */,
+				CEAF71E820EFEB220016CA18 /* knob_sub_note_25.png in Resources */,
 				CE8EA08F20ED40170031E883 /* knob.png in Resources */,
 				4F78D89913B639100032E0F3 /* InfoPlist.strings in Resources */,
 				CE8EA0D720ED40170031E883 /* switch_trig_inpmute.png in Resources */,

@@ -28,6 +28,7 @@
 #define DLPG_STANDARD_KNOB_FRAMES 128
 #define DLPG_TRIG_CH_KNOB_FRAMES 17
 #define DLPG_TRIG_NOTE_KNOB_FRAMES 129
+#define DLPG_SUB_NOTE_KNOB_FRAMES 25
 
 // Should be outside of respective standard midi ranges
 // 0 or 17
@@ -37,6 +38,22 @@
 #define DLPG_TRIG_ANY_NOTE 128
 #define DLPG_TRIG_ANY_NOTE_STR "Any"
 
+// Sub frequency knobs
+// E-1 = 20.6 Hz = Note 16, range 2 octaves up
+#define DLPG_MIDI_NOTE_NUMBER_TO_FREQ_INDEX(n) (n)
+#define DLPG_MIDI_FREQ_INDEX_TO_NOTE_NUMBER(n) (n)
+#define DLPG_SUB_LOWEST_NOTE_MIDI_NUMBER 16 
+#define DLPG_SUB_NOTE_STATES 25
+#define DLPG_DEFAULT_SUB_NOTE_STATE 12
+#define DLPG_SUB_NOTE_KNOB_VALUE_TO_MIDI_NUMBER(v) (v + DLPG_SUB_LOWEST_NOTE_MIDI_NUMBER)
+#define DLPG_SUB_NOTE_KNOB_VALUE_TO_HZ(v) (afNoteFrequencies[DLPG_MIDI_NOTE_NUMBER_TO_FREQ_INDEX(DLPG_SUB_NOTE_KNOB_VALUE_TO_MIDI_NUMBER(v))])
+#define DLPG_SUB_NOTE_KNOB_VALUE_TO_NOTE_LABEL(v) (asNoteLabels[DLPG_MIDI_NOTE_NUMBER_TO_FREQ_INDEX(DLPG_SUB_NOTE_KNOB_VALUE_TO_MIDI_NUMBER(v))])
+#define DLPG_SUB_FREQ_MIN DLPG_SUB_NOTE_KNOB_VALUE_TO_HZ(0)
+#define DLPG_SUB_FREQ_MAX DLPG_SUB_NOTE_KNOB_VALUE_TO_HZ(DLPG_SUB_NOTE_STATES)
+#define DLPG_SUB_FREQ_DEFAULT DLPG_SUB_NOTE_KNOB_VALUE_TO_HZ(DLPG_DEFAULT_SUB_NOTE_STATE)
+#define DLPG_SUB_FREQ_RANGE DLPG_SUB_FREQ_MIN, DLPG_SUB_FREQ_MAX
+
+// Other knobs
 #define DLPG_TRIG_CH_RANGE 1, DLPG_TRIG_ANY_CH
 #define DLPG_TRIG_CH_DEFAULT DLPG_TRIG_ANY_CH
 #define DLPG_TRIG_NOTE_RANGE 0, DLPG_TRIG_ANY_NOTE
@@ -45,8 +62,6 @@
 #define DLPG_TRIG_ATTACK_DEFAULT 10.
 #define DLPG_TRIG_THRESH_RANGE -60., 0.
 #define DLPG_TRIG_THRESH_DEFAULT -6.
-#define DLPG_SUB_FREQ_RANGE 20, 100.
-#define DLPG_SUB_FREQ_DEFAULT 60.
 #define DLPG_SUB_PHASE_RANGE -180., 180.
 #define DLPG_SUB_PHASE_DEFAULT 0.
 #define DLPG_ENVELOPE_ATTACK_RANGE .1, 200.
@@ -117,7 +132,6 @@ const IColor tBugreportLabelColor(
   );
 #define DLPG_BUGREPORT_LABEL_TEXT "Report a bug"
 
-
 #define DLPG_KNOB_LABEL_STRING_SIZE 28
 #define DLPG_KNOB_LABEL_COLOR_MONO 196
 #define DLPG_KNOB_LABEL_W 155
@@ -155,6 +169,7 @@ IRECT(\
 #define DLPG_TRIG_THRESH_LABEL_STR DLPG_LEVEL_GENERIC_STR
 #define DLPG_SUB_FREQ_LABEL_STR "%0.2f Hz"
 #define DLPG_SUB_PHASE_LABEL_STR "%+0.1f\xB0"
+#define DLPG_SUB_NOTE_LABEL_STR "%s (%0.1f Hz)"
 #define DLPG_ENVELOPE_ATTACK_LABEL_STR DLPG_ENVELOPE_GENERIC_STR
 #define DLPG_ENVELOPE_HOLD_LABEL_STR DLPG_ENVELOPE_GENERIC_STR
 #define DLPG_ENVELOPE_RELEASE_LABEL_STR DLPG_ENVELOPE_GENERIC_STR
@@ -188,6 +203,8 @@ obj->SetTextFromPlug(buf)
 #define DLPG_MIDI_CH_TO_IPLUG_INDEX(ch) (ch - 1)
 #define DLPG_MIDI_IPLUG_INDEX_TO_CH(i) (i + 1)
 
+#define DLPG_ENUM_CONTROL_STRING_SIZE 32
+
 const int kNumPrograms = 1;
 
 enum EParams
@@ -206,6 +223,7 @@ enum EParams
   kTrigThreshKnob,
   kSubFreqKnob,
   kSubPhaseKnob,
+  kSubNoteKnob,
   kEnvelopeAttackKnob,
   kEnvelopeHoldKnob,
   kEnvelopeReleaseKnob,
@@ -218,6 +236,7 @@ enum EParams
   kTrigThreshLabel,
   kSubFreqLabel,
   kSubPhaseKLabel,
+  kSubNoteLabel,
   kEnvelopeAttackLabel,
   kEnvelopeHoldLabel,
   kEnvelopeReleaseLabel,
@@ -310,6 +329,7 @@ private:
   IKnobMultiControl *tTrigAttackKnob;
   IKnobMultiControl *tTrigThreshKnob;
   IKnobMultiControl *tSubFreqKnob;
+  IKnobMultiControl *tSubNoteKnob;
   IKnobMultiControl *tSubPhaseKnob;
   IKnobMultiControl *tEnvelopeAttackKnob;
   IKnobMultiControl *tEnvelopeHoldKnob;
@@ -321,6 +341,7 @@ private:
   ITextControl *tTrigThreshLabel;
   ITextControl *tSubFreqLabel;
   ITextControl *tSubPhaseLabel;
+  ITextControl *tSubNoteLabel;
   ITextControl *tEnvelopeAttackLabel;
   ITextControl *tEnvelopeHoldLabel;
   ITextControl *tEnvelopeReleaseLabel;

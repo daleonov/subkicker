@@ -1,5 +1,6 @@
 #include "DLPG_Version.h"
 #include "DLPG_NoteNames.h"
+#include "DLPG_NoteFrequencies.h"
 #include "SubKicker.h"
 #include "IPlug_include_in_plug_src.h"
 #include "IControl.h"
@@ -10,6 +11,7 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
 {
   TRACE;
   IBitmap tBmp;
+  char sEnumText[DLPG_ENUM_CONTROL_STRING_SIZE];
 
   //arguments are: name, defaultVal, minVal, maxVal, step, label
   GetParam(kTrigNoteKnob)->InitInt("Trigger (ext) | Midi note", DLPG_TRIG_ANY_NOTE, DLPG_TRIG_NOTE_RANGE, "");
@@ -18,8 +20,18 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   GetParam(kTrigThreshKnob)->InitDouble("Trigger (int) | Threshold", DLPG_TRIG_THRESH_DEFAULT, DLPG_TRIG_THRESH_RANGE, 0.1, "dB");
 
   GetParam(kSubFreqKnob)->InitDouble("Sub | Frequency", DLPG_SUB_FREQ_DEFAULT, DLPG_SUB_FREQ_RANGE, 0.1, "Hz");
-  // And another freq knob for snapped mode?
   GetParam(kSubPhaseKnob)->InitDouble("Sub | Phase", DLPG_SUB_PHASE_DEFAULT, DLPG_SUB_PHASE_RANGE, 0.1, "Deg");
+  GetParam(kSubNoteKnob)->InitEnum("Sub | Note", DLPG_DEFAULT_SUB_NOTE_STATE, DLPG_SUB_NOTE_STATES);
+  // Human readable labels for generic UI's
+  for(int i=0; i<DLPG_SUB_NOTE_STATES; i++){
+    sprintf(
+      sEnumText,
+      DLPG_SUB_NOTE_LABEL_STR,
+      DLPG_SUB_NOTE_KNOB_VALUE_TO_NOTE_LABEL(i),
+      DLPG_SUB_NOTE_KNOB_VALUE_TO_HZ(i)
+      );
+    GetParam(kBypassSwitch)->SetDisplayText(i, sEnumText);
+  }
 
   GetParam(kEnvelopeAttackKnob)->InitDouble("Envelope | Attack", DLPG_ENVELOPE_ATTACK_DEFAULT, DLPG_ENVELOPE_ATTACK_RANGE, 0.1, "ms");
   GetParam(kEnvelopeHoldKnob)->InitDouble("Envelope | Hold", DLPG_ENVELOPE_HOLD_DEFAULT, DLPG_ENVELOPE_HOLD_RANGE, 0.1, "ms");
@@ -92,6 +104,10 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tBmp = pGraphics->LoadIBitmap(DLPG_SUB_PHASE_KNOB_ID, DLPG_SUB_PHASE_KNOB_FN, DLPG_STANDARD_KNOB_FRAMES);
   tSubPhaseKnob = new IKnobMultiControl(this, DLPG_KNOB_GRID(1, 4), kSubPhaseKnob, &tBmp);
   pGraphics->AttachControl(tSubPhaseKnob);
+
+  tBmp = pGraphics->LoadIBitmap(DLPG_SUB_NOTE_KNOB_ID, DLPG_SUB_NOTE_KNOB_FN, DLPG_SUB_NOTE_KNOB_FRAMES);
+  tSubNoteKnob = new IKnobMultiControl(this, DLPG_KNOB_GRID(1, 3), kSubNoteKnob, &tBmp);
+  pGraphics->AttachControl(tSubNoteKnob);
 
   // Envelope section
   tBmp = pGraphics->LoadIBitmap(DLPG_ENVELOPE_ATTACK_KNOB_ID, DLPG_ENVELOPE_ATTACK_KNOB_FN, DLPG_STANDARD_KNOB_FRAMES);
@@ -211,8 +227,10 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tTrigThreshLabel->Hide(true);
   // Sub section
   tSubFreqLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 3), &tKnobLabelCommon, "Sub Freq");
+  tSubNoteLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 3), &tKnobLabelCommon, "Sub Note");
   tSubPhaseLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 4), &tKnobLabelCommon, "Sub Phase");
   pGraphics->AttachControl(tSubFreqLabel);
+  pGraphics->AttachControl(tSubNoteLabel);
   pGraphics->AttachControl(tSubPhaseLabel);
   // Envelope section
   tEnvelopeAttackLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(2, 1), &tKnobLabelCommon, "Envelope Attack");
@@ -230,6 +248,11 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tScope = new dlpg::IWavScopeControl(this, PLUG_ScopeIrect, kScope, vSubkickWaveform);
   tScope->UpdateScale(0.1, 44100.);
   pGraphics->AttachControl(tScope);
+
+  tSubFreqKnob->Hide(true);
+  //tSubNoteKnob->Hide(true);
+  tSubFreqLabel->Hide(true);
+  //tSubNoteLabel->Hide(true);
 
   AttachGraphics(pGraphics);
 
@@ -416,6 +439,17 @@ void SubKicker::OnParamChange(int paramIdx)
       else
         sprintf(sKnobLabelString, DLPG_TRIG_CH_LABEL_STR, nKnobValue);
       tTrigChLabel->SetTextFromPlug(sKnobLabelString);
+      break;
+    case kSubNoteKnob:
+      // Display knob's value with a text label
+      nKnobValue = GetParam(kSubNoteKnob)->Int();
+      sprintf(
+        sKnobLabelString,
+        DLPG_SUB_NOTE_LABEL_STR,
+        DLPG_SUB_NOTE_KNOB_VALUE_TO_NOTE_LABEL(nKnobValue),
+        DLPG_SUB_NOTE_KNOB_VALUE_TO_HZ(nKnobValue)
+        );
+      tSubNoteLabel->SetTextFromPlug(sKnobLabelString);
       break;
     case kSubFreqKnob:
       // Display knob's value with a text label

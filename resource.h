@@ -71,6 +71,7 @@ instrument determined by PLUG _IS _INST
 #define DLPG_ENVELOPE_RELEASE_KNOB_ID 115
 #define DLPG_VOL_KNOB_ID 116
 #define DLPG_TRIG_INPMUTE_SWITCH_ID 117
+#define DLPG_SUB_NOTE_KNOB_ID 118
 
 // Image resource locations for this plug.
 #define DLPG_BACKGROUND_FN "resources/img/bg_reva.png"
@@ -86,6 +87,7 @@ instrument determined by PLUG _IS _INST
 #define DLPG_TRIG_ATTACK_KNOB_FN "resources/img/knob_trig_attack_128.png"
 #define DLPG_SUB_FREQ_KNOB_FN "resources/img/knob_sub_freq_128.png"
 #define DLPG_SUB_PHASE_KNOB_FN "resources/img/knob_sub_phase_128.png"
+#define DLPG_SUB_NOTE_KNOB_FN "resources/img/knob_sub_note_25.png"
 #define DLPG_ENVELOPE_ATTACK_KNOB_FN "resources/img/knob_envelope_attack_128.png"
 #define DLPG_ENVELOPE_HOLD_KNOB_FN "resources/img/knob_envelope_hold_128.png"
 #define DLPG_ENVELOPE_RELEASE_KNOB_FN "resources/img/knob_envelope_release_128.png"
