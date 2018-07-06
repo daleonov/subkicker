@@ -77,7 +77,7 @@ instrument determined by PLUG _IS _INST
 #define DLPG_BYPASS_SWITCH_FN "resources/img/switch_bypass.png"
 #define DLPG_TRIG_SWITCH_FN "resources/img/switch_trig.png"
 #define DLPG_SNAP_SWITCH_FN "resources/img/switch_snap_alt.png"
-#define DLPG_FLIP_SWITCH_FN "resources/img/switch_flip_alt.png"
+#define DLPG_FLIP_SWITCH_FN "resources/img/switch_flip_alt2.png"
 #define DLPG_TRIG_INPUT_SWITCH_FN "resources/img/switch_trig_input.png"
 #define DLPG_TRIG_INPMUTE_SWITCH_FN "resources/img/switch_trig_inpmute.png"
 #define DLPG_TRIG_NOTE_KNOB_FN "resources/img/knob_trig_note_129.png"

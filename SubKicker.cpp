@@ -14,18 +14,18 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   //arguments are: name, defaultVal, minVal, maxVal, step, label
   GetParam(kTrigNoteKnob)->InitInt("Trigger (ext) | Midi note", DLPG_TRIG_ANY_NOTE, DLPG_TRIG_NOTE_RANGE, "");
   GetParam(kTrigChKnob)->InitInt("Trigger (ext) | Midi channel", DLPG_TRIG_ANY_CH, DLPG_TRIG_CH_RANGE, "");
-  GetParam(kTrigAttackKnob)->InitDouble("Trigger (int) | Attack", 10., 0.1, 100., 0.1, "ms");
-  GetParam(kTrigThreshKnob)->InitDouble("Trigger (int) | Threshold", -6., -60., 0., 0.1, "dB");
+  GetParam(kTrigAttackKnob)->InitDouble("Trigger (int) | Attack", DLPG_TRIG_ATTACK_DEFAULT, DLPG_TRIG_ATTACK_RANGE, 0.1, "ms");
+  GetParam(kTrigThreshKnob)->InitDouble("Trigger (int) | Threshold", DLPG_TRIG_THRESH_DEFAULT, DLPG_TRIG_THRESH_RANGE, 0.1, "dB");
 
-  GetParam(kSubFreqKnob)->InitDouble("Sub | Frequency", 100., 20., 500., 0.1, "Hz");
+  GetParam(kSubFreqKnob)->InitDouble("Sub | Frequency", DLPG_SUB_FREQ_DEFAULT, DLPG_SUB_FREQ_RANGE, 0.1, "Hz");
   // And another freq knob for snapped mode?
-  GetParam(kSubPhaseKnob)->InitDouble("Sub | Phase", 0., -180., 180., 0.1, "Deg");
+  GetParam(kSubPhaseKnob)->InitDouble("Sub | Phase", DLPG_SUB_PHASE_DEFAULT, DLPG_SUB_PHASE_RANGE, 0.1, "Deg");
 
-  GetParam(kEnvelopeAttackKnob)->InitDouble("Envelope | Attack", 10., 0.1, 100., 0.1, "ms");
-  GetParam(kEnvelopeHoldKnob)->InitDouble("Envelope | Hold", 100., 0.1, 1000., 0.1, "ms");
-  GetParam(kEnvelopeReleaseKnob)->InitDouble("Envelope | Release", 10., 0.1, 100., 0.1, "ms");
+  GetParam(kEnvelopeAttackKnob)->InitDouble("Envelope | Attack", DLPG_ENVELOPE_ATTACK_DEFAULT, DLPG_ENVELOPE_ATTACK_RANGE, 0.1, "ms");
+  GetParam(kEnvelopeHoldKnob)->InitDouble("Envelope | Hold", DLPG_ENVELOPE_HOLD_DEFAULT, DLPG_ENVELOPE_HOLD_RANGE, 0.1, "ms");
+  GetParam(kEnvelopeReleaseKnob)->InitDouble("Envelope | Release", DLPG_ENVELOPE_RELEASE_DEFAULT, DLPG_ENVELOPE_RELEASE_RANGE, 0.1, "ms");
 
-  GetParam(kVolKnob)->InitDouble("Volume", 0., -60., 12., 0.1, "dB");
+  GetParam(kVolKnob)->InitDouble("Volume", DLPG_VOL_DEFAULT, DLPG_VOL_RANGE, 0.1, "dB");
   GetParam(kVolKnob)->SetShape(DLPG_VOL_KNOB_SHAPE);
 
   GetParam(kBypassSwitch)->InitEnum("Bypass", DLPG_DEFAULT_BYPASS_SWITCH_STATE, DLPG_SWITCH_STATES);
