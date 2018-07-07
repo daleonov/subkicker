@@ -12,8 +12,7 @@ ILevelMeteringBar::ILevelMeteringBar(
 		const IColor *ptLevelBarColor,
 		const IColor *ptNotchColor,
 		const IColor *ptAboveNotchColor
-		)
-: IPanelControl(pPlug, pR, &PLUG_DEFAULT_BG_ICOLOR)
+		):IControl(pPlug, pR, paramIdx)
 {
 	this->x = x;
 	this->y = y;
@@ -22,7 +21,10 @@ ILevelMeteringBar::ILevelMeteringBar(
 	this->fNotchValue = METERING_BAR_DEFAULT_NOTCH_VALUE;
 	this->fCurrentValue = mPlug->GetParam(paramIdx)->GetDefault();
 	// There is no operator "=" for IRECT, so copying it explicitely
-	memcpy(&this->mBarRect, &pR, sizeof(pR));
+	this->mBarRect.L = pR.L - x;
+	this->mBarRect.T = pR.T - y;
+	this->mBarRect.R = pR.R - x;
+	this->mBarRect.B = pR.B - y;
 	this->ptLevelBarColor = new IColor(*ptLevelBarColor);
 	this->ptNotchColor = new IColor(*ptNotchColor);
 	this->bIsReversed = bIsReversed;
@@ -139,6 +141,7 @@ bool ILevelMeteringBar::Draw(IGraphics* pGraphics){
 	// Always draw notch option 2 on top of everything!
 	pGraphics->FillIRect(ptNotchColor, &tNotchRectOption2);
 	#endif
+	SetDirty(false);
 
 	return true;
 }

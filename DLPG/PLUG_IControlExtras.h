@@ -63,7 +63,7 @@ namespace Plug{
 @param pR IRECT representing the bar's size. Relative coordinates. 
 @param paramIdx Unique ID of the control
 */
-class ILevelMeteringBar : public IPanelControl
+class ILevelMeteringBar : public IControl
 {
 private:
 	int mParamIdx;

@@ -70,7 +70,7 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
     );
 
   // Background
-  IGraphics* pGraphics = MakeGraphics(this, kWidth, kHeight);
+  pGraphics = MakeGraphics(this, kWidth, kHeight);
   //const IColor *tBgColor = new IColor(255, 40, 40, 40);
   //pGraphics->AttachPanelBackground(tBgColor);
   pGraphics->AttachBackground(DLPG_BACKGROUND_ID, DLPG_BACKGROUND_FN);
@@ -349,6 +349,7 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
       if(nCurrentWaveformSample == 1)
         tScope->Highlight(true);
       nCurrentWaveformSample++;
+      tOutputMeter->SetValue(DLPG_LINEAR_TO_LOG(*pfOutL));
     }
     else{
       // Stop playback
@@ -444,6 +445,7 @@ void SubKicker::OnParamChange(int paramIdx)
   static bool bIsInit = true;
   bool bSwitchState;
   double fKnobValue, fNormalizedKnobValue;
+      IRECT s(kOutputMeterX, kOutputMeterY, kWidth, kHeight);
 
   switch (paramIdx)
   {

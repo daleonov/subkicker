@@ -100,7 +100,6 @@
 #define DLPG_OUTPUT_METER_NOTCH DLPG_OUTPUT_METER_RANGE_MAX
 #define DLPG_OUTPUT_METER_W 74
 #define DLPG_OUTPUT_METER_H 490
-const IRECT tOutputMeterIrect(0, 0, DLPG_OUTPUT_METER_W, DLPG_OUTPUT_METER_H);
 const IColor tOutputMeterFgIcolor(255, 0, 184, 67);
 
 #define DLPG_VERSION_TEXT_LABEL_STRING_SIZE 96
@@ -283,6 +282,12 @@ enum ELayout
   kOutputMeterY = 10,
 };
 
+const IRECT tOutputMeterIrect(\
+  kOutputMeterX, \
+  kOutputMeterY, \
+  kOutputMeterX + DLPG_OUTPUT_METER_W, \
+  kOutputMeterY+DLPG_OUTPUT_METER_H);
+
 const IRECT tTextVersionIrect(
   kTextVersionX,
   kTextVersionY,
@@ -348,6 +353,7 @@ private:
   ITextControl *tEnvelopeHoldLabel;
   ITextControl *tEnvelopeReleaseLabel;
   ITextControl *tVolLabel;
+  IGraphics* pGraphics;
   // Midi stuff
   void ProcessMidiMsg(IMidiMsg* pMsg);
   IMidiQueue tMidiQueue;
