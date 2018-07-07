@@ -97,6 +97,8 @@ public:
 
 	~ILevelMeteringBar();
 
+	void OnMouseDown(int x, int y, IMouseMod* pMod);
+
 	/*
 	@param Graphic part. Sizes and colours are based on macros defined in the header. 
 	*/
@@ -112,6 +114,7 @@ public:
 	@brief Value of the notch. Notch can be used to mark target, peak, zero level etc. 
 	*/
 	void SetNotchValue(double fValue);
+	double GetNotchValue();
 
 };
 

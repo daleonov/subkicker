@@ -33,6 +33,7 @@
 #define DLPG_TRIG_NOTE_KNOB_FRAMES 129
 #define DLPG_SUB_NOTE_KNOB_FRAMES 25
 
+// Those are empirical values
 #define DLPG_VOL_KNOB_SHAPE 0.26
 #define DLPG_SUB_FREQ_KNOB_SHAPE 1.45
 
@@ -97,14 +98,16 @@
 
 #define DLPG_OUTPUT_METER_RANGE_MIN -60.
 #define DLPG_OUTPUT_METER_RANGE_MAX +12.
-#define DLPG_OUTPUT_METER_NOTCH 0.
+#define DLPG_OUTPUT_METER_NOTCH (DLPG_OUTPUT_METER_RANGE_MIN + std::numeric_limits<double>::epsilon())
 #define DLPG_OUTPUT_METER_W 74
-#define DLPG_OUTPUT_METER_H 490
+#define DLPG_OUTPUT_METER_H 487
 const IColor tOutputMeterFgIcolor(255, 0, 184, 67);
-#define DLPG_OUTPUT_METER_ATTACK 0.6
-#define DLPG_OUTPUT_METER_DECAY 0.008
-#define DLPG_OUTPUT_METER_LABEL_ATTACK 0.3
-#define DLPG_OUTPUT_METER_LABEL_DECAY 0.003
+
+// Output meter's LPF
+// Those are empirical values
+#define DLPG_OUTPUT_METER_FILTER_ATTACK 0.6
+#define DLPG_OUTPUT_METER_FILTER_DECAY 0.01
+#define DLPG_OUTPUT_METER_FILTER_MAKEUP_GAIN_DB 0.1
 
 #define DLPG_VERSION_TEXT_LABEL_STRING_SIZE 96
 #define DLPG_VERSION_TEXT_LABEL_COLOR_MONO 90
@@ -157,7 +160,7 @@ const IColor tKnobLabelColor(
 
 #define DLPG_KNOB_LABEL_X_BASE DLPG_KNOB_X_BASE
 #define DLPG_KNOB_LABEL_X_STEP DLPG_KNOB_X_STEP
-#define DLPG_KNOB_LABEL_Y_BASE 145+155
+#define DLPG_KNOB_LABEL_Y_BASE 300
 #define DLPG_KNOB_LABEL_Y_STEP DLPG_KNOB_Y_STEP
 
 #define DLPG_KNOB_LABEL_GRID(row, col)\
@@ -265,6 +268,7 @@ enum EParams
   kEnvelopeReleaseLabel,
   kVolLabel,
   kOutputMeterLabel,
+  kOutputMeterNotchLabel,
 };
 
 enum ELayout
@@ -300,7 +304,10 @@ enum ELayout
   kOutputMeterY = 10,
 
   kOutputMeterLabelX = kOutputMeterX,
-  kOutputMeterLabelY = kOutputMeterY + 5,
+  kOutputMeterLabelY = kOutputMeterY + DLPG_OUTPUT_METER_H + 2,
+
+  kOutputMeterNotchLabelX = kOutputMeterX,
+  kOutputMeterNotchLabelY = kOutputMeterY + 5,
 };
 
 const IRECT tOutputMeterIrect(\
@@ -314,6 +321,13 @@ const IRECT tOutputMeterLabelIrect(\
   kOutputMeterLabelY, \
   kOutputMeterLabelX + DLPG_OUTPUT_METER_W, \
   kOutputMeterLabelY + DLPG_KNOB_LABEL_H \
+  );
+
+const IRECT tOutputMeterNotchLabelIrect(\
+  kOutputMeterNotchLabelX, \
+  kOutputMeterNotchLabelY, \
+  kOutputMeterNotchLabelX + DLPG_OUTPUT_METER_W, \
+  kOutputMeterNotchLabelY + DLPG_KNOB_LABEL_H \
   );
 
 const IRECT tTextVersionIrect(
@@ -382,6 +396,7 @@ private:
   ITextControl *tEnvelopeReleaseLabel;
   ITextControl *tVolLabel;
   ITextControl *tOutputMeterLabel;
+  ITextControl *tOutputMeterNotchLabel;
   IGraphics* pGraphics;
   // Midi stuff
   void ProcessMidiMsg(IMidiMsg* pMsg);

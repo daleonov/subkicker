@@ -249,7 +249,10 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tOutputMeterLabelIText.mSize = DLPG_OUTPUT_METER_LABEL_FONT_SIZE;
   tOutputMeterLabelIText.mAlign = tOutputMeterLabelIText.DLPG_OUTPUT_METER_LABEL_ALIGN;
   tOutputMeterLabel = new ITextControl(this, tOutputMeterLabelIrect, &tOutputMeterLabelIText, DLPG_OUTPUT_METER_LABEL_MINUS_INF_STR);
+  tOutputMeterNotchLabel = new ITextControl(this, tOutputMeterNotchLabelIrect, &tOutputMeterLabelIText, "Notch");
   pGraphics->AttachControl(tOutputMeterLabel);
+  pGraphics->AttachControl(tOutputMeterNotchLabel);
+  
   // *** Knob labels - end
 
   // Scope
@@ -318,9 +321,8 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
   static int nCurrentWaveformSample = 0;
   static bool bPlay = false;
   double fCurrentMeterPeakLinear = 0., fCurrentMeterPeakDb, fMeterGainLinear;
-  double fCurrentMeterLabelPeakLinear = 0., fCurrentMeterLabelPeakDb, fMeterLabelGainLinear;
   static double fPreviousMeterPeakLinear = 0.;
-  static double fPreviousMeterLabelPeakLinear = 0.;
+  double fCurrentMeterLabelPeakDb, fCurrentMeterNotchDb;
   char sOutputMeterLabelString[DLPG_OUTPUT_METER_LABEL_STRING_SIZE];
   char sOutputMeterLabelMinusInfString[] = DLPG_OUTPUT_METER_LABEL_MINUS_INF_STR;
   char* psOutputMeterLabelString = NULL;
@@ -375,12 +377,10 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
 
   tMidiQueue.Flush(nFrames);
 
-  fCurrentMeterLabelPeakLinear = fCurrentMeterPeakLinear;
-
   // Applying a filter to meter's value
   fMeterGainLinear = (fCurrentMeterPeakLinear < fPreviousMeterPeakLinear) ? \
-    DLPG_OUTPUT_METER_DECAY : \
-    DLPG_OUTPUT_METER_ATTACK;
+    DLPG_OUTPUT_METER_FILTER_DECAY : \
+    DLPG_OUTPUT_METER_FILTER_ATTACK;
   fCurrentMeterPeakLinear = \
     fCurrentMeterPeakLinear * fMeterGainLinear + \
     fPreviousMeterPeakLinear * (1.0 - fMeterGainLinear);
@@ -388,23 +388,26 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
   tOutputMeter->SetValue(fCurrentMeterPeakDb);
   fPreviousMeterPeakLinear = fCurrentMeterPeakLinear;
 
-  // Applying a slower filter to meter label's value
-  fMeterLabelGainLinear = (fCurrentMeterLabelPeakLinear < fPreviousMeterLabelPeakLinear) ? \
-    DLPG_OUTPUT_METER_LABEL_DECAY : \
-    DLPG_OUTPUT_METER_LABEL_ATTACK;
-  fCurrentMeterLabelPeakLinear = \
-    fCurrentMeterLabelPeakLinear * fMeterLabelGainLinear + \
-    fPreviousMeterLabelPeakLinear * (1.0 - fMeterLabelGainLinear);
-  fCurrentMeterLabelPeakDb = DLPG_LINEAR_TO_LOG(fCurrentMeterLabelPeakLinear);
-  fPreviousMeterLabelPeakLinear = fCurrentMeterLabelPeakLinear;
+  // Meter's notch - represents max output value
+  fCurrentMeterLabelPeakDb = fCurrentMeterPeakDb;
+  fCurrentMeterNotchDb = tOutputMeter->GetNotchValue();
+  if(fCurrentMeterLabelPeakDb > fCurrentMeterNotchDb){
+    // Apparently the filter above introduces some attenuation, so we have to compensate it
+    fCurrentMeterNotchDb = fCurrentMeterLabelPeakDb + DLPG_OUTPUT_METER_FILTER_MAKEUP_GAIN_DB;
+    tOutputMeter->SetNotchValue(fCurrentMeterNotchDb);
+    sprintf(
+      sOutputMeterLabelString,
+      DLPG_OUTPUT_METER_LABEL_STR,
+      fCurrentMeterNotchDb
+      );
+    tOutputMeterNotchLabel->SetTextFromPlug(sOutputMeterLabelString);
+  }
 
   // Text reading for output meter
   /*
   Todo: When waveform is not being played, the label is still being
   spammed with "-oo dB" text all the time (each sample chunk), which
   doesn't look too efficient.
-  Todo: Set up a separate filter (slower one) for the text label to
-  make it more readable.
   */
   if(fCurrentMeterLabelPeakDb > DLPG_OUTPUT_METER_RANGE_MIN){
     sprintf(
@@ -497,13 +500,13 @@ void SubKicker::OnParamChange(int paramIdx)
 {
   IMutexLock lock(this);
   char sKnobLabelString[DLPG_KNOB_LABEL_STRING_SIZE];
+  char sOutputMeterNotchLabelMinusInfString[] = DLPG_OUTPUT_METER_LABEL_MINUS_INF_STR;
   int nKnobValue;
   int nPreviewNote, nPreviewCh;
   IMidiMsg tMidiMsg;
   static bool bIsInit = true;
   bool bSwitchState;
   double fKnobValue, fNormalizedKnobValue;
-      IRECT s(kOutputMeterX, kOutputMeterY, kWidth, kHeight);
 
   switch (paramIdx)
   {
@@ -625,6 +628,11 @@ void SubKicker::OnParamChange(int paramIdx)
       tMidiQueue.Add(&tMidiMsg);
       tMidiMsg.MakeNoteOffMsg(nPreviewNote, 0, nPreviewCh);
       tMidiQueue.Add(&tMidiMsg);
+      break;
+    case kOutputMeter:
+      // Clicking on the meter resets the notch
+      tOutputMeter->SetNotchValue(DLPG_OUTPUT_METER_NOTCH);
+      tOutputMeterNotchLabel->SetTextFromPlug(sOutputMeterNotchLabelMinusInfString);
       break;
     default:
       break;

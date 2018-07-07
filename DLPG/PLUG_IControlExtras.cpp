@@ -158,6 +158,10 @@ void ILevelMeteringBar::SetNotchValue(double fValue){
 	Redraw();
 }
 
+double ILevelMeteringBar::GetNotchValue(){
+	return this->fNotchValue;
+}
+
 int ILevelMeteringBar::_CalculateRectHeight(double fValue){
 	const double fMax = mPlug->GetParam(this->mParamIdx)->GetMax();
 	const double fMin = mPlug->GetParam(this->mParamIdx)->GetMin();
@@ -173,4 +177,9 @@ int ILevelMeteringBar::_CalculateRectHeight(double fValue){
 	int nLevelBarHeight = floor((fRelativeValue / fBarRange) * nBarBgHeight);
 	return nLevelBarHeight;
 }
+
+void ILevelMeteringBar::OnMouseDown(int x, int y, IMouseMod* pMod){
+  SetDirty(true);
+}
+
 } //namespace Plug
