@@ -310,6 +310,8 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
   int nCurrentNote, nCurrentCh, nCurrentVelocity;
   static int nCurrentWaveformSample = 0;
   static bool bPlay = false;
+  double fCurrentMeterPeakLinear = 0., fMeterGainLinear;
+  static double fPreviousMeterPeakLinear = 0.;
 
   for (int nOffset = 0; nOffset < nFrames; ++nOffset, ++pfOutL, ++pfOutR){
     while (!tMidiQueue.Empty()){
@@ -349,7 +351,7 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
       if(nCurrentWaveformSample == 1)
         tScope->Highlight(true);
       nCurrentWaveformSample++;
-      tOutputMeter->SetValue(DLPG_LINEAR_TO_LOG(*pfOutL));
+      fCurrentMeterPeakLinear = IPMAX(fCurrentMeterPeakLinear, (*pfOutL + *pfOutR)/2);
     }
     else{
       // Stop playback
@@ -360,6 +362,16 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
   }
 
   tMidiQueue.Flush(nFrames);
+
+  // Applying a filter to meter's value
+  fMeterGainLinear = (fCurrentMeterPeakLinear < fPreviousMeterPeakLinear) ? \
+    DLPG_OUTPUT_METER_DECAY : \
+    DLPG_OUTPUT_METER_ATTACK;
+  fCurrentMeterPeakLinear = \
+    fCurrentMeterPeakLinear * fMeterGainLinear + \
+    fPreviousMeterPeakLinear * (1.0 - fMeterGainLinear);
+  tOutputMeter->SetValue(DLPG_LINEAR_TO_LOG(fCurrentMeterPeakLinear));
+  fPreviousMeterPeakLinear = fCurrentMeterPeakLinear;
 }
 
 
