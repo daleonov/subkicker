@@ -74,7 +74,7 @@ bool IWavScopeControl::Draw(IGraphics* pGraphics){
   if(bHighlightState){
     pGraphics->FillIRect(&DLPG_SCOPE_ONCLICK_ICOLOR, &this->mScopeRect);
   }
-  SetDirty(false);
+  //SetDirty(false);
 
   return true;
 }
@@ -104,8 +104,8 @@ bool IWavScopeControl::UpdateScale(double fDuration, double fSampleRate){
   */
   this->fScale = \
     fDuration * fSampleRate / (mScopeRect.R - mScopeRect.L - 2*DLPG_SCOPE_H_PADDING);
-  SetDirty(false);
-  Redraw();
+  //SetDirty(false);
+  //Redraw();
   return true;
 }
 

@@ -28,6 +28,7 @@ ILevelMeteringBar::ILevelMeteringBar(
 	this->ptLevelBarColor = new IColor(*ptLevelBarColor);
 	this->ptNotchColor = new IColor(*ptNotchColor);
 	this->bIsReversed = bIsReversed;
+	this->bIsMouseDown = false;
 }
 ILevelMeteringBar::~ILevelMeteringBar(){
 	delete (this->ptLevelBarColor);
@@ -141,6 +142,12 @@ bool ILevelMeteringBar::Draw(IGraphics* pGraphics){
 	// Always draw notch option 2 on top of everything!
 	pGraphics->FillIRect(ptNotchColor, &tNotchRectOption2);
 	#endif
+
+	// Highlight the bar when clicked
+	if(bIsMouseDown){
+		pGraphics->FillIRect(&METERING_BAR_ONMOUSEDOWN_ICOLOR, &tBgRect);
+	}
+
 	SetDirty(false);
 
 	return true;
@@ -179,7 +186,12 @@ int ILevelMeteringBar::_CalculateRectHeight(double fValue){
 }
 
 void ILevelMeteringBar::OnMouseDown(int x, int y, IMouseMod* pMod){
+  bIsMouseDown = true;
   SetDirty(true);
 }
 
+void ILevelMeteringBar::OnMouseUp(int x, int y, IMouseMod* pMod){
+  bIsMouseDown = false;
+  SetDirty(false);
+}
 } //namespace Plug
