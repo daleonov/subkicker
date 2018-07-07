@@ -243,6 +243,13 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   // Volume
   tVolLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(2, 4), &tKnobLabelCommon, "Volume");
   pGraphics->AttachControl(tVolLabel);
+  // Output meter
+  IText tOutputMeterLabelIText = IText(DLPG_OUTPUT_METER_LABEL_STRING_SIZE);
+  tOutputMeterLabelIText.mColor = tOutputMeterLabelIColor;
+  tOutputMeterLabelIText.mSize = DLPG_OUTPUT_METER_LABEL_FONT_SIZE;
+  tOutputMeterLabelIText.mAlign = tOutputMeterLabelIText.DLPG_OUTPUT_METER_LABEL_ALIGN;
+  tOutputMeterLabel = new ITextControl(this, tOutputMeterLabelIrect, &tOutputMeterLabelIText, DLPG_OUTPUT_METER_LABEL_MINUS_INF_STR);
+  pGraphics->AttachControl(tOutputMeterLabel);
   // *** Knob labels - end
 
   // Scope
@@ -310,8 +317,13 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
   int nCurrentNote, nCurrentCh, nCurrentVelocity;
   static int nCurrentWaveformSample = 0;
   static bool bPlay = false;
-  double fCurrentMeterPeakLinear = 0., fMeterGainLinear;
+  double fCurrentMeterPeakLinear = 0., fCurrentMeterPeakDb, fMeterGainLinear;
+  double fCurrentMeterLabelPeakLinear = 0., fCurrentMeterLabelPeakDb, fMeterLabelGainLinear;
   static double fPreviousMeterPeakLinear = 0.;
+  static double fPreviousMeterLabelPeakLinear = 0.;
+  char sOutputMeterLabelString[DLPG_OUTPUT_METER_LABEL_STRING_SIZE];
+  char sOutputMeterLabelMinusInfString[] = DLPG_OUTPUT_METER_LABEL_MINUS_INF_STR;
+  char* psOutputMeterLabelString = NULL;
 
   for (int nOffset = 0; nOffset < nFrames; ++nOffset, ++pfOutL, ++pfOutR){
     while (!tMidiQueue.Empty()){
@@ -363,6 +375,8 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
 
   tMidiQueue.Flush(nFrames);
 
+  fCurrentMeterLabelPeakLinear = fCurrentMeterPeakLinear;
+
   // Applying a filter to meter's value
   fMeterGainLinear = (fCurrentMeterPeakLinear < fPreviousMeterPeakLinear) ? \
     DLPG_OUTPUT_METER_DECAY : \
@@ -370,8 +384,40 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
   fCurrentMeterPeakLinear = \
     fCurrentMeterPeakLinear * fMeterGainLinear + \
     fPreviousMeterPeakLinear * (1.0 - fMeterGainLinear);
-  tOutputMeter->SetValue(DLPG_LINEAR_TO_LOG(fCurrentMeterPeakLinear));
+  fCurrentMeterPeakDb = DLPG_LINEAR_TO_LOG(fCurrentMeterPeakLinear);
+  tOutputMeter->SetValue(fCurrentMeterPeakDb);
   fPreviousMeterPeakLinear = fCurrentMeterPeakLinear;
+
+  // Applying a slower filter to meter label's value
+  fMeterLabelGainLinear = (fCurrentMeterLabelPeakLinear < fPreviousMeterLabelPeakLinear) ? \
+    DLPG_OUTPUT_METER_LABEL_DECAY : \
+    DLPG_OUTPUT_METER_LABEL_ATTACK;
+  fCurrentMeterLabelPeakLinear = \
+    fCurrentMeterLabelPeakLinear * fMeterLabelGainLinear + \
+    fPreviousMeterLabelPeakLinear * (1.0 - fMeterLabelGainLinear);
+  fCurrentMeterLabelPeakDb = DLPG_LINEAR_TO_LOG(fCurrentMeterLabelPeakLinear);
+  fPreviousMeterLabelPeakLinear = fCurrentMeterLabelPeakLinear;
+
+  // Text reading for output meter
+  /*
+  Todo: When waveform is not being played, the label is still being
+  spammed with "-oo dB" text all the time (each sample chunk), which
+  doesn't look too efficient.
+  Todo: Set up a separate filter (slower one) for the text label to
+  make it more readable.
+  */
+  if(fCurrentMeterLabelPeakDb > DLPG_OUTPUT_METER_RANGE_MIN){
+    sprintf(
+      sOutputMeterLabelString,
+      DLPG_OUTPUT_METER_LABEL_STR,
+      fCurrentMeterLabelPeakDb
+      );
+    psOutputMeterLabelString = sOutputMeterLabelString;
+  }
+  else{
+    psOutputMeterLabelString = sOutputMeterLabelMinusInfString;
+  }
+  tOutputMeterLabel->SetTextFromPlug(psOutputMeterLabelString); 
 }
 
 

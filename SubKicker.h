@@ -103,6 +103,8 @@
 const IColor tOutputMeterFgIcolor(255, 0, 184, 67);
 #define DLPG_OUTPUT_METER_ATTACK 0.6
 #define DLPG_OUTPUT_METER_DECAY 0.008
+#define DLPG_OUTPUT_METER_LABEL_ATTACK 0.3
+#define DLPG_OUTPUT_METER_LABEL_DECAY 0.003
 
 #define DLPG_VERSION_TEXT_LABEL_STRING_SIZE 96
 #define DLPG_VERSION_TEXT_LABEL_COLOR_MONO 90
@@ -183,6 +185,8 @@ IRECT(\
 #define DLPG_ENVELOPE_HOLD_LABEL_STR DLPG_ENVELOPE_GENERIC_STR
 #define DLPG_ENVELOPE_RELEASE_LABEL_STR DLPG_ENVELOPE_GENERIC_STR
 #define DLPG_VOL_LABEL_STR DLPG_LEVEL_GENERIC_STR
+#define DLPG_OUTPUT_METER_LABEL_STR "%+5.1f dB"
+#define DLPG_OUTPUT_METER_LABEL_MINUS_INF_STR "  -oo dB"
 
 #define DLPG_SET_LABEL_GENERIC(buf, str, id, obj)\
 sprintf(buf, str, GetParam(id)->Value());\
@@ -196,6 +200,7 @@ obj->SetTextFromPlug(buf)
 #define DLPG_VERSION_TEXT_LABEL_FONT_SIZE 13
 #endif
 #define DLPG_BUGREPORT_LABEL_FONT_SIZE DLPG_VERSION_TEXT_LABEL_FONT_SIZE
+#define DLPG_OUTPUT_METER_LABEL_FONT_SIZE DLPG_KNOB_LABEL_FONT_SIZE
 
 // Choose between kLogarithmic or kLinear
 #define DLPG_ENVELOPE_ATTACK_SHAPE kLinear
@@ -213,6 +218,16 @@ obj->SetTextFromPlug(buf)
 #define DLPG_MIDI_IPLUG_INDEX_TO_CH(i) (i + 1)
 
 #define DLPG_ENUM_CONTROL_STRING_SIZE 32
+
+#define DLPG_OUTPUT_METER_LABEL_STRING_SIZE 16
+#define DLPG_OUTPUT_METER_LABEL_ALIGN kAlignCenter
+#define DLPG_OUTPUT_METER_LABEL_COLOR_MONO 196
+const IColor tOutputMeterLabelIColor(
+  255,
+  DLPG_OUTPUT_METER_LABEL_COLOR_MONO,
+  DLPG_OUTPUT_METER_LABEL_COLOR_MONO,
+  DLPG_OUTPUT_METER_LABEL_COLOR_MONO
+  );
 
 const int kNumPrograms = 1;
 
@@ -249,6 +264,7 @@ enum EParams
   kEnvelopeHoldLabel,
   kEnvelopeReleaseLabel,
   kVolLabel,
+  kOutputMeterLabel,
 };
 
 enum ELayout
@@ -282,6 +298,9 @@ enum ELayout
 
   kOutputMeterX = 785,
   kOutputMeterY = 10,
+
+  kOutputMeterLabelX = kOutputMeterX,
+  kOutputMeterLabelY = kOutputMeterY + 5,
 };
 
 const IRECT tOutputMeterIrect(\
@@ -289,6 +308,13 @@ const IRECT tOutputMeterIrect(\
   kOutputMeterY, \
   kOutputMeterX + DLPG_OUTPUT_METER_W, \
   kOutputMeterY+DLPG_OUTPUT_METER_H);
+
+const IRECT tOutputMeterLabelIrect(\
+  kOutputMeterLabelX, \
+  kOutputMeterLabelY, \
+  kOutputMeterLabelX + DLPG_OUTPUT_METER_W, \
+  kOutputMeterLabelY + DLPG_KNOB_LABEL_H \
+  );
 
 const IRECT tTextVersionIrect(
   kTextVersionX,
@@ -355,6 +381,7 @@ private:
   ITextControl *tEnvelopeHoldLabel;
   ITextControl *tEnvelopeReleaseLabel;
   ITextControl *tVolLabel;
+  ITextControl *tOutputMeterLabel;
   IGraphics* pGraphics;
   // Midi stuff
   void ProcessMidiMsg(IMidiMsg* pMsg);
