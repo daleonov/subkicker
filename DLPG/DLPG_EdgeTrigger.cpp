@@ -3,12 +3,12 @@
 namespace dlpg{
 
 EdgeTrigger::EdgeTrigger(double fSampleRate, double fHoldTime, double fThresholdLinear):
-	nHoldSampleCounter(0),
 	fPreviousSampleLinear(0.),
 	fSampleRate(fSampleRate),
 	fThresholdLinear(fThresholdLinear)
 {
 	nHoldSamples = std::floor(fSampleRate * fHoldTime);
+	nHoldSampleCounter = nHoldSamples;
 }
 
 EdgeTrigger::~EdgeTrigger(){
@@ -25,6 +25,7 @@ bool EdgeTrigger::SetSampleRate(double fSampleRate){
 bool EdgeTrigger::SetHoldTime(double fHoldTime){
 	this->fHoldSeconds = fHoldTime;
 	this->nHoldSamples = std::floor(fSampleRate * fHoldTime);
+	nHoldSampleCounter = nHoldSamples;
 	return true;
 }
 
@@ -47,9 +48,9 @@ TriggerState_t EdgeTrigger::ProcessMonoSampleLinear(double fSampleLinear){
 		   once the signal gets below the threshold. 
 
 	Scenarios:
-	1. Sample value higher than thresh, previous sample is lower than thresh and nHoldSampleCounter = 0 -> kTriggerRisingEdge
+	1. Sample value higher than thresh, previous sample is lower than thresh and nHoldSampleCounter = nHoldSamples -> kTriggerRisingEdge
 	2. Sample has any value, but nHoldSampleCounter > 1 -> kTriggerOn
-	3. Sample is lower than thresh, nHoldSampleCounter = 1 -> kTriggerFallingEdge, nHoldSampleCounter = 0
+	3. Sample is lower than thresh, nHoldSampleCounter = 1 -> kTriggerFallingEdge, reset nHoldSampleCounter
 	4. Sample is higher than thresh, nHoldSampleCounter = 1 -> kTriggerOn, and stop decreasing nHoldSampleCounter
 	5. Sample value is below the thresh and nHoldSampleCounter = 0 -> kTriggerOff
 	*/
@@ -60,43 +61,44 @@ TriggerState_t EdgeTrigger::ProcessMonoSampleLinear(double fSampleLinear){
 
 	// Scenario #1
 	if(
-		(nHoldSampleCounter == 0) && \
+		(nHoldSampleCounter == nHoldSamples) && \
 		(fSampleLinear >= fThresholdLinear) && \
 		(fPreviousSampleLinear < fThresholdLinear)
 		){
 		eState = kTriggerRisingEdge;
-		nHoldSampleCounter = nHoldSamples + 1;
 		nHoldSampleCounter--;
 		fPreviousSampleLinear = fSampleLinear;
 		return eState;
 	}
 
 	// Scenario #2
-	if(nHoldSampleCounter > 1){
+	if((nHoldSampleCounter > 1) && (nHoldSampleCounter < nHoldSamples)){
 		eState = kTriggerOn;
 		nHoldSampleCounter--;
 		fPreviousSampleLinear = fSampleLinear;
 		return eState;
 	}
 
-	// Scenario #3
-	if((nHoldSampleCounter == 1) && (fSampleLinear < fThresholdLinear)){
-		eState = kTriggerFallingEdge;
-		nHoldSampleCounter = 0;
-		fPreviousSampleLinear = fSampleLinear;
-		return eState;
-	}
-
-	// Scenario #4
-	if((nHoldSampleCounter == 1) && (fSampleLinear >= fThresholdLinear)){
-		eState = kTriggerOn;
-		// Not changing nHoldSampleCounter, waiting for scenario #3 to occur
-		fPreviousSampleLinear = fSampleLinear;
-		return eState;
+	if(nHoldSampleCounter == 1){
+		if(fSampleLinear < fThresholdLinear){
+		// Scenario #3
+			eState = kTriggerFallingEdge;
+			// Reset the hold sample counter
+			nHoldSampleCounter = nHoldSamples;
+			fPreviousSampleLinear = fSampleLinear;
+			return eState;
+		}
+		else{
+			// Scenario #4
+			eState = kTriggerOn;
+			// Not changing nHoldSampleCounter, waiting for scenario #3 to occur
+			fPreviousSampleLinear = fSampleLinear;
+			return eState;
+		}
 	}
 
 	// Scenario #5
-	if((nHoldSampleCounter == 0) && (fSampleLinear < fThresholdLinear)){
+	if((nHoldSampleCounter == nHoldSamples) && (fSampleLinear < fThresholdLinear)){
 		eState = kTriggerOff;
 		// Not changing nHoldSampleCounter, waiting for scenario #1 to occur
 		fPreviousSampleLinear = fSampleLinear;
@@ -117,7 +119,7 @@ TriggerState_t EdgeTrigger::ProcessStereoSampleLinear(double fSampleLeftLinear, 
 }
 
 bool EdgeTrigger::Reset(){
-	nHoldSampleCounter = 0;
+	nHoldSampleCounter = nHoldSamples;
 	fPreviousSampleLinear = 0.;
 }
 

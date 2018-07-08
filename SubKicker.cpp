@@ -275,7 +275,7 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
 
   // Edge trigger
   double fSampleRate = GetSampleRate();
-  double fTrigHold = GetParam(kTrigHoldKnob)->Value();
+  double fTrigHold = GetParam(kTrigHoldKnob)->Value() / 1000.;
   double fTrigThresh = DLPG_LOG_TO_LINEAR(GetParam(kTrigThreshKnob)->Value());
   tEdgeTrigger = new dlpg::EdgeTrigger(fSampleRate, fTrigHold, fTrigThresh);
 
@@ -357,7 +357,7 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
   dlpg::TriggerState_t eTriggerState;
   IMidiMsg tMidiMsg;
 
-  if(bIsTriggeredInternally){
+  if(1){
     // Todo: Make sure the midi notes' offset is correct in the sample chunk
     for (int i = 0; i < nFrames; ++i, ++pfInR, ++pfInL){
       fCurrentRectifiedSampleLinear = (fabs(*pfInR) + fabs(*pfInL))/2;
@@ -605,7 +605,7 @@ void SubKicker::OnParamChange(int paramIdx)
       // Display knob's value with a text label
       DLPG_SET_LABEL_GENERIC(sKnobLabelString, DLPG_TRIG_HOLD_LABEL_STR, kTrigHoldKnob, tTrigHoldLabel);
       fKnobValue = GetParam(kTrigHoldKnob)->Value();
-      tEdgeTrigger->SetHoldTime(fKnobValue);
+      tEdgeTrigger->SetHoldTime(fKnobValue / 1000.);
       break;
     case kSubNoteKnob:
       // Display knob's value with a text label
