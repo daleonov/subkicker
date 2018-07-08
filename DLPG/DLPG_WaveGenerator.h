@@ -41,10 +41,6 @@ class WaveGenerator{
 public:
   WaveGenerator(double fSampleRate = DLPG_DEFAULT_SAMPLERATE_HZ_F);
   ~WaveGenerator();
-  /*
-  @param Graphic part. Sizes and colours are based on macros defined in the header. 
-  */
-  bool GenerateSamples(std::vector<double> &vBuffer, int nSamples, double fFrequency, double fPhase = 0., WaveForm_t kWaveForm = kSine);
 
   /*
   @brief Fills a buffer with a generated signal.

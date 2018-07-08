@@ -15,22 +15,6 @@ bool WaveGenerator::SetSampleRate(double fSampleRate){
   return true;
 }
 
-bool WaveGenerator::GenerateSamples(std::vector<double> &vBuffer, int nSamples, double fFrequency, double fPhaseShift, WaveForm_t kWaveForm){
-  double fSample;
-  double fPhase = fPhaseShift;
-  CalculateIncrement(fFrequency);
-  // Ignoring kWaveForm and generating a sine wave
-  for(int i=0; i<nSamples; i++) {
-    fSample = sin(fPhase);
-    vBuffer.push_back(fSample);
-    fPhase += fPhaseIncrement;
-    while (fPhase > fTwoPi){
-      fPhase -= fTwoPi;
-    }
-  }
-  return true;
-}
-
 bool WaveGenerator::Generate(std::vector<double> &vBuffer, double fDuration, double fFrequency, double fPhaseShift, WaveForm_t kWaveForm){
   int nSamples = fDuration * fSampleRate;
   double fSample;
@@ -49,6 +33,8 @@ bool WaveGenerator::Generate(std::vector<double> &vBuffer, double fDuration, dou
     }
     break;
   case kTriangle:
+    // Shift the phase, so that triangle wave is in phase with sine, not cosine. 
+    fPhase -= fPi/2;
     for(int i=0; i<nSamples; i++) {
       fSample = 2. * fabs((fPhase / fPi) - 1.) - 1.;
       vBuffer.push_back(fSample);
