@@ -37,14 +37,28 @@ bool WaveGenerator::Generate(std::vector<double> &vBuffer, double fDuration, dou
   double fPhase = fPhaseShift;
   CalculateIncrement(fFrequency);
   // Ignoring kWaveForm and generating a sine wave
-  for(int i=0; i<nSamples; i++) {
-    fSample = sin(fPhase);
-    vBuffer.push_back(fSample);
-    fPhase += fPhaseIncrement;
-    while (fPhase > fTwoPi){
-      fPhase -= fTwoPi;
+  switch(kWaveForm){
+  case kSine:
+    for(int i=0; i<nSamples; i++) {
+      fSample = sin(fPhase);
+      vBuffer.push_back(fSample);
+      fPhase += fPhaseIncrement;
+      while (fPhase > fTwoPi){
+        fPhase -= fTwoPi;
+      }
     }
-  }
+    break;
+  case kTriangle:
+    for(int i=0; i<nSamples; i++) {
+      fSample = 2. * fabs((fPhase / fPi) - 1.) - 1.;
+      vBuffer.push_back(fSample);
+      fPhase += fPhaseIncrement;
+      while (fPhase > fTwoPi){
+        fPhase -= fTwoPi;
+      }
+    }
+    break;
+  } // switch
   return true;
 }
 

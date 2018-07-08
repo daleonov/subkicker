@@ -19,7 +19,8 @@ const double fExp = 2.718281828;
 #endif
 
 typedef enum WaveForm_t{
-  kSine = 1,
+  kSine,
+  kTriangle,
 }WaveForm_t;
 
 typedef enum EnvelopeShape_t{
