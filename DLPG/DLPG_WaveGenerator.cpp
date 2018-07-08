@@ -20,7 +20,6 @@ bool WaveGenerator::Generate(std::vector<double> &vBuffer, double fDuration, dou
   double fSample;
   double fPhase = fPhaseShift;
   CalculateIncrement(fFrequency);
-  // Ignoring kWaveForm and generating a sine wave
   switch(kWaveForm){
   case kSine:
     for(int i=0; i<nSamples; i++) {
@@ -35,6 +34,10 @@ bool WaveGenerator::Generate(std::vector<double> &vBuffer, double fDuration, dou
   case kTriangle:
     // Shift the phase, so that triangle wave is in phase with sine, not cosine. 
     fPhase -= fPi/2;
+    // Convert negative phase to positive for correct waveform generation. 
+    while (fPhase < 0.){
+      fPhase += fTwoPi;
+    }
     for(int i=0; i<nSamples; i++) {
       fSample = 2. * fabs((fPhase / fPi) - 1.) - 1.;
       vBuffer.push_back(fSample);
