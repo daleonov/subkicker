@@ -27,6 +27,7 @@
 #define DLPG_DEFAULT_FLIP_SWITCH_STATE 0
 #define DLPG_DEFAULT_TRIG_INPUT_SWITCH_STATE 0
 #define DLPG_DEFAULT_TRIG_INPMUTE_SWITCH_STATE 0
+#define DLPG_DEFAULT_SUB_SHAPE_SWITCH_STATE 0
 
 #define DLPG_STANDARD_KNOB_FRAMES 128
 #define DLPG_TRIG_CH_KNOB_FRAMES 17
@@ -206,8 +207,8 @@ obj->SetTextFromPlug(buf)
 #define DLPG_OUTPUT_METER_LABEL_FONT_SIZE DLPG_KNOB_LABEL_FONT_SIZE
 
 // Choose between kLogarithmic or kLinear
-#define DLPG_ENVELOPE_ATTACK_SHAPE kLinear
-#define DLPG_ENVELOPE_RELEASE_SHAPE DLPG_ENVELOPE_ATTACK_SHAPE
+#define DLPG_DEFAULT_ENVELOPE_ATTACK_SHAPE dlpg::kLinear
+#define DLPG_DEFAULT_ENVELOPE_RELEASE_SHAPE dlpg::kLinear
 
 #define DLPG_MIDI_NOTES_TOTAL 128
 
@@ -241,6 +242,7 @@ enum EParams
   kTrigSwitch,
   kSnapSwitch,
   kFlipSwitch,
+  kSubShapeSwitch,
   kTrigInputSwitch,
   kTrigInpMuteSwitch,
   kTrigNoteKnob,
@@ -256,6 +258,7 @@ enum EParams
   kVolKnob,
   kOutputMeter,
   kNumParams,
+  // Todo: Those ID's for text labels are not necessary and can be deleted. 
   kTrigNoteLabel,
   kTrigChLabel,
   kTrigAttackLabel,
@@ -376,6 +379,7 @@ private:
   ISwitchControl *tFlipSwitch;
   ISwitchControl *tTrigInputSwitch;
   ISwitchControl *tTrigInpMuteSwitch;
+  ISwitchControl *tSubShapeSwitch;
   IKnobMultiControl *tTrigNoteKnob;
   IKnobMultiControl *tTrigChKnob;
   IKnobMultiControl *tTrigAttackKnob;

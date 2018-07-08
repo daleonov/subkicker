@@ -59,6 +59,9 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   GetParam(kTrigInpMuteSwitch)->InitEnum("Input mute", DLPG_DEFAULT_TRIG_INPMUTE_SWITCH_STATE, DLPG_SWITCH_STATES);
   GetParam(kTrigInpMuteSwitch)->SetDisplayText(0, "don't mute");
   GetParam(kTrigInpMuteSwitch)->SetDisplayText(1, "mute");
+  GetParam(kSubShapeSwitch)->InitEnum("Waveform", DLPG_DEFAULT_SUB_SHAPE_SWITCH_STATE, DLPG_SWITCH_STATES);
+  GetParam(kSubShapeSwitch)->SetDisplayText(0, "Sine");
+  GetParam(kSubShapeSwitch)->SetDisplayText(1, "Triangle");
 
   GetParam(kOutputMeter)->InitDouble(
     "[Output level]",
@@ -152,6 +155,11 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   pGraphics->AttachControl(tTrigInpMuteSwitch);
   tTrigInputSwitch->GrayOut(true);
   tTrigInpMuteSwitch->GrayOut(true);
+  tTrigInputSwitch->Hide(true);
+  tTrigInpMuteSwitch->Hide(true);
+  tBmp = pGraphics->LoadIBitmap(DLPG_SUB_WAVEFORM_SHAPE_SWITCH_ID, DLPG_SUB_WAVEFORM_SHAPE_SWITCH_FN, DLPG_SWITCH_STATES);
+  tSubShapeSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(2, 2), kSubShapeSwitch, &tBmp);
+  pGraphics->AttachControl(tSubShapeSwitch);
   // *** Switches - end
 
   // Text label with current version of the plug
@@ -450,7 +458,9 @@ bool SubKicker::UpdateWaveform(){
   double fFrequency = GetParam(kSnapSwitch)->Bool() ? \
     DLPG_SUB_NOTE_KNOB_VALUE_TO_HZ(GetParam(kSubNoteKnob)->Int()) : \
     GetParam(kSubFreqKnob)->Value();
-
+  dlpg::WaveForm_t eSubShape = GetParam(kSubShapeSwitch)->Bool() ? dlpg::kTriangle : dlpg::kSine;
+  dlpg::EnvelopeShape_t eEnvelopeAttackShape = DLPG_DEFAULT_ENVELOPE_ATTACK_SHAPE;
+  dlpg::EnvelopeShape_t eEnvelopeReleaseShape = DLPG_DEFAULT_ENVELOPE_RELEASE_SHAPE;
 
   // Delete old waveform
   vSubkickWaveform.clear();
@@ -460,11 +470,11 @@ bool SubKicker::UpdateWaveform(){
   tEnvelopeGenerator = new dlpg::EnvelopeGenerator();
 
   // Generate wave
-  tWaveGenerator->Generate(vSubkickWaveform, fDuration, fFrequency, fPhase);
+  tWaveGenerator->Generate(vSubkickWaveform, fDuration, fFrequency, fPhase, eSubShape);
 
   // Apply Attack and Release envelopes 
-  tEnvelopeGenerator->Generate(vAttackEnvelope, fAttack, dlpg::kAttack, dlpg::DLPG_ENVELOPE_ATTACK_SHAPE);
-  tEnvelopeGenerator->Generate(vReleaseEnvelope, fRelease, dlpg::kRelease, dlpg::DLPG_ENVELOPE_RELEASE_SHAPE);
+  tEnvelopeGenerator->Generate(vAttackEnvelope, fAttack, dlpg::kAttack, eEnvelopeAttackShape);
+  tEnvelopeGenerator->Generate(vReleaseEnvelope, fRelease, dlpg::kRelease, eEnvelopeReleaseShape);
   std::vector<double>::size_type i, j;
   for(i = 0; i != vAttackEnvelope.size(); i++){
     vSubkickWaveform[i] *= vAttackEnvelope[i];
@@ -584,6 +594,9 @@ void SubKicker::OnParamChange(int paramIdx)
       this->fOutputGainLinear = DLPG_LOG_TO_LINEAR(fKnobValue);
       break;
     case kFlipSwitch:
+      UpdateWaveform();
+      break;
+    case kSubShapeSwitch:
       UpdateWaveform();
       break;
     case kBypassSwitch:
