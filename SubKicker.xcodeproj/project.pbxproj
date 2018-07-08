@@ -497,6 +497,14 @@
 		CEAF71EB20EFEB220016CA18 /* knob_sub_note_25.png in Resources */ = {isa = PBXBuildFile; fileRef = CEAF71E720EFEB220016CA18 /* knob_sub_note_25.png */; };
 		CEAF71EC20EFEB220016CA18 /* knob_sub_note_25.png in Resources */ = {isa = PBXBuildFile; fileRef = CEAF71E720EFEB220016CA18 /* knob_sub_note_25.png */; };
 		CEAF71ED20EFEB220016CA18 /* knob_sub_note_25.png in Resources */ = {isa = PBXBuildFile; fileRef = CEAF71E720EFEB220016CA18 /* knob_sub_note_25.png */; };
+		CEE3170720F28817002DABC3 /* DLPG_EdgeTrigger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEE3170520F28817002DABC3 /* DLPG_EdgeTrigger.cpp */; };
+		CEE3170820F28818002DABC3 /* DLPG_EdgeTrigger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEE3170520F28817002DABC3 /* DLPG_EdgeTrigger.cpp */; };
+		CEE3170920F28818002DABC3 /* DLPG_EdgeTrigger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEE3170520F28817002DABC3 /* DLPG_EdgeTrigger.cpp */; };
+		CEE3170A20F28818002DABC3 /* DLPG_EdgeTrigger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEE3170520F28817002DABC3 /* DLPG_EdgeTrigger.cpp */; };
+		CEE3170B20F28818002DABC3 /* DLPG_EdgeTrigger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEE3170520F28817002DABC3 /* DLPG_EdgeTrigger.cpp */; };
+		CEE3170C20F28818002DABC3 /* DLPG_EdgeTrigger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEE3170520F28817002DABC3 /* DLPG_EdgeTrigger.cpp */; };
+		CEE3170D20F28818002DABC3 /* DLPG_EdgeTrigger.h in Headers */ = {isa = PBXBuildFile; fileRef = CEE3170620F28817002DABC3 /* DLPG_EdgeTrigger.h */; };
+		CEE3170E20F28818002DABC3 /* DLPG_EdgeTrigger.h in Headers */ = {isa = PBXBuildFile; fileRef = CEE3170620F28817002DABC3 /* DLPG_EdgeTrigger.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -912,6 +920,8 @@
 		CE8EA10D20ED5C0E0031E883 /* DLPG_Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLPG_Version.h; sourceTree = "<group>"; };
 		CEAF71E420EFDDAC0016CA18 /* DLPG_NoteFrequencies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLPG_NoteFrequencies.h; path = DLPG/DLPG_NoteFrequencies.h; sourceTree = "<group>"; };
 		CEAF71E720EFEB220016CA18 /* knob_sub_note_25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = knob_sub_note_25.png; path = resources/img/knob_sub_note_25.png; sourceTree = "<group>"; };
+		CEE3170520F28817002DABC3 /* DLPG_EdgeTrigger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DLPG_EdgeTrigger.cpp; path = DLPG/DLPG_EdgeTrigger.cpp; sourceTree = "<group>"; };
+		CEE3170620F28817002DABC3 /* DLPG_EdgeTrigger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLPG_EdgeTrigger.h; path = DLPG/DLPG_EdgeTrigger.h; sourceTree = "<group>"; };
 		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -1007,6 +1017,8 @@
 			isa = PBXGroup;
 			children = (
 				52FBBED30D0CF143001C8B8A /* resource.h */,
+				CEE3170520F28817002DABC3 /* DLPG_EdgeTrigger.cpp */,
+				CEE3170620F28817002DABC3 /* DLPG_EdgeTrigger.h */,
 				52FBBED20D0CF13D001C8B8A /* SubKicker.h */,
 				52FBBED00D0CF139001C8B8A /* SubKicker.cpp */,
 				CE8EA0EF20ED57EB0031E883 /* DLPG_IControlExtras.cpp */,
@@ -1658,6 +1670,7 @@
 				4FD16D1913B634E5001D0217 /* swell.h in Headers */,
 				4FD16D2413B6351C001D0217 /* swell-functions.h in Headers */,
 				4FD16D2D13B6353C001D0217 /* swell-internal.h in Headers */,
+				CEE3170E20F28818002DABC3 /* DLPG_EdgeTrigger.h in Headers */,
 				4FD16D3213B6355A001D0217 /* swell-types.h in Headers */,
 				4F78D8D913B63B5D0032E0F3 /* aeffect.h in Headers */,
 				4F78D8DA13B63B5D0032E0F3 /* aeffectx.h in Headers */,
@@ -1724,6 +1737,7 @@
 				4F78DA9513B640050032E0F3 /* IPlug_include_in_plug_hdr.h in Headers */,
 				4F78DA9613B640050032E0F3 /* IPlug_include_in_plug_src.h in Headers */,
 				CE06F9C820ED8C2200C18BEC /* DLPG_NoteNames.h in Headers */,
+				CEE3170D20F28818002DABC3 /* DLPG_EdgeTrigger.h in Headers */,
 				4F78DA9713B640050032E0F3 /* IControl.h in Headers */,
 				4F78DA9813B640050032E0F3 /* IKeyboardControl.h in Headers */,
 				4F78DA9913B640050032E0F3 /* IPlugBase.h in Headers */,
@@ -2255,6 +2269,7 @@
 				4FD16D1213B634BF001D0217 /* swell-gdi.mm in Sources */,
 				4F78D9BB13B63BA50032E0F3 /* IPlugBase.cpp in Sources */,
 				4F78D9BC13B63BA50032E0F3 /* IPlugStructs.cpp in Sources */,
+				CEE3170820F28818002DABC3 /* DLPG_EdgeTrigger.cpp in Sources */,
 				4F78D9BD13B63BA50032E0F3 /* Hosts.cpp in Sources */,
 				4F78D9BF13B63BA50032E0F3 /* IGraphicsMac.mm in Sources */,
 				4F78D9C013B63BA50032E0F3 /* IGraphics.cpp in Sources */,
@@ -2286,6 +2301,7 @@
 				4F78D94E13B63BA50032E0F3 /* IGraphics.cpp in Sources */,
 				4F78D94F13B63BA50032E0F3 /* IGraphicsCarbon.cpp in Sources */,
 				4F78D95013B63BA50032E0F3 /* IGraphicsCocoa.mm in Sources */,
+				CEE3170A20F28818002DABC3 /* DLPG_EdgeTrigger.cpp in Sources */,
 				CE8EA0F820ED57EC0031E883 /* DLPG_IControlExtras.cpp in Sources */,
 				4F78D95313B63BA50032E0F3 /* Log.cpp in Sources */,
 				CE8EA10820ED57EC0031E883 /* PLUG_IControlExtras.cpp in Sources */,
@@ -2313,6 +2329,7 @@
 				4F7F5C5513E95EC8002918FD /* IGraphics.cpp in Sources */,
 				4F7F5C5613E95EC8002918FD /* IGraphicsCarbon.cpp in Sources */,
 				CE8EA10120ED57EC0031E883 /* DLPG_WaveGenerator.cpp in Sources */,
+				CEE3170B20F28818002DABC3 /* DLPG_EdgeTrigger.cpp in Sources */,
 				4F7F5C5713E95EC8002918FD /* IGraphicsCocoa.mm in Sources */,
 				4F7F5C5813E95EC8002918FD /* Log.cpp in Sources */,
 				4F7F5C5913E95EC8002918FD /* IPopupMenu.cpp in Sources */,
@@ -2364,6 +2381,7 @@
 				4F9828CE140A9EB700F3FCC1 /* vstinitiids.cpp in Sources */,
 				4F9828CF140A9EB700F3FCC1 /* vstnoteexpressiontypes.cpp in Sources */,
 				4F9828D0140A9EB700F3FCC1 /* vstparameters.cpp in Sources */,
+				CEE3170920F28818002DABC3 /* DLPG_EdgeTrigger.cpp in Sources */,
 				CE8EA0FF20ED57EC0031E883 /* DLPG_WaveGenerator.cpp in Sources */,
 				4F9828D1140A9EB700F3FCC1 /* vstpresetfile.cpp in Sources */,
 				4F9828D2140A9EB700F3FCC1 /* vstrepresentation.cpp in Sources */,
@@ -2380,6 +2398,7 @@
 			files = (
 				4FB600181567CB0A0020189A /* SubKicker.cpp in Sources */,
 				4FB600191567CB0A0020189A /* swell-gdi.mm in Sources */,
+				CEE3170C20F28818002DABC3 /* DLPG_EdgeTrigger.cpp in Sources */,
 				CE8EA10A20ED57EC0031E883 /* PLUG_IControlExtras.cpp in Sources */,
 				4FB6001A1567CB0A0020189A /* IPlugBase.cpp in Sources */,
 				CE8EA10220ED57EC0031E883 /* DLPG_WaveGenerator.cpp in Sources */,
@@ -2428,6 +2447,7 @@
 				4F78D90D13B63BA50032E0F3 /* Hosts.cpp in Sources */,
 				4F78D90F13B63BA50032E0F3 /* IGraphicsMac.mm in Sources */,
 				4F78D91013B63BA50032E0F3 /* IGraphics.cpp in Sources */,
+				CEE3170720F28817002DABC3 /* DLPG_EdgeTrigger.cpp in Sources */,
 				4F78D91113B63BA50032E0F3 /* IGraphicsCarbon.cpp in Sources */,
 				4F78D91213B63BA50032E0F3 /* IGraphicsCocoa.mm in Sources */,
 				4F78D91313B63BA50032E0F3 /* Log.cpp in Sources */,
