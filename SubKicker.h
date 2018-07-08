@@ -6,6 +6,7 @@
 #include "DLPG_IControlExtras.h"
 #include "PLUG_IControlExtras.h"
 #include "DLPG_WaveGenerator.h"
+#include "DLPG_EdgeTrigger.h"
 
 #define DLPG_LOG_TO_LINEAR(v) (pow(10, v/20.))
 #define DLPG_LINEAR_TO_LOG(v) (20.*log10(v))
@@ -359,6 +360,7 @@ private:
   dlpg::WaveGenerator* tWaveGenerator;
   dlpg::EnvelopeGenerator* tEnvelopeGenerator;
   Plug::ILevelMeteringBar* tOutputMeter;
+  dlpg::EdgeTrigger *tEdgeTrigger;
   ISwitchControl *tBypassSwitch;
   ISwitchControl *tTrigSwitch;
   ISwitchControl *tSnapSwitch;

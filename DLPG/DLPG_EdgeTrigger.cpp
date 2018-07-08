@@ -3,6 +3,8 @@
 namespace dlpg{
 
 EdgeTrigger::EdgeTrigger(double fSampleRate, double fHoldTime, double fThresholdLinear):
+	nHoldSampleCounter(0),
+	fPreviousSampleLinear(0.),
 	fSampleRate(fSampleRate),
 	fThresholdLinear(fThresholdLinear)
 {
@@ -51,9 +53,6 @@ TriggerState_t EdgeTrigger::ProcessMonoSampleLinear(double fSampleLinear){
 	4. Sample is higher than thresh, nHoldSampleCounter = 1 -> kTriggerOn, and stop decreasing nHoldSampleCounter
 	5. Sample value is below the thresh and nHoldSampleCounter = 0 -> kTriggerOff
 	*/
-
-	static unsigned long nHoldSampleCounter = 0;
-	static double fPreviousSampleLinear = 0.;
 	TriggerState_t eState = kNone;
 
 	// Rectify the input signal
@@ -115,6 +114,11 @@ TriggerState_t EdgeTrigger::ProcessStereoSampleLinear(double fSampleLeftLinear, 
 	// Well, it's still a mono trigger.
 	double fSampleMonoLinear = (fabs(fSampleLeftLinear) + fabs(fSampleRightLinear)) / 2;
 	return ProcessMonoSampleLinear(fSampleMonoLinear);
+}
+
+bool EdgeTrigger::Reset(){
+	nHoldSampleCounter = 0;
+	fPreviousSampleLinear = 0.;
 }
 
 } //namespace

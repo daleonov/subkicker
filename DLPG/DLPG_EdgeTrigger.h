@@ -58,11 +58,21 @@ public:
 	*/
 	TriggerState_t ProcessStereoSampleLinear(double fSampleLeftLinear, double fSampleRightLinear);
 
+	/*
+	@brief Resets internal variables related to trigger switching.
+	@note Call it every time there's a gap in sample stream (e.g. when you temporarily turn the trigger off). 
+  @retval always true
+	*/
+	bool Reset();
+
 private:
 	double fSampleRate;
 	double fThresholdLinear;
 	double fHoldSeconds;
 	unsigned long nHoldSamples;
+
+	unsigned long nHoldSampleCounter;
+	double fPreviousSampleLinear;
 };
 
 } //namespace dlpg

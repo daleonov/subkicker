@@ -273,9 +273,15 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   
   // *** Knob labels - end
 
+  // Edge trigger
+  double fSampleRate = GetSampleRate();
+  double fTrigHold = GetParam(kTrigHoldKnob)->Value();
+  double fTrigThresh = DLPG_LOG_TO_LINEAR(GetParam(kTrigThreshKnob)->Value());
+  tEdgeTrigger = new dlpg::EdgeTrigger(fSampleRate, fTrigHold, fTrigThresh);
+
   // Scope
   tScope = new dlpg::IWavScopeControl(this, PLUG_ScopeIrect, kScope, vSubkickWaveform);
-  tScope->UpdateScale(0.1, 44100.);
+  tScope->UpdateScale(0.1, fSampleRate);
   pGraphics->AttachControl(tScope);
 
   /*
@@ -334,6 +340,8 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
   // Mutex is already locked for us.
   double* pfOutL = outputs[0];
   double* pfOutR = outputs[1];
+  double* pfInL = inputs[0];
+  double* pfInR = inputs[1];
   int nTargetNote, nTargetCh;
   int nCurrentNote, nCurrentCh, nCurrentVelocity;
   static int nCurrentWaveformSample = 0;
@@ -344,6 +352,29 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
   char sOutputMeterLabelString[DLPG_OUTPUT_METER_LABEL_STRING_SIZE];
   char sOutputMeterLabelMinusInfString[] = DLPG_OUTPUT_METER_LABEL_MINUS_INF_STR;
   char* psOutputMeterLabelString = NULL;
+  bool bIsTriggeredInternally = GetParam(kTrigSwitch)->Bool();
+  double fCurrentRectifiedSampleLinear;
+  dlpg::TriggerState_t eTriggerState;
+  IMidiMsg tMidiMsg;
+
+  if(bIsTriggeredInternally){
+    // Todo: Make sure the midi notes' offset is correct in the sample chunk
+    for (int i = 0; i < nFrames; ++i, ++pfInR, ++pfInL){
+      fCurrentRectifiedSampleLinear = (fabs(*pfInR) + fabs(*pfInL))/2;
+      eTriggerState = tEdgeTrigger->ProcessMonoSampleLinear(fCurrentRectifiedSampleLinear);
+      if(eTriggerState == dlpg::kTriggerRisingEdge){
+        // Send "Note on"
+        // Emulate pressing a midi key to play a waveform
+        tMidiMsg.MakeNoteOnMsg(10, 100, 0, 1);
+        tMidiQueue.Add(&tMidiMsg);
+        tMidiMsg.MakeNoteOffMsg(10, 0, 1);
+        tMidiQueue.Add(&tMidiMsg);
+      }
+      if(eTriggerState == dlpg::kTriggerFallingEdge){
+        // Send "Note off" ###
+      }
+    }
+  }
 
   for (int nOffset = 0; nOffset < nFrames; ++nOffset, ++pfOutL, ++pfOutR){
     while (!tMidiQueue.Empty()){
@@ -446,6 +477,16 @@ void SubKicker::Reset()
 {
   TRACE;
   IMutexLock lock(this);
+  double fSampleRateHz = GetSampleRate();
+
+  // Update edge trigger
+  // Todo: Probably reset it as well?
+  tEdgeTrigger->SetSampleRate(fSampleRateHz);
+
+  // tScope's, tWaveGenerator and tEnvelopeGenerator's sample rate are updated in UpdateWaveform()
+  UpdateWaveform();
+
+  // Midi shenanigans
   tMidiQueue.Resize(GetBlockSize());
 }
 
@@ -557,10 +598,14 @@ void SubKicker::OnParamChange(int paramIdx)
     case kTrigThreshKnob:
       // Display knob's value with a text label
       DLPG_SET_LABEL_GENERIC(sKnobLabelString, DLPG_TRIG_THRESH_LABEL_STR, kTrigThreshKnob, tTrigThreshLabel);
+      fKnobValue = GetParam(kTrigThreshKnob)->Value();
+      tEdgeTrigger->SetThresholdLinear(DLPG_LOG_TO_LINEAR(fKnobValue));
       break;
     case kTrigHoldKnob:
       // Display knob's value with a text label
       DLPG_SET_LABEL_GENERIC(sKnobLabelString, DLPG_TRIG_HOLD_LABEL_STR, kTrigHoldKnob, tTrigHoldLabel);
+      fKnobValue = GetParam(kTrigHoldKnob)->Value();
+      tEdgeTrigger->SetHoldTime(fKnobValue);
       break;
     case kSubNoteKnob:
       // Display knob's value with a text label
@@ -676,6 +721,9 @@ void SubKicker::OnParamChange(int paramIdx)
       tTrigChLabel->Hide(bSwitchState);
       tTrigHoldLabel->Hide(!bSwitchState);
       tTrigThreshLabel->Hide(!bSwitchState);
+
+      // Reset the trigger every time
+      tEdgeTrigger->Reset();
     default:
       break;
   }
