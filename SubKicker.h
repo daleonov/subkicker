@@ -308,6 +308,9 @@ enum ELayout
 
   kOutputMeterNotchLabelX = kOutputMeterX,
   kOutputMeterNotchLabelY = kOutputMeterY + 5,
+
+  kOutputMeterOverlayX = kOutputMeterX + 5,
+  kOutputMeterOverlayY = kOutputMeterY + DLPG_OUTPUT_METER_H - 29,
 };
 
 const IRECT tOutputMeterIrect(\
@@ -397,6 +400,7 @@ private:
   ITextControl *tVolLabel;
   ITextControl *tOutputMeterLabel;
   ITextControl *tOutputMeterNotchLabel;
+  IBitmapControl *tOutputMeterOverlay;
   IGraphics* pGraphics;
   // Midi stuff
   void ProcessMidiMsg(IMidiMsg* pMsg);

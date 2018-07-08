@@ -210,6 +210,10 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tOutputMeter->SetNotchValue(DLPG_OUTPUT_METER_NOTCH);
   pGraphics->AttachControl(tOutputMeter);
 
+  tBmp = pGraphics->LoadIBitmap(DLPG_OUTPUT_METER_OVERLAY_ID, DLPG_OUTPUT_METER_OVERLAY_FN, 1);
+  tOutputMeterOverlay = new IBitmapControl(this, kOutputMeterOverlayX, kOutputMeterOverlayY, &tBmp);
+  pGraphics->AttachControl(tOutputMeterOverlay);
+
   // *** Knob labels - begin
   IText tKnobLabelCommon = IText(DLPG_KNOB_LABEL_STRING_SIZE);
   tKnobLabelCommon.mColor = tKnobLabelColor;

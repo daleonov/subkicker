@@ -72,6 +72,7 @@ instrument determined by PLUG _IS _INST
 #define DLPG_VOL_KNOB_ID 116
 #define DLPG_TRIG_INPMUTE_SWITCH_ID 117
 #define DLPG_SUB_NOTE_KNOB_ID 118
+#define DLPG_OUTPUT_METER_OVERLAY_ID 119
 
 // Image resource locations for this plug.
 #define DLPG_BACKGROUND_FN "resources/img/bg_reva.png"
@@ -92,6 +93,7 @@ instrument determined by PLUG _IS _INST
 #define DLPG_ENVELOPE_HOLD_KNOB_FN "resources/img/knob_envelope_hold_128.png"
 #define DLPG_ENVELOPE_RELEASE_KNOB_FN "resources/img/knob_envelope_release_128.png"
 #define DLPG_VOL_KNOB_FN "resources/img/knob_vol_128.png"
+#define DLPG_OUTPUT_METER_OVERLAY_FN "resources/img/overlay_out.png"
 
 // GUI default dimensions
 #define GUI_WIDTH 870
