@@ -505,6 +505,12 @@
 		CEE3170C20F28818002DABC3 /* DLPG_EdgeTrigger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEE3170520F28817002DABC3 /* DLPG_EdgeTrigger.cpp */; };
 		CEE3170D20F28818002DABC3 /* DLPG_EdgeTrigger.h in Headers */ = {isa = PBXBuildFile; fileRef = CEE3170620F28817002DABC3 /* DLPG_EdgeTrigger.h */; };
 		CEE3170E20F28818002DABC3 /* DLPG_EdgeTrigger.h in Headers */ = {isa = PBXBuildFile; fileRef = CEE3170620F28817002DABC3 /* DLPG_EdgeTrigger.h */; };
+		CEE3171320F29C75002DABC3 /* knob_trig_hold_128.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE3171220F29C75002DABC3 /* knob_trig_hold_128.png */; };
+		CEE3171420F29C75002DABC3 /* knob_trig_hold_128.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE3171220F29C75002DABC3 /* knob_trig_hold_128.png */; };
+		CEE3171520F29C75002DABC3 /* knob_trig_hold_128.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE3171220F29C75002DABC3 /* knob_trig_hold_128.png */; };
+		CEE3171620F29C75002DABC3 /* knob_trig_hold_128.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE3171220F29C75002DABC3 /* knob_trig_hold_128.png */; };
+		CEE3171720F29C75002DABC3 /* knob_trig_hold_128.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE3171220F29C75002DABC3 /* knob_trig_hold_128.png */; };
+		CEE3171820F29C75002DABC3 /* knob_trig_hold_128.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE3171220F29C75002DABC3 /* knob_trig_hold_128.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -922,6 +928,7 @@
 		CEAF71E720EFEB220016CA18 /* knob_sub_note_25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = knob_sub_note_25.png; path = resources/img/knob_sub_note_25.png; sourceTree = "<group>"; };
 		CEE3170520F28817002DABC3 /* DLPG_EdgeTrigger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DLPG_EdgeTrigger.cpp; path = DLPG/DLPG_EdgeTrigger.cpp; sourceTree = "<group>"; };
 		CEE3170620F28817002DABC3 /* DLPG_EdgeTrigger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLPG_EdgeTrigger.h; path = DLPG/DLPG_EdgeTrigger.h; sourceTree = "<group>"; };
+		CEE3171220F29C75002DABC3 /* knob_trig_hold_128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = knob_trig_hold_128.png; path = resources/img/knob_trig_hold_128.png; sourceTree = "<group>"; };
 		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -1580,6 +1587,7 @@
 				CE8EA03720ED40170031E883 /* switch_trig_inpmute.png */,
 				CE8EA03820ED40170031E883 /* switch_trig_input.png */,
 				CE8EA03920ED40170031E883 /* switch_trig_l.png */,
+				CEE3171220F29C75002DABC3 /* knob_trig_hold_128.png */,
 				CE8EA03A20ED40170031E883 /* switch_trig.png */,
 			);
 			name = img;
@@ -2002,6 +2010,7 @@
 				CE8EA04E20ED40170031E883 /* knob_envelope_hold_128.png in Resources */,
 				CE8EA05A20ED40170031E883 /* knob_generic_128.png in Resources */,
 				CE8EA07820ED40170031E883 /* knob_trig_ch_128.png in Resources */,
+				CEE3171420F29C75002DABC3 /* knob_trig_hold_128.png in Resources */,
 				CE8EA06020ED40170031E883 /* knob_sub_freq_128.png in Resources */,
 				CE8EA06C20ED40170031E883 /* knob_trig_attack_128.png in Resources */,
 				CE8EA05420ED40170031E883 /* knob_envelope_release_128.png in Resources */,
@@ -2040,6 +2049,7 @@
 				CE8EA05020ED40170031E883 /* knob_envelope_hold_128.png in Resources */,
 				CE8EA05C20ED40170031E883 /* knob_generic_128.png in Resources */,
 				CE8EA07A20ED40170031E883 /* knob_trig_ch_128.png in Resources */,
+				CEE3171620F29C75002DABC3 /* knob_trig_hold_128.png in Resources */,
 				CE8EA06220ED40170031E883 /* knob_sub_freq_128.png in Resources */,
 				CE8EA06E20ED40170031E883 /* knob_trig_attack_128.png in Resources */,
 				CE8EA05620ED40170031E883 /* knob_envelope_release_128.png in Resources */,
@@ -2078,6 +2088,7 @@
 				CE8EA05120ED40170031E883 /* knob_envelope_hold_128.png in Resources */,
 				CE8EA05D20ED40170031E883 /* knob_generic_128.png in Resources */,
 				CE8EA07B20ED40170031E883 /* knob_trig_ch_128.png in Resources */,
+				CEE3171720F29C75002DABC3 /* knob_trig_hold_128.png in Resources */,
 				CE8EA06320ED40170031E883 /* knob_sub_freq_128.png in Resources */,
 				CE8EA06F20ED40170031E883 /* knob_trig_attack_128.png in Resources */,
 				CE8EA05720ED40170031E883 /* knob_envelope_release_128.png in Resources */,
@@ -2116,6 +2127,7 @@
 				CE8EA04F20ED40170031E883 /* knob_envelope_hold_128.png in Resources */,
 				CE8EA05B20ED40170031E883 /* knob_generic_128.png in Resources */,
 				CE8EA07920ED40170031E883 /* knob_trig_ch_128.png in Resources */,
+				CEE3171520F29C75002DABC3 /* knob_trig_hold_128.png in Resources */,
 				CE8EA06120ED40170031E883 /* knob_sub_freq_128.png in Resources */,
 				CE8EA06D20ED40170031E883 /* knob_trig_attack_128.png in Resources */,
 				CE8EA05520ED40170031E883 /* knob_envelope_release_128.png in Resources */,
@@ -2154,6 +2166,7 @@
 				CE8EA05220ED40170031E883 /* knob_envelope_hold_128.png in Resources */,
 				CE8EA05E20ED40170031E883 /* knob_generic_128.png in Resources */,
 				CE8EA07C20ED40170031E883 /* knob_trig_ch_128.png in Resources */,
+				CEE3171820F29C75002DABC3 /* knob_trig_hold_128.png in Resources */,
 				CE8EA06420ED40170031E883 /* knob_sub_freq_128.png in Resources */,
 				CE8EA07020ED40170031E883 /* knob_trig_attack_128.png in Resources */,
 				CE8EA05820ED40170031E883 /* knob_envelope_release_128.png in Resources */,
@@ -2185,6 +2198,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE8EA07D20ED40170031E883 /* knob_trig_note_129.png in Resources */,
+				CEE3171320F29C75002DABC3 /* knob_trig_hold_128.png in Resources */,
 				CE8EA08320ED40170031E883 /* knob_trig_thresh_128.png in Resources */,
 				CE8EA09520ED40170031E883 /* overlay_in.png in Resources */,
 				CE8EA0B920ED40170031E883 /* switch_flip.png in Resources */,

@@ -16,7 +16,7 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   //arguments are: name, defaultVal, minVal, maxVal, step, label
   GetParam(kTrigNoteKnob)->InitInt("Trigger (ext) | Midi note", DLPG_TRIG_ANY_NOTE, DLPG_TRIG_NOTE_RANGE, "");
   GetParam(kTrigChKnob)->InitInt("Trigger (ext) | Midi channel", DLPG_TRIG_ANY_CH, DLPG_TRIG_CH_RANGE, "");
-  GetParam(kTrigAttackKnob)->InitDouble("Trigger (int) | Attack", DLPG_TRIG_ATTACK_DEFAULT, DLPG_TRIG_ATTACK_RANGE, 0.1, "ms");
+  GetParam(kTrigHoldKnob)->InitDouble("Trigger (int) | Hold", DLPG_TRIG_HOLD_DEFAULT, DLPG_TRIG_HOLD_RANGE, 0.1, "ms");
   GetParam(kTrigThreshKnob)->InitDouble("Trigger (int) | Threshold", DLPG_TRIG_THRESH_DEFAULT, DLPG_TRIG_THRESH_RANGE, 0.1, "dB");
 
   GetParam(kSubFreqKnob)->InitDouble("Sub | Frequency", DLPG_SUB_FREQ_DEFAULT, DLPG_SUB_FREQ_RANGE, 0.1, "Hz");
@@ -93,12 +93,15 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_THRESH_KNOB_ID, DLPG_TRIG_THRESH_KNOB_FN, DLPG_STANDARD_KNOB_FRAMES);
   tTrigThreshKnob = new IKnobMultiControl(this, DLPG_KNOB_GRID(1, 1), kTrigThreshKnob, &tBmp);
   pGraphics->AttachControl(tTrigThreshKnob);
-  tTrigThreshKnob->Hide(true);
 
-  tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_ATTACK_KNOB_ID, DLPG_TRIG_ATTACK_KNOB_FN, DLPG_STANDARD_KNOB_FRAMES);
-  tTrigAttackKnob = new IKnobMultiControl(this, DLPG_KNOB_GRID(1, 2), kTrigAttackKnob, &tBmp);
-  pGraphics->AttachControl(tTrigAttackKnob);
-  tTrigAttackKnob->Hide(true);
+  tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_HOLD_KNOB_ID, DLPG_TRIG_HOLD_KNOB_FN, DLPG_STANDARD_KNOB_FRAMES);
+  tTrigHoldKnob = new IKnobMultiControl(this, DLPG_KNOB_GRID(1, 2), kTrigHoldKnob, &tBmp);
+  pGraphics->AttachControl(tTrigHoldKnob);
+  // Hide all, the switch will take care of them later
+  tTrigChKnob->Hide(true);
+  tTrigNoteKnob->Hide(true);
+  tTrigHoldKnob->Hide(true);
+  tTrigThreshKnob->Hide(true);
 
   // Sub section
   tBmp = pGraphics->LoadIBitmap(DLPG_SUB_FREQ_KNOB_ID, DLPG_SUB_FREQ_KNOB_FN, DLPG_STANDARD_KNOB_FRAMES);
@@ -230,14 +233,17 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   // Trig section
   tTrigNoteLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 1), &tKnobLabelCommon, "Trig Note");
   tTrigChLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 2), &tKnobLabelCommon, "Trig Ch");
-  tTrigAttackLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 1), &tKnobLabelCommon, "Trig Attack");
-  tTrigThreshLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 2), &tKnobLabelCommon, "Trig Thresh");
+  tTrigThreshLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 1), &tKnobLabelCommon, "Trig Thresh");
+  tTrigHoldLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 2), &tKnobLabelCommon, "Trig Hold");
   pGraphics->AttachControl(tTrigNoteLabel);
   pGraphics->AttachControl(tTrigChLabel);
-  pGraphics->AttachControl(tTrigAttackLabel);
+  pGraphics->AttachControl(tTrigHoldLabel);
   pGraphics->AttachControl(tTrigThreshLabel);
-  tTrigAttackLabel->Hide(true);
+  // Hide all, the trig switch will take care of them later
+  tTrigHoldLabel->Hide(true);
   tTrigThreshLabel->Hide(true);
+  tTrigNoteLabel->Hide(true);
+  tTrigChLabel->Hide(true);
   // Sub section
   tSubFreqLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 3), &tKnobLabelCommon, "Sub Freq");
   tSubNoteLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 3), &tKnobLabelCommon, "Sub Note");
@@ -548,6 +554,14 @@ void SubKicker::OnParamChange(int paramIdx)
         sprintf(sKnobLabelString, DLPG_TRIG_CH_LABEL_STR, nKnobValue);
       tTrigChLabel->SetTextFromPlug(sKnobLabelString);
       break;
+    case kTrigThreshKnob:
+      // Display knob's value with a text label
+      DLPG_SET_LABEL_GENERIC(sKnobLabelString, DLPG_TRIG_THRESH_LABEL_STR, kTrigThreshKnob, tTrigThreshLabel);
+      break;
+    case kTrigHoldKnob:
+      // Display knob's value with a text label
+      DLPG_SET_LABEL_GENERIC(sKnobLabelString, DLPG_TRIG_HOLD_LABEL_STR, kTrigHoldKnob, tTrigHoldLabel);
+      break;
     case kSubNoteKnob:
       // Display knob's value with a text label
       nKnobValue = GetParam(kSubNoteKnob)->Int();
@@ -651,6 +665,17 @@ void SubKicker::OnParamChange(int paramIdx)
       tOutputMeter->SetNotchValue(DLPG_OUTPUT_METER_NOTCH);
       tOutputMeterNotchLabel->SetTextFromPlug(sOutputMeterNotchLabelMinusInfString);
       break;
+    case kTrigSwitch:
+      bSwitchState = GetParam(kTrigSwitch)->Bool();
+
+      tTrigChKnob->Hide(bSwitchState);
+      tTrigNoteKnob->Hide(bSwitchState);
+      tTrigHoldKnob->Hide(!bSwitchState);
+      tTrigThreshKnob->Hide(!bSwitchState);
+      tTrigNoteLabel->Hide(bSwitchState);
+      tTrigChLabel->Hide(bSwitchState);
+      tTrigHoldLabel->Hide(!bSwitchState);
+      tTrigThreshLabel->Hide(!bSwitchState);
     default:
       break;
   }

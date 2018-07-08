@@ -63,7 +63,7 @@ instrument determined by PLUG _IS _INST
 #define DLPG_TRIG_NOTE_KNOB_ID 107
 #define DLPG_TRIG_CH_KNOB_ID 108
 #define DLPG_TRIG_THRESH_KNOB_ID 109
-#define DLPG_TRIG_ATTACK_KNOB_ID 110
+#define DLPG_TRIG_HOLD_KNOB_ID 110
 #define DLPG_SUB_FREQ_KNOB_ID 111
 #define DLPG_SUB_PHASE_KNOB_ID 112
 #define DLPG_ENVELOPE_ATTACK_KNOB_ID 113
@@ -87,7 +87,7 @@ instrument determined by PLUG _IS _INST
 #define DLPG_TRIG_NOTE_KNOB_FN "resources/img/knob_trig_note_129.png"
 #define DLPG_TRIG_CH_KNOB_FN "resources/img/knob_trig_ch_17.png"
 #define DLPG_TRIG_THRESH_KNOB_FN "resources/img/knob_trig_thresh_128.png"
-#define DLPG_TRIG_ATTACK_KNOB_FN "resources/img/knob_trig_attack_128.png"
+#define DLPG_TRIG_HOLD_KNOB_FN "resources/img/knob_trig_hold_128.png"
 #define DLPG_SUB_FREQ_KNOB_FN "resources/img/knob_sub_freq_128.png"
 #define DLPG_SUB_PHASE_KNOB_FN "resources/img/knob_sub_phase_128.png"
 #define DLPG_SUB_NOTE_KNOB_FN "resources/img/knob_sub_note_25.png"

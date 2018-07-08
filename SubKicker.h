@@ -22,7 +22,7 @@
 (DLPG_SWITCH_Y_BASE + (row-1)*DLPG_SWITCH_Y_STEP)
 
 #define DLPG_DEFAULT_BYPASS_SWITCH_STATE 0
-#define DLPG_DEFAULT_TRIG_SWITCH_STATE 0
+#define DLPG_DEFAULT_TRIG_SWITCH_STATE 1
 #define DLPG_DEFAULT_SNAP_SWITCH_STATE 1
 #define DLPG_DEFAULT_FLIP_SWITCH_STATE 0
 #define DLPG_DEFAULT_TRIG_INPUT_SWITCH_STATE 0
@@ -70,8 +70,8 @@
 #define DLPG_TRIG_CH_DEFAULT DLPG_TRIG_ANY_CH
 #define DLPG_TRIG_NOTE_RANGE 0, DLPG_TRIG_ANY_NOTE
 #define DLPG_TRIG_NOTE_DEFAULT DLPG_TRIG_ANY_NOTE
-#define DLPG_TRIG_ATTACK_RANGE 0.1, 100.
-#define DLPG_TRIG_ATTACK_DEFAULT 10.
+#define DLPG_TRIG_HOLD_RANGE 0.1, 100.
+#define DLPG_TRIG_HOLD_DEFAULT 10.
 #define DLPG_TRIG_THRESH_RANGE -60., 0.
 #define DLPG_TRIG_THRESH_DEFAULT -6.
 #define DLPG_SUB_PHASE_RANGE -180., 180.
@@ -180,7 +180,7 @@ IRECT(\
 
 #define DLPG_TRIG_NOTE_LABEL_STR "%d (%s%d)"
 #define DLPG_TRIG_CH_LABEL_STR "%02d"
-#define DLPG_TRIG_ATTACK_LABEL_STR DLPG_ENVELOPE_GENERIC_STR
+#define DLPG_TRIG_HOLD_LABEL_STR DLPG_ENVELOPE_GENERIC_STR
 #define DLPG_TRIG_THRESH_LABEL_STR DLPG_LEVEL_GENERIC_STR
 #define DLPG_SUB_FREQ_LABEL_STR "%0.2f Hz"
 #define DLPG_SUB_PHASE_LABEL_STR "%+0.1f\xB0"
@@ -247,7 +247,7 @@ enum EParams
   kTrigInpMuteSwitch,
   kTrigNoteKnob,
   kTrigChKnob,
-  kTrigAttackKnob,
+  kTrigHoldKnob,
   kTrigThreshKnob,
   kSubFreqKnob,
   kSubPhaseKnob,
@@ -258,20 +258,6 @@ enum EParams
   kVolKnob,
   kOutputMeter,
   kNumParams,
-  // Todo: Those ID's for text labels are not necessary and can be deleted. 
-  kTrigNoteLabel,
-  kTrigChLabel,
-  kTrigAttackLabel,
-  kTrigThreshLabel,
-  kSubFreqLabel,
-  kSubPhaseKLabel,
-  kSubNoteLabel,
-  kEnvelopeAttackLabel,
-  kEnvelopeHoldLabel,
-  kEnvelopeReleaseLabel,
-  kVolLabel,
-  kOutputMeterLabel,
-  kOutputMeterNotchLabel,
 };
 
 enum ELayout
@@ -382,7 +368,7 @@ private:
   ISwitchControl *tSubShapeSwitch;
   IKnobMultiControl *tTrigNoteKnob;
   IKnobMultiControl *tTrigChKnob;
-  IKnobMultiControl *tTrigAttackKnob;
+  IKnobMultiControl *tTrigHoldKnob;
   IKnobMultiControl *tTrigThreshKnob;
   IKnobMultiControl *tSubFreqKnob;
   IKnobMultiControl *tSubNoteKnob;
@@ -393,7 +379,7 @@ private:
   IKnobMultiControl *tVolKnob;
   ITextControl *tTrigNoteLabel;
   ITextControl *tTrigChLabel;
-  ITextControl *tTrigAttackLabel;
+  ITextControl *tTrigHoldLabel;
   ITextControl *tTrigThreshLabel;
   ITextControl *tSubFreqLabel;
   ITextControl *tSubPhaseLabel;
