@@ -70,29 +70,98 @@ bool EnvelopeGenerator::Generate(std::vector<double> &vBuffer, double fDuration,
   double fSampleMultiplier;
   switch(kEnvelopeStage){
   case kAttack:
-    for(int i=0; i<nSamples; i++) {
-      if(kEnvelopeShape == kLogarithmic)
-        // Log
+    switch(kEnvelopeShape){
+    case kLogarithmic:
+      // Log
+      for(int i=0; i<nSamples; i++){
         fSampleMultiplier = log(((fExp-1)/(nSamples-1))*i + 1);
-      else
-        // Linear
+        vBuffer.push_back(fSampleMultiplier);
+      }
+      break;
+    case kLinear:
+      // Linear
+      for(int i=0; i<nSamples; i++){
         fSampleMultiplier = (double)i/(nSamples-1);
-
-      vBuffer.push_back(fSampleMultiplier);
+        vBuffer.push_back(fSampleMultiplier);
+      }
+      break;
+    case kReverseLogarithmic:
+      // Reverse log
+      for(int i=0; i<nSamples; i++){
+        fSampleMultiplier = 1. - log(((fExp-1)/(nSamples-1))*(nSamples-1-i) + 1);
+        vBuffer.push_back(fSampleMultiplier);
+      }
+      break;
+    case kQuadReverseLogarithmic:
+      // Reverse log
+      for(int i=0; i<nSamples; i++){
+        fSampleMultiplier = pow(1. - log(((fExp-1)/(nSamples-1))*(nSamples-1-i) + 1), 2);
+        vBuffer.push_back(fSampleMultiplier);
+      }
+      break;
+    case kQuadLogarithmic:
+      // Log
+      for(int i=0; i<nSamples; i++){
+        fSampleMultiplier = pow(log(((fExp-1)/(nSamples-1))*i + 1), 4);
+        vBuffer.push_back(fSampleMultiplier);
+      }
+      break;
+    default:
+      // Everything else that's not supported
+      for(int i=0; i<nSamples; i++){
+        fSampleMultiplier = 1.;
+        vBuffer.push_back(fSampleMultiplier);
+      }
+      break;
     }
     break;
   case kRelease:
-    for(int i=0; i<nSamples; i++) {
-      if(kEnvelopeShape == kLogarithmic)
-        // Log
-        fSampleMultiplier = 1.-log(((fExp-1)/(nSamples-1))*i + 1);
-      else
-        // Linear
-        fSampleMultiplier = 1.-((double)i/(nSamples-1));
-
-      vBuffer.push_back(fSampleMultiplier);
+    switch(kEnvelopeShape){
+    case kReverseLogarithmic:
+      // Reverse log
+      for(int i=0; i<nSamples; i++){
+        fSampleMultiplier = 1. - log(((fExp-1)/(nSamples-1))*i + 1);
+        vBuffer.push_back(fSampleMultiplier);
+      }
+      break;
+    case kLinear:
+      // Linear
+      for(int i=0; i<nSamples; i++){
+        fSampleMultiplier = 1. - (double)i/(nSamples-1);
+        vBuffer.push_back(fSampleMultiplier);
+      }
+      break;
+    case kLogarithmic:
+      // Log
+      for(int i=0; i<nSamples; i++){
+        fSampleMultiplier = log(((fExp-1)/(nSamples-1))*(nSamples-1-i) + 1);
+        vBuffer.push_back(fSampleMultiplier);
+      }
+      break;
+    case kQuadReverseLogarithmic:
+      // Reverse log
+      for(int i=0; i<nSamples; i++){
+        fSampleMultiplier = pow(1. - log(((fExp-1)/(nSamples-1))*i + 1), 2);
+        vBuffer.push_back(fSampleMultiplier);
+      }
+      break;
+    case kQuadLogarithmic:
+      // Log
+      for(int i=0; i<nSamples; i++){
+        fSampleMultiplier = pow(log(((fExp-1)/(nSamples-1))*(nSamples-1-i) + 1), 4);
+        vBuffer.push_back(fSampleMultiplier);
+      }
+      break;
+    default:
+      // Everything else that's not supported
+      for(int i=0; i<nSamples; i++){
+        fSampleMultiplier = 1.;
+        vBuffer.push_back(fSampleMultiplier);
+      }
+      break;
     }
     break;
+
   default:
     break;
   } //switch

@@ -26,6 +26,9 @@ typedef enum WaveForm_t{
 typedef enum EnvelopeShape_t{
   kLinear,
   kLogarithmic,
+  kReverseLogarithmic,
+  kQuadLogarithmic,
+  kQuadReverseLogarithmic,
 }EnvelopeShape_t;
 
 typedef enum EnvelopeStage_t{
