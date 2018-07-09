@@ -8,6 +8,12 @@
 #include "DLPG_WaveGenerator.h"
 #include "DLPG_EdgeTrigger.h"
 
+/*
+Either send immediate note offs (short notes) or send note offs
+when the trigger actually closes (potentially less safe)
+*/
+#define DLPG_TRIG_INT_IMMEDIATE_NOTE_OFFS false
+
 #define DLPG_LOG_TO_LINEAR(v) (pow(10, v/20.))
 #define DLPG_LINEAR_TO_LOG(v) (20.*log10(v))
 

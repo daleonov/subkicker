@@ -370,11 +370,18 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
         // Emulate pressing a midi key to play a waveform
         tMidiMsg.MakeNoteOnMsg(10, 100, 0, 1);
         tMidiQueue.Add(&tMidiMsg);
+
+        #if DLPG_TRIG_INT_IMMEDIATE_NOTE_OFFS
         tMidiMsg.MakeNoteOffMsg(10, 0, 1);
         tMidiQueue.Add(&tMidiMsg);
+        #endif
       }
       if(eTriggerState == dlpg::kTriggerFallingEdge){
-        // Send "Note off" ###
+        // Send "Note off"
+        #if !DLPG_TRIG_INT_IMMEDIATE_NOTE_OFFS
+        tMidiMsg.MakeNoteOffMsg(10, 0, 1);
+        tMidiQueue.Add(&tMidiMsg);
+        #endif
       }
     }
   }
