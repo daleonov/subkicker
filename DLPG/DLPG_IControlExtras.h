@@ -45,7 +45,6 @@ public:
   void OnMouseDown(int x, int y, IMouseMod* pMod);
   void OnMouseUp(int x, int y, IMouseMod* pMod);
   bool LoadWave(std::vector<double> &pvBuffer);
-  bool UpdateScale(double fDuration, double fSampleRate);
   /*
   @brief Highlight (literally) the scope - for clicking etc
   @param bHighlightState true = highlighted, false = normal
@@ -55,7 +54,6 @@ public:
 private:
   IRECT mScopeRect;
   std::vector<double> pvBuffer;
-  double fScale;
   bool bHighlightState;
 };
 } //namespace dlpg

@@ -14,10 +14,8 @@ IWavScopeControl::IWavScopeControl(
   this->mParamIdx = paramIdx;
   this->pvBuffer = vBuffer;
   memcpy(&this->mScopeRect, &pR, sizeof(pR));
-  fScale = 1.;
   bHighlightState = false;
 }
-
 
 IWavScopeControl::~IWavScopeControl(){
 
@@ -36,6 +34,8 @@ bool IWavScopeControl::Draw(IGraphics* pGraphics){
   const int nWaveYBase = this->mScopeRect.T + DLPG_SCOPE_V_PADDING;
   IColor *pBgColor;
 
+  double fXStep = ((double)(mScopeRect.R - mScopeRect.L - 2*DLPG_SCOPE_H_PADDING)) / pvBuffer.size();
+
   pGraphics->FillIRect(&DLPG_DEFAULT_SCOPE_BG_ICOLOR, &this->mScopeRect);
 
   // Assuming the buffer has at least 2 samples
@@ -48,7 +48,7 @@ bool IWavScopeControl::Draw(IGraphics* pGraphics){
   otherwise the waveform won't look clean.
   */
   nWaveX = this->mScopeRect.L + DLPG_SCOPE_H_PADDING;
-  for(std::vector<double>::size_type i = 0; i != pvBuffer.size(); i++, nWaveX+=1/fScale){
+  for(std::vector<double>::size_type i = 0; i != pvBuffer.size(); i++, nWaveX+=fXStep){
     pGraphics->DrawLine(
       &DLPG_DEFAULT_SCOPE_FILL_ICOLOR,
       nWaveX,
@@ -59,12 +59,12 @@ bool IWavScopeControl::Draw(IGraphics* pGraphics){
   }
   #endif //DLPG_SCOPE_FILL
   nWaveX = this->mScopeRect.L + DLPG_SCOPE_H_PADDING;
-  for(std::vector<double>::size_type i = 1; i != pvBuffer.size(); i++, nWaveX+=1/fScale){
+  for(std::vector<double>::size_type i = 1; i != pvBuffer.size(); i++, nWaveX+=fXStep){
     pGraphics->DrawLine(
       &DLPG_DEFAULT_SCOPE_OUTLINE_ICOLOR,
       nWaveX,
       nWaveYBase + DLPG_SCOPE_SCALE_SIGNAL(pvBuffer[i-1], nHeight),
-      nWaveX + 1/fScale,
+      nWaveX + fXStep,
       nWaveYBase + DLPG_SCOPE_SCALE_SIGNAL(pvBuffer[i], nHeight),
       0,
       DLPG_SCOPE_ANTIALIAS
@@ -83,29 +83,6 @@ bool IWavScopeControl::Highlight(bool bHighlightState){
   this->bHighlightState = bHighlightState;
   SetDirty(false);
   Redraw();
-  return true;
-}
-
-bool IWavScopeControl::UpdateScale(double fDuration, double fSampleRate){
-  /*
-  Quick maths.
-  User changeable params:
-  - F (frequency, Hz),
-  - Ds (duration, seconds);
-  System parameters:
-  - Sr (sample rate, Hz),
-  - W (scope width, pixels);
-  Variable parameters:
-  - Dn (duration, samples)
-  - Scl (scope scale, samples/pixel)
-
-  Dn[samples] = Ds[seconds] * Sr[Hz]
-  Scl[samples/pixel] = Dn/W = Ds * Sr / W
-  */
-  this->fScale = \
-    fDuration * fSampleRate / (mScopeRect.R - mScopeRect.L - 2*DLPG_SCOPE_H_PADDING);
-  //SetDirty(false);
-  //Redraw();
   return true;
 }
 

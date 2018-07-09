@@ -281,7 +281,6 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
 
   // Scope
   tScope = new dlpg::IWavScopeControl(this, PLUG_ScopeIrect, kScope, vSubkickWaveform);
-  tScope->UpdateScale(0.1, fSampleRate);
   pGraphics->AttachControl(tScope);
 
   /*
@@ -483,7 +482,7 @@ void SubKicker::Reset()
   // Todo: Probably reset it as well?
   tEdgeTrigger->SetSampleRate(fSampleRateHz);
 
-  // tScope's, tWaveGenerator and tEnvelopeGenerator's sample rate are updated in UpdateWaveform()
+  // tWaveGenerator and tEnvelopeGenerator's sample rate are updated in UpdateWaveform()
   UpdateWaveform();
 
   // Midi shenanigans
@@ -530,7 +529,6 @@ bool SubKicker::UpdateWaveform(){
     vSubkickWaveform[i] *= vReleaseEnvelope[j];
   }
 
-  tScope->UpdateScale(fDuration, fSampleRate);
   tScope->LoadWave(vSubkickWaveform);
   tScope->SetDirty(false);
   return true;
