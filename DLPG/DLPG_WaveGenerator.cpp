@@ -3,6 +3,7 @@
 namespace dlpg{
 WaveGenerator::WaveGenerator(double fSampleRate){
   this-> fSampleRate = fSampleRate;
+  // Phase increment is calculated later
   this-> fPhaseIncrement = 0.;
 }
 
@@ -11,6 +12,7 @@ WaveGenerator::~WaveGenerator(){
 
 bool WaveGenerator::SetSampleRate(double fSampleRate){
   this-> fSampleRate = fSampleRate;
+  // Phase increment is calculated later
   this-> fPhaseIncrement = 0.;
   return true;
 }
@@ -94,6 +96,11 @@ bool EnvelopeGenerator::Generate(std::vector<double> &vBuffer, double fDuration,
   default:
     break;
   } //switch
+  return true;
+}
+
+bool EnvelopeGenerator::SetSampleRate(double fSampleRate){
+  this-> fSampleRate = fSampleRate;
   return true;
 }
 

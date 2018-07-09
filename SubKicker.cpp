@@ -283,6 +283,10 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tScope = new dlpg::IWavScopeControl(this, PLUG_ScopeIrect, kScope, vSubkickWaveform);
   pGraphics->AttachControl(tScope);
 
+  // Waveform stuff
+  tWaveGenerator = new dlpg::WaveGenerator();
+  tEnvelopeGenerator = new dlpg::EnvelopeGenerator();
+
   /*
   Those two knobs (and switches) are mutually exclusive, so we
   hide both of them and figure out later which one to show.
@@ -471,7 +475,6 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
   tOutputMeterLabel->SetTextFromPlug(psOutputMeterLabelString); 
 }
 
-
 void SubKicker::Reset()
 {
   TRACE;
@@ -510,10 +513,11 @@ bool SubKicker::UpdateWaveform(){
 
   // Delete old waveform
   vSubkickWaveform.clear();
-
   std::vector<double> vAttackEnvelope(0), vReleaseEnvelope(0);
-  tWaveGenerator = new dlpg::WaveGenerator();
-  tEnvelopeGenerator = new dlpg::EnvelopeGenerator();
+
+  // Sample rate
+  tWaveGenerator->SetSampleRate(fSampleRate);
+  tEnvelopeGenerator->SetSampleRate(fSampleRate);
 
   // Generate wave
   tWaveGenerator->Generate(vSubkickWaveform, fDuration, fFrequency, fPhase, eSubShape);
