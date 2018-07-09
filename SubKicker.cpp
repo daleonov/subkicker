@@ -396,8 +396,18 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
   double fCurrentRectifiedSampleLinear;
   dlpg::TriggerState_t eTriggerState;
   IMidiMsg tMidiMsg;
+  static double fPreviousTempo = 120.;
+  double fCurrentTempo;
 
   if(1){
+    if(GetParam(kTrigHoldSnapSwitch)->Bool()){
+      fCurrentTempo = GetTempo();
+      if(HasTempoChanged(fCurrentTempo, fPreviousTempo)){
+        // Change subdivision-to-seconds scale
+        tTrigSubdivisionKnob->SetDirty(true);
+      }
+      fPreviousTempo = fCurrentTempo;
+    }
     // Todo: Make sure the midi notes' offset is correct in the sample chunk
     for (int i = 0; i < nFrames; ++i, ++pfInR, ++pfInL){
       fCurrentRectifiedSampleLinear = (fabs(*pfInR) + fabs(*pfInL))/2;

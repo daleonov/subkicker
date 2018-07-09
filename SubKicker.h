@@ -249,6 +249,20 @@ const IColor tOutputMeterLabelIColor(
   DLPG_OUTPUT_METER_LABEL_COLOR_MONO
   );
 
+const double fEpsilon = std::numeric_limits<double>::epsilon();
+#define DLPG_TEMPO_CHANGE_DELTA_BPM .5
+inline bool HasTempoChanged(double fCurrentBpm, double fPreviousBpm){
+  if(fCurrentBpm < fEpsilon || \
+    fPreviousBpm < fEpsilon){
+    // Obviously tempos shouldn't be negative or zero
+    return false;
+  }
+  if(fabs(fCurrentBpm) - fabs(fPreviousBpm) < DLPG_TEMPO_CHANGE_DELTA_BPM)
+    return true;
+  else
+    return false;
+}
+
 const int kNumPrograms = 1;
 
 enum EParams
