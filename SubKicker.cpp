@@ -30,7 +30,7 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
       DLPG_SUB_NOTE_KNOB_VALUE_TO_NOTE_LABEL(i),
       DLPG_SUB_NOTE_KNOB_VALUE_TO_HZ(i)
       );
-    GetParam(kBypassSwitch)->SetDisplayText(i, sEnumText);
+    GetParam(kSubNoteKnob)->SetDisplayText(i, sEnumText);
   }
   GetParam(kSubFreqKnob)->SetShape(DLPG_SUB_FREQ_KNOB_SHAPE);
 
@@ -44,7 +44,7 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   GetParam(kBypassSwitch)->InitEnum("Bypass", DLPG_DEFAULT_BYPASS_SWITCH_STATE, DLPG_SWITCH_STATES);
   GetParam(kBypassSwitch)->SetDisplayText(0, "Normal");
   GetParam(kBypassSwitch)->SetDisplayText(1, "Bypassed");
-  GetParam(kTrigSwitch)->InitEnum("Trig | Source", DLPG_DEFAULT_TRIG_SWITCH_STATE, DLPG_SWITCH_STATES);
+  GetParam(kTrigSwitch)->InitEnum("Triger (int) | Source", DLPG_DEFAULT_TRIG_SWITCH_STATE, DLPG_SWITCH_STATES);
   GetParam(kTrigSwitch)->SetDisplayText(0, "Internal");
   GetParam(kTrigSwitch)->SetDisplayText(1, "External");
   GetParam(kSnapSwitch)->InitEnum("Sub | Frequency snap", DLPG_DEFAULT_SNAP_SWITCH_STATE, DLPG_SWITCH_STATES);
@@ -53,9 +53,12 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   GetParam(kFlipSwitch)->InitEnum("Sub | Phase flip", DLPG_DEFAULT_FLIP_SWITCH_STATE, DLPG_SWITCH_STATES);
   GetParam(kFlipSwitch)->SetDisplayText(0, "off");
   GetParam(kFlipSwitch)->SetDisplayText(1, "invert");
-  GetParam(kTrigInputSwitch)->InitEnum("Input source", DLPG_DEFAULT_TRIG_INPUT_SWITCH_STATE, DLPG_SWITCH_STATES);
+  // Sidechain triggering - not yet implemented
+  /*
+  GetParam(kTrigInputSwitch)->InitEnum("Trigger (int) | Input source", DLPG_DEFAULT_TRIG_INPUT_SWITCH_STATE, DLPG_SWITCH_STATES);
   GetParam(kTrigInputSwitch)->SetDisplayText(0, "ch. 1-2");
   GetParam(kTrigInputSwitch)->SetDisplayText(1, "ch. 3-4");
+  */
   GetParam(kTrigInpMuteSwitch)->InitEnum("Input mute", DLPG_DEFAULT_TRIG_INPMUTE_SWITCH_STATE, DLPG_SWITCH_STATES);
   GetParam(kTrigInpMuteSwitch)->SetDisplayText(0, "don't mute");
   GetParam(kTrigInpMuteSwitch)->SetDisplayText(1, "mute");
@@ -153,15 +156,18 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_SWITCH_ID, DLPG_TRIG_SWITCH_FN, DLPG_SWITCH_STATES);
   tTrigSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(1, 2), kTrigSwitch, &tBmp);
   pGraphics->AttachControl(tTrigSwitch);
+  // Sidechain triggering - not yet implemented
+  /*
   tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_INPUT_SWITCH_ID, DLPG_TRIG_INPUT_SWITCH_FN, DLPG_SWITCH_STATES);
   tTrigInputSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(2, 2), kTrigInputSwitch, &tBmp);
   pGraphics->AttachControl(tTrigInputSwitch);
+  tTrigInputSwitch->GrayOut(true);
+  tTrigInputSwitch->Hide(true);
+  */
   tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_INPMUTE_SWITCH_ID, DLPG_TRIG_INPMUTE_SWITCH_FN, DLPG_SWITCH_STATES);
   tTrigInpMuteSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(3, 2), kTrigInpMuteSwitch, &tBmp);
   pGraphics->AttachControl(tTrigInpMuteSwitch);
-  tTrigInputSwitch->GrayOut(true);
   tTrigInpMuteSwitch->GrayOut(true);
-  tTrigInputSwitch->Hide(true);
   tTrigInpMuteSwitch->Hide(true);
   tBmp = pGraphics->LoadIBitmap(DLPG_SUB_WAVEFORM_SHAPE_SWITCH_ID, DLPG_SUB_WAVEFORM_SHAPE_SWITCH_FN, DLPG_SWITCH_STATES);
   tSubShapeSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(2, 2), kSubShapeSwitch, &tBmp);
@@ -286,6 +292,10 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tEdgeTrigger = new dlpg::EdgeTrigger(fSampleRate, fTrigHold, fTrigThresh);
 
   // Scope
+  // Some text labels for generic UI's
+  GetParam(kScope)->InitEnum("Preview waveform", 0, DLPG_SWITCH_STATES);
+  GetParam(kScope)->SetDisplayText(0, "(Not clicked)");
+  GetParam(kScope)->SetDisplayText(1, "(Clicked)");
   tScope = new dlpg::IWavScopeControl(this, PLUG_ScopeIrect, kScope, vSubkickWaveform);
   pGraphics->AttachControl(tScope);
 

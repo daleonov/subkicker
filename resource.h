@@ -59,7 +59,7 @@ instrument determined by PLUG _IS _INST
 #define DLPG_TRIG_SWITCH_ID 103
 #define DLPG_SNAP_SWITCH_ID 104
 #define DLPG_FLIP_SWITCH_ID 105
-#define DLPG_TRIG_INPUT_SWITCH_ID 106
+//#define DLPG_TRIG_INPUT_SWITCH_ID 106
 #define DLPG_TRIG_NOTE_KNOB_ID 107
 #define DLPG_TRIG_CH_KNOB_ID 108
 #define DLPG_TRIG_THRESH_KNOB_ID 109
@@ -83,7 +83,7 @@ instrument determined by PLUG _IS _INST
 #define DLPG_TRIG_HOLD_SNAP_SWITCH_FN "resources/img/switch_generic.png"
 #define DLPG_SNAP_SWITCH_FN "resources/img/switch_snap_alt.png"
 #define DLPG_FLIP_SWITCH_FN "resources/img/switch_flip_alt2.png"
-#define DLPG_TRIG_INPUT_SWITCH_FN "resources/img/switch_trig_input.png"
+//#define DLPG_TRIG_INPUT_SWITCH_FN "resources/img/switch_trig_input.png"
 #define DLPG_TRIG_INPMUTE_SWITCH_FN "resources/img/switch_trig_inpmute.png"
 #define DLPG_SUB_WAVEFORM_SHAPE_SWITCH_FN "resources/img/switch_generic.png"
 #define DLPG_TRIG_NOTE_KNOB_FN "resources/img/knob_trig_note_129.png"

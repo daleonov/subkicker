@@ -252,7 +252,7 @@ enum EParams
   kSnapSwitch,
   kFlipSwitch,
   kSubShapeSwitch,
-  kTrigInputSwitch,
+  //kTrigInputSwitch,
   kTrigInpMuteSwitch,
   kTrigNoteKnob,
   kTrigChKnob,
@@ -374,7 +374,7 @@ private:
   ISwitchControl *tTrigHoldSnapSwitch;
   ISwitchControl *tSnapSwitch;
   ISwitchControl *tFlipSwitch;
-  ISwitchControl *tTrigInputSwitch;
+  //ISwitchControl *tTrigInputSwitch;
   ISwitchControl *tTrigInpMuteSwitch;
   ISwitchControl *tSubShapeSwitch;
   IKnobMultiControl *tTrigNoteKnob;
