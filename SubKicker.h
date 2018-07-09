@@ -39,6 +39,7 @@ when the trigger actually closes (potentially less safe)
 
 #define DLPG_STANDARD_KNOB_FRAMES 128
 #define DLPG_TRIG_CH_KNOB_FRAMES 17
+#define DLPG_TRIG_SUBDIVISION_KNOB_FRAMES 6
 #define DLPG_TRIG_NOTE_KNOB_FRAMES 129
 #define DLPG_SUB_NOTE_KNOB_FRAMES 25
 
@@ -72,6 +73,12 @@ when the trigger actually closes (potentially less safe)
 #define DLPG_SUB_FREQ_KNOB_NORMALIZE(v) ToNormalizedParam(v, DLPG_SUB_FREQ_MIN, DLPG_SUB_FREQ_MAX, DLPG_SUB_FREQ_KNOB_SHAPE)
 #define DLPG_SUB_NOTE_KNOB_NORMALIZE(v) ToNormalizedParam(v, 0, DLPG_SUB_NOTE_STATES - 1, 1.)
 // For Hz to Note knob value conversion, use HzToSubNoteKnobValue()
+
+// Trigger (int.) snapped knob
+#define DLPG_TRIG_SUBDIVISION_STATES DLPG_NUMBER_OF_SUBDIVISIONS
+#define DLPG_TRIG_SUBDIVISION_DEFAULT 2
+#define DLPG_TRIG_SUBDIVISION_KNOB_VALUE_TO_LABEL(v) (asSubdivisionNames[v])
+#define DLPG_TRIG_SUBDIVISION_KNOB_VALUE_TO_SECONDS(v, tempo) (SubdivisionToSeconds(v, tempo))
 
 // Other knobs
 #define DLPG_TRIG_CH_RANGE 1, DLPG_TRIG_ANY_CH
@@ -190,6 +197,7 @@ IRECT(\
 #define DLPG_TRIG_CH_LABEL_STR "%02d"
 #define DLPG_TRIG_HOLD_LABEL_STR DLPG_ENVELOPE_GENERIC_STR
 #define DLPG_TRIG_THRESH_LABEL_STR DLPG_LEVEL_GENERIC_STR
+#define DLPG_TRIG_SUBDIVISION_LABEL_STR "%s (%0.1f ms)"
 #define DLPG_SUB_FREQ_LABEL_STR "%0.2f Hz"
 #define DLPG_SUB_PHASE_LABEL_STR "%+0.1f\xB0"
 #define DLPG_SUB_NOTE_LABEL_STR "%s (%0.2f Hz)"
@@ -258,6 +266,7 @@ enum EParams
   kTrigChKnob,
   kTrigHoldKnob,
   kTrigThreshKnob,
+  kTrigSubdivisionKnob,
   kSubFreqKnob,
   kSubPhaseKnob,
   kSubNoteKnob,
@@ -381,6 +390,7 @@ private:
   IKnobMultiControl *tTrigChKnob;
   IKnobMultiControl *tTrigHoldKnob;
   IKnobMultiControl *tTrigThreshKnob;
+  IKnobMultiControl *tTrigSubdivisionKnob;
   IKnobMultiControl *tSubFreqKnob;
   IKnobMultiControl *tSubNoteKnob;
   IKnobMultiControl *tSubPhaseKnob;
@@ -391,6 +401,7 @@ private:
   ITextControl *tTrigNoteLabel;
   ITextControl *tTrigChLabel;
   ITextControl *tTrigHoldLabel;
+  ITextControl *tTrigSubdivisionLabel;
   ITextControl *tTrigThreshLabel;
   ITextControl *tSubFreqLabel;
   ITextControl *tSubPhaseLabel;

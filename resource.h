@@ -75,6 +75,7 @@ instrument determined by PLUG _IS _INST
 #define DLPG_OUTPUT_METER_OVERLAY_ID 119
 #define DLPG_SUB_WAVEFORM_SHAPE_SWITCH_ID 120
 #define DLPG_TRIG_HOLD_SNAP_SWITCH_ID 121
+#define DLPG_TRIG_SUBDIVISION_KNOB_ID 122
 
 // Image resource locations for this plug.
 #define DLPG_BACKGROUND_FN "resources/img/bg_reva.png"
@@ -90,6 +91,7 @@ instrument determined by PLUG _IS _INST
 #define DLPG_TRIG_CH_KNOB_FN "resources/img/knob_trig_ch_17.png"
 #define DLPG_TRIG_THRESH_KNOB_FN "resources/img/knob_trig_thresh_128.png"
 #define DLPG_TRIG_HOLD_KNOB_FN "resources/img/knob_trig_hold_128.png"
+#define DLPG_TRIG_SUBDIVISION_KNOB_FN "resources/img/knob_trig_subdivision_6.png"
 #define DLPG_SUB_FREQ_KNOB_FN "resources/img/knob_sub_freq_128.png"
 #define DLPG_SUB_PHASE_KNOB_FN "resources/img/knob_sub_phase_128.png"
 #define DLPG_SUB_NOTE_KNOB_FN "resources/img/knob_sub_note_25.png"

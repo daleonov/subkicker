@@ -511,6 +511,14 @@
 		CEE3171620F29C75002DABC3 /* knob_trig_hold_128.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE3171220F29C75002DABC3 /* knob_trig_hold_128.png */; };
 		CEE3171720F29C75002DABC3 /* knob_trig_hold_128.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE3171220F29C75002DABC3 /* knob_trig_hold_128.png */; };
 		CEE3171820F29C75002DABC3 /* knob_trig_hold_128.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE3171220F29C75002DABC3 /* knob_trig_hold_128.png */; };
+		CEE3172220F3AE41002DABC3 /* DLPG_Subdivisions.h in Headers */ = {isa = PBXBuildFile; fileRef = CEE3172120F3AE41002DABC3 /* DLPG_Subdivisions.h */; };
+		CEE3172320F3AE41002DABC3 /* DLPG_Subdivisions.h in Headers */ = {isa = PBXBuildFile; fileRef = CEE3172120F3AE41002DABC3 /* DLPG_Subdivisions.h */; };
+		CEE3172820F3B7AC002DABC3 /* knob_trig_subdivision_6.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE3172720F3B7AC002DABC3 /* knob_trig_subdivision_6.png */; };
+		CEE3172920F3B7AC002DABC3 /* knob_trig_subdivision_6.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE3172720F3B7AC002DABC3 /* knob_trig_subdivision_6.png */; };
+		CEE3172A20F3B7AC002DABC3 /* knob_trig_subdivision_6.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE3172720F3B7AC002DABC3 /* knob_trig_subdivision_6.png */; };
+		CEE3172B20F3B7AC002DABC3 /* knob_trig_subdivision_6.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE3172720F3B7AC002DABC3 /* knob_trig_subdivision_6.png */; };
+		CEE3172C20F3B7AC002DABC3 /* knob_trig_subdivision_6.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE3172720F3B7AC002DABC3 /* knob_trig_subdivision_6.png */; };
+		CEE3172D20F3B7AC002DABC3 /* knob_trig_subdivision_6.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE3172720F3B7AC002DABC3 /* knob_trig_subdivision_6.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -929,6 +937,8 @@
 		CEE3170520F28817002DABC3 /* DLPG_EdgeTrigger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DLPG_EdgeTrigger.cpp; path = DLPG/DLPG_EdgeTrigger.cpp; sourceTree = "<group>"; };
 		CEE3170620F28817002DABC3 /* DLPG_EdgeTrigger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLPG_EdgeTrigger.h; path = DLPG/DLPG_EdgeTrigger.h; sourceTree = "<group>"; };
 		CEE3171220F29C75002DABC3 /* knob_trig_hold_128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = knob_trig_hold_128.png; path = resources/img/knob_trig_hold_128.png; sourceTree = "<group>"; };
+		CEE3172120F3AE41002DABC3 /* DLPG_Subdivisions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLPG_Subdivisions.h; path = DLPG/DLPG_Subdivisions.h; sourceTree = "<group>"; };
+		CEE3172720F3B7AC002DABC3 /* knob_trig_subdivision_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = knob_trig_subdivision_6.png; path = resources/img/knob_trig_subdivision_6.png; sourceTree = "<group>"; };
 		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -1032,6 +1042,7 @@
 				CE8EA0F020ED57EC0031E883 /* DLPG_IControlExtras.h */,
 				CE8EA0F120ED57EC0031E883 /* DLPG_WaveGenerator.cpp */,
 				CE8EA0F220ED57EC0031E883 /* DLPG_WaveGenerator.h */,
+				CEE3172120F3AE41002DABC3 /* DLPG_Subdivisions.h */,
 				CEAF71E420EFDDAC0016CA18 /* DLPG_NoteFrequencies.h */,
 				CE8EA0F320ED57EC0031E883 /* PLUG_IControlExtras.cpp */,
 				CE8EA10D20ED5C0E0031E883 /* DLPG_Version.h */,
@@ -1563,6 +1574,7 @@
 				CE8EA02020ED40170031E883 /* knob_envelope_hold_128.png */,
 				CE8EA02120ED40170031E883 /* knob_envelope_release_128.png */,
 				CE8EA02220ED40170031E883 /* knob_generic_128.png */,
+				CEE3172720F3B7AC002DABC3 /* knob_trig_subdivision_6.png */,
 				CE8EA02320ED40170031E883 /* knob_sub_freq_128.png */,
 				CE8EA02420ED40170031E883 /* knob_sub_phase_128.png */,
 				CE8EA02520ED40170031E883 /* knob_trig_attack_128.png */,
@@ -1707,6 +1719,7 @@
 				4F78D96013B63BA50032E0F3 /* IGraphics.h in Headers */,
 				CEAF71E620EFDDAC0016CA18 /* DLPG_NoteFrequencies.h in Headers */,
 				4F78DA0713B63CD90032E0F3 /* IPlugAU.h in Headers */,
+				CEE3172320F3AE41002DABC3 /* DLPG_Subdivisions.h in Headers */,
 				4F3EE94913B65A350097B791 /* IPlugOSDetect.h in Headers */,
 				4FDA440913F3E4F2000B4551 /* IBitmapMonoText.h in Headers */,
 				CE8EA0FC20ED57EC0031E883 /* DLPG_IControlExtras.h in Headers */,
@@ -1738,6 +1751,7 @@
 				CE8EA10E20ED5C0E0031E883 /* DLPG_Version.h in Headers */,
 				CE8EA10320ED57EC0031E883 /* DLPG_WaveGenerator.h in Headers */,
 				4F78DA9113B640050032E0F3 /* swell-internal.h in Headers */,
+				CEE3172220F3AE41002DABC3 /* DLPG_Subdivisions.h in Headers */,
 				4F78DA9213B640050032E0F3 /* swell-types.h in Headers */,
 				CE8EA0FB20ED57EC0031E883 /* DLPG_IControlExtras.h in Headers */,
 				4F78DA9313B640050032E0F3 /* aeffect.h in Headers */,
@@ -2019,6 +2033,7 @@
 				CE8EA0D820ED40170031E883 /* switch_trig_inpmute.png in Resources */,
 				CE8EA09620ED40170031E883 /* overlay_in.png in Resources */,
 				CE8EA04220ED40170031E883 /* bg_reva.png in Resources */,
+				CEE3172920F3B7AC002DABC3 /* knob_trig_subdivision_6.png in Resources */,
 				CE8EA08420ED40170031E883 /* knob_trig_thresh_128.png in Resources */,
 				CE8EA0EA20ED40170031E883 /* switch_trig.png in Resources */,
 				CE8EA0C020ED40170031E883 /* switch_freeze.png in Resources */,
@@ -2058,6 +2073,7 @@
 				CE8EA0DA20ED40170031E883 /* switch_trig_inpmute.png in Resources */,
 				CE8EA09820ED40170031E883 /* overlay_in.png in Resources */,
 				CE8EA04420ED40170031E883 /* bg_reva.png in Resources */,
+				CEE3172B20F3B7AC002DABC3 /* knob_trig_subdivision_6.png in Resources */,
 				CE8EA08620ED40170031E883 /* knob_trig_thresh_128.png in Resources */,
 				CE8EA0EC20ED40170031E883 /* switch_trig.png in Resources */,
 				CE8EA0C220ED40170031E883 /* switch_freeze.png in Resources */,
@@ -2097,6 +2113,7 @@
 				CE8EA0DB20ED40170031E883 /* switch_trig_inpmute.png in Resources */,
 				CE8EA09920ED40170031E883 /* overlay_in.png in Resources */,
 				CE8EA04520ED40170031E883 /* bg_reva.png in Resources */,
+				CEE3172C20F3B7AC002DABC3 /* knob_trig_subdivision_6.png in Resources */,
 				CE8EA08720ED40170031E883 /* knob_trig_thresh_128.png in Resources */,
 				CE8EA0ED20ED40170031E883 /* switch_trig.png in Resources */,
 				CE8EA0C320ED40170031E883 /* switch_freeze.png in Resources */,
@@ -2136,6 +2153,7 @@
 				CE8EA0D920ED40170031E883 /* switch_trig_inpmute.png in Resources */,
 				CE8EA09720ED40170031E883 /* overlay_in.png in Resources */,
 				CE8EA04320ED40170031E883 /* bg_reva.png in Resources */,
+				CEE3172A20F3B7AC002DABC3 /* knob_trig_subdivision_6.png in Resources */,
 				CE8EA08520ED40170031E883 /* knob_trig_thresh_128.png in Resources */,
 				CE8EA0EB20ED40170031E883 /* switch_trig.png in Resources */,
 				CE8EA0C120ED40170031E883 /* switch_freeze.png in Resources */,
@@ -2175,6 +2193,7 @@
 				CE8EA0DC20ED40170031E883 /* switch_trig_inpmute.png in Resources */,
 				CE8EA09A20ED40170031E883 /* overlay_in.png in Resources */,
 				CE8EA04620ED40170031E883 /* bg_reva.png in Resources */,
+				CEE3172D20F3B7AC002DABC3 /* knob_trig_subdivision_6.png in Resources */,
 				CE8EA08820ED40170031E883 /* knob_trig_thresh_128.png in Resources */,
 				CE8EA0EE20ED40170031E883 /* switch_trig.png in Resources */,
 				CE8EA0C420ED40170031E883 /* switch_freeze.png in Resources */,
@@ -2205,6 +2224,7 @@
 				CE8EA0BF20ED40170031E883 /* switch_freeze.png in Resources */,
 				CE8EA09B20ED40170031E883 /* overlay_out.png in Resources */,
 				4F78D88613B6382B0032E0F3 /* SubKicker.icns in Resources */,
+				CEE3172820F3B7AC002DABC3 /* knob_trig_subdivision_6.png in Resources */,
 				CE8EA0C520ED40170031E883 /* switch_generic.png in Resources */,
 				CE8EA0E920ED40170031E883 /* switch_trig.png in Resources */,
 				CE8EA0D120ED40170031E883 /* switch_snap.png in Resources */,

@@ -1,6 +1,7 @@
 #include "DLPG_Version.h"
 #include "DLPG_NoteNames.h"
 #include "DLPG_NoteFrequencies.h"
+#include "DLPG_Subdivisions.h"
 #include "SubKicker.h"
 #include "IPlug_include_in_plug_src.h"
 #include "IControl.h"
@@ -16,12 +17,13 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   //arguments are: name, defaultVal, minVal, maxVal, step, label
   GetParam(kTrigNoteKnob)->InitInt("Trigger (ext) | Midi note", DLPG_TRIG_ANY_NOTE, DLPG_TRIG_NOTE_RANGE, "");
   GetParam(kTrigChKnob)->InitInt("Trigger (ext) | Midi channel", DLPG_TRIG_ANY_CH, DLPG_TRIG_CH_RANGE, "");
-  GetParam(kTrigHoldKnob)->InitDouble("Trigger (int) | Hold", DLPG_TRIG_HOLD_DEFAULT, DLPG_TRIG_HOLD_RANGE, 0.1, "ms");
+  GetParam(kTrigHoldKnob)->InitDouble("Trigger (int) | Hold (ms)", DLPG_TRIG_HOLD_DEFAULT, DLPG_TRIG_HOLD_RANGE, 0.1, "ms");
   GetParam(kTrigThreshKnob)->InitDouble("Trigger (int) | Threshold", DLPG_TRIG_THRESH_DEFAULT, DLPG_TRIG_THRESH_RANGE, 0.1, "dB");
 
   GetParam(kSubFreqKnob)->InitDouble("Sub | Frequency", DLPG_SUB_FREQ_DEFAULT, DLPG_SUB_FREQ_RANGE, 0.1, "Hz");
   GetParam(kSubPhaseKnob)->InitDouble("Sub | Phase", DLPG_SUB_PHASE_DEFAULT, DLPG_SUB_PHASE_RANGE, 0.1, "Deg");
   GetParam(kSubNoteKnob)->InitEnum("Sub | Note", DLPG_DEFAULT_SUB_NOTE_STATE, DLPG_SUB_NOTE_STATES);
+  GetParam(kTrigSubdivisionKnob)->InitEnum("Trigger (int) | Hold (subdivision)", DLPG_TRIG_SUBDIVISION_DEFAULT, DLPG_TRIG_SUBDIVISION_STATES);
   // Human readable labels for generic UI's
   for(int i=0; i<DLPG_SUB_NOTE_STATES; i++){
     sprintf(
@@ -33,6 +35,17 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
     GetParam(kSubNoteKnob)->SetDisplayText(i, sEnumText);
   }
   GetParam(kSubFreqKnob)->SetShape(DLPG_SUB_FREQ_KNOB_SHAPE);
+
+  for(int i=0; i<DLPG_TRIG_SUBDIVISION_STATES; i++){
+    sprintf(
+      sEnumText,
+      DLPG_TRIG_SUBDIVISION_LABEL_STR,
+      DLPG_TRIG_SUBDIVISION_KNOB_VALUE_TO_LABEL(i),
+      DLPG_TRIG_SUBDIVISION_KNOB_VALUE_TO_SECONDS(i, GetTempo()) * 1000.
+      );
+    GetParam(kTrigSubdivisionKnob)->SetDisplayText(i, sEnumText);
+  }
+
 
   GetParam(kEnvelopeAttackKnob)->InitDouble("Envelope | Attack", DLPG_ENVELOPE_ATTACK_DEFAULT, DLPG_ENVELOPE_ATTACK_RANGE, 0.1, "ms");
   GetParam(kEnvelopeHoldKnob)->InitDouble("Envelope | Hold", DLPG_ENVELOPE_HOLD_DEFAULT, DLPG_ENVELOPE_HOLD_RANGE, 0.1, "ms");
@@ -103,10 +116,15 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_HOLD_KNOB_ID, DLPG_TRIG_HOLD_KNOB_FN, DLPG_STANDARD_KNOB_FRAMES);
   tTrigHoldKnob = new IKnobMultiControl(this, DLPG_KNOB_GRID(1, 2), kTrigHoldKnob, &tBmp);
   pGraphics->AttachControl(tTrigHoldKnob);
+
+  tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_SUBDIVISION_KNOB_ID, DLPG_TRIG_SUBDIVISION_KNOB_FN, DLPG_TRIG_SUBDIVISION_KNOB_FRAMES);
+  tTrigSubdivisionKnob = new IKnobMultiControl(this, DLPG_KNOB_GRID(1, 2), kTrigSubdivisionKnob, &tBmp);
+  pGraphics->AttachControl(tTrigSubdivisionKnob);
   // Hide all, the switch will take care of them later
   tTrigChKnob->Hide(true);
   tTrigNoteKnob->Hide(true);
   tTrigHoldKnob->Hide(true);
+  tTrigSubdivisionKnob->Hide(true);
   tTrigThreshKnob->Hide(true);
 
   // Sub section
@@ -246,16 +264,19 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tTrigNoteLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 1), &tKnobLabelCommon, "Trig Note");
   tTrigChLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 2), &tKnobLabelCommon, "Trig Ch");
   tTrigThreshLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 1), &tKnobLabelCommon, "Trig Thresh");
-  tTrigHoldLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 2), &tKnobLabelCommon, "Trig Hold");
+  tTrigHoldLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 2), &tKnobLabelCommon, "Trig Hold ms");
+  tTrigSubdivisionLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 2), &tKnobLabelCommon, "Trig Hold s/d");
   pGraphics->AttachControl(tTrigNoteLabel);
   pGraphics->AttachControl(tTrigChLabel);
   pGraphics->AttachControl(tTrigHoldLabel);
   pGraphics->AttachControl(tTrigThreshLabel);
+  pGraphics->AttachControl(tTrigSubdivisionLabel);
   // Hide all, the trig switch will take care of them later
   tTrigHoldLabel->Hide(true);
   tTrigThreshLabel->Hide(true);
   tTrigNoteLabel->Hide(true);
   tTrigChLabel->Hide(true);
+  tTrigSubdivisionLabel->Hide(true);
   // Sub section
   tSubFreqLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 3), &tKnobLabelCommon, "Sub Freq");
   tSubNoteLabel = new ITextControl(this, DLPG_KNOB_LABEL_GRID_IRECT(1, 3), &tKnobLabelCommon, "Sub Note");
@@ -591,7 +612,7 @@ void SubKicker::OnParamChange(int paramIdx)
   int nPreviewNote, nPreviewCh;
   IMidiMsg tMidiMsg;
   static bool bIsInit = true;
-  bool bSwitchState;
+  bool bSwitchState, bExtraSwitchState;
   double fKnobValue, fNormalizedKnobValue;
 
   switch (paramIdx)
@@ -631,6 +652,20 @@ void SubKicker::OnParamChange(int paramIdx)
       DLPG_SET_LABEL_GENERIC(sKnobLabelString, DLPG_TRIG_HOLD_LABEL_STR, kTrigHoldKnob, tTrigHoldLabel);
       fKnobValue = GetParam(kTrigHoldKnob)->Value();
       tEdgeTrigger->SetHoldTime(fKnobValue / 1000.);
+      break;
+    case kTrigSubdivisionKnob:
+      // Display knob's value with a text label ###
+      nKnobValue = GetParam(kTrigSubdivisionKnob)->Int();
+      fKnobValue = DLPG_TRIG_SUBDIVISION_KNOB_VALUE_TO_SECONDS(nKnobValue, GetTempo());
+      sprintf(
+        sKnobLabelString,
+        DLPG_TRIG_SUBDIVISION_LABEL_STR,
+        DLPG_TRIG_SUBDIVISION_KNOB_VALUE_TO_LABEL(nKnobValue),
+        fKnobValue * 1000.
+        );
+      tTrigSubdivisionLabel->SetTextFromPlug(sKnobLabelString);
+      tEdgeTrigger->SetHoldTime(fKnobValue);
+      // 
       break;
     case kSubNoteKnob:
       // Display knob's value with a text label
@@ -737,18 +772,61 @@ void SubKicker::OnParamChange(int paramIdx)
       break;
     case kTrigSwitch:
       bSwitchState = GetParam(kTrigSwitch)->Bool();
+      bExtraSwitchState = GetParam(kTrigHoldSnapSwitch)->Bool();
 
+      /*
+      Trig sw: ext = 0, int = 1;
+      Snap sw:  ms = 0, s/d = 1.
+      | Trig sw | Snap sw || Hold knob | Subdiv knob | Ch knob |
+      |    0    |    0    ||  hidden   |   hidden    | visible |
+      |    0    |   [1]   ||  hidden   |   hidden    | visible |
+      |    1    |    0    ||  visible  |   hidden    | hidden  |
+      |    1    |    1    ||  hidden   |   visible   | hidden  |
+
+      Ch knob =          !Trig
+      Hold knob =        Trig && !snap
+      Subdiv knob =      Trig && snap
+      Ch knob hide =     Trig
+      Hold knob hide =   !(Trig && !snap)
+      Subdiv knob hide = !(Trig && snap)
+
+      */
       tTrigChKnob->Hide(bSwitchState);
       tTrigNoteKnob->Hide(bSwitchState);
-      tTrigHoldKnob->Hide(!bSwitchState);
+      tTrigHoldKnob->Hide(!(bSwitchState && !bExtraSwitchState));
+      tTrigSubdivisionKnob->Hide(!(bSwitchState && bExtraSwitchState));
       tTrigThreshKnob->Hide(!bSwitchState);
+
       tTrigNoteLabel->Hide(bSwitchState);
       tTrigChLabel->Hide(bSwitchState);
-      tTrigHoldLabel->Hide(!bSwitchState);
+      tTrigHoldLabel->Hide(!(bSwitchState && !bExtraSwitchState));
+      tTrigSubdivisionLabel->Hide(!(bSwitchState && bExtraSwitchState));
       tTrigThreshLabel->Hide(!bSwitchState);
+
+      tTrigHoldSnapSwitch->GrayOut(!bSwitchState);
 
       // Reset the trigger every time
       tEdgeTrigger->Reset();
+    case kTrigHoldSnapSwitch:
+      // Update controls 
+      bSwitchState = GetParam(kTrigSwitch)->Bool();
+      bExtraSwitchState = GetParam(kTrigHoldSnapSwitch)->Bool();
+      tTrigHoldKnob->Hide(!(bSwitchState && !bExtraSwitchState));
+      tTrigSubdivisionKnob->Hide(!(bSwitchState && bExtraSwitchState));
+      tTrigHoldLabel->Hide(!(bSwitchState && !bExtraSwitchState));
+      tTrigSubdivisionLabel->Hide(!(bSwitchState && bExtraSwitchState));
+      // Update trigger's hold time
+      // If the tempo of the song changes, this control is getting SetDirty() from DSP thread
+      if(bExtraSwitchState){
+        // Is snapped to subdivision
+        nKnobValue = GetParam(kTrigSubdivisionKnob)->Int();
+        fKnobValue = DLPG_TRIG_SUBDIVISION_KNOB_VALUE_TO_SECONDS(nKnobValue, GetTempo());
+      }
+      else{
+        // If not snapped (milliseconds)
+        fKnobValue = GetParam(kTrigHoldKnob)->Value() / 1000.;
+      }
+      tEdgeTrigger->SetHoldTime(fKnobValue);
     default:
       break;
   }
