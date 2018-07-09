@@ -44,13 +44,13 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   GetParam(kBypassSwitch)->InitEnum("Bypass", DLPG_DEFAULT_BYPASS_SWITCH_STATE, DLPG_SWITCH_STATES);
   GetParam(kBypassSwitch)->SetDisplayText(0, "Normal");
   GetParam(kBypassSwitch)->SetDisplayText(1, "Bypassed");
-  GetParam(kTrigSwitch)->InitEnum("Trigger", DLPG_DEFAULT_TRIG_SWITCH_STATE, DLPG_SWITCH_STATES);
+  GetParam(kTrigSwitch)->InitEnum("Trig | Source", DLPG_DEFAULT_TRIG_SWITCH_STATE, DLPG_SWITCH_STATES);
   GetParam(kTrigSwitch)->SetDisplayText(0, "Internal");
   GetParam(kTrigSwitch)->SetDisplayText(1, "External");
-  GetParam(kSnapSwitch)->InitEnum("Frequency snap", DLPG_DEFAULT_SNAP_SWITCH_STATE, DLPG_SWITCH_STATES);
+  GetParam(kSnapSwitch)->InitEnum("Sub | Frequency snap", DLPG_DEFAULT_SNAP_SWITCH_STATE, DLPG_SWITCH_STATES);
   GetParam(kSnapSwitch)->SetDisplayText(0, "to Hz");
   GetParam(kSnapSwitch)->SetDisplayText(1, "to notes");
-  GetParam(kFlipSwitch)->InitEnum("Phase flip", DLPG_DEFAULT_FLIP_SWITCH_STATE, DLPG_SWITCH_STATES);
+  GetParam(kFlipSwitch)->InitEnum("Sub | Phase flip", DLPG_DEFAULT_FLIP_SWITCH_STATE, DLPG_SWITCH_STATES);
   GetParam(kFlipSwitch)->SetDisplayText(0, "off");
   GetParam(kFlipSwitch)->SetDisplayText(1, "invert");
   GetParam(kTrigInputSwitch)->InitEnum("Input source", DLPG_DEFAULT_TRIG_INPUT_SWITCH_STATE, DLPG_SWITCH_STATES);
@@ -59,9 +59,12 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   GetParam(kTrigInpMuteSwitch)->InitEnum("Input mute", DLPG_DEFAULT_TRIG_INPMUTE_SWITCH_STATE, DLPG_SWITCH_STATES);
   GetParam(kTrigInpMuteSwitch)->SetDisplayText(0, "don't mute");
   GetParam(kTrigInpMuteSwitch)->SetDisplayText(1, "mute");
-  GetParam(kSubShapeSwitch)->InitEnum("Waveform", DLPG_DEFAULT_SUB_SHAPE_SWITCH_STATE, DLPG_SWITCH_STATES);
+  GetParam(kSubShapeSwitch)->InitEnum("Sub | Waveform", DLPG_DEFAULT_SUB_SHAPE_SWITCH_STATE, DLPG_SWITCH_STATES);
   GetParam(kSubShapeSwitch)->SetDisplayText(0, "Sine");
   GetParam(kSubShapeSwitch)->SetDisplayText(1, "Triangle");
+  GetParam(kTrigHoldSnapSwitch)->InitEnum("Trig | Hold snap", DLPG_DEFAULT_TRIG_HOLD_SNAP_SWITCH_STATE, DLPG_SWITCH_STATES);
+  GetParam(kTrigHoldSnapSwitch)->SetDisplayText(0, "Time");
+  GetParam(kTrigHoldSnapSwitch)->SetDisplayText(1, "Subdivisions");
 
   GetParam(kOutputMeter)->InitDouble(
     "[Output level]",
@@ -163,6 +166,9 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tBmp = pGraphics->LoadIBitmap(DLPG_SUB_WAVEFORM_SHAPE_SWITCH_ID, DLPG_SUB_WAVEFORM_SHAPE_SWITCH_FN, DLPG_SWITCH_STATES);
   tSubShapeSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(2, 2), kSubShapeSwitch, &tBmp);
   pGraphics->AttachControl(tSubShapeSwitch);
+  tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_HOLD_SNAP_SWITCH_ID, DLPG_TRIG_HOLD_SNAP_SWITCH_FN, DLPG_SWITCH_STATES);
+  tTrigHoldSnapSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(3, 2), kTrigHoldSnapSwitch, &tBmp);
+  pGraphics->AttachControl(tTrigHoldSnapSwitch);
   // *** Switches - end
 
   // Text label with current version of the plug

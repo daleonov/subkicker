@@ -35,6 +35,7 @@ when the trigger actually closes (potentially less safe)
 #define DLPG_DEFAULT_TRIG_INPUT_SWITCH_STATE 0
 #define DLPG_DEFAULT_TRIG_INPMUTE_SWITCH_STATE 0
 #define DLPG_DEFAULT_SUB_SHAPE_SWITCH_STATE 0
+#define DLPG_DEFAULT_TRIG_HOLD_SNAP_SWITCH_STATE 1
 
 #define DLPG_STANDARD_KNOB_FRAMES 128
 #define DLPG_TRIG_CH_KNOB_FRAMES 17
@@ -247,6 +248,7 @@ enum EParams
   kScope,
   kBypassSwitch,
   kTrigSwitch,
+  kTrigHoldSnapSwitch,
   kSnapSwitch,
   kFlipSwitch,
   kSubShapeSwitch,
@@ -369,6 +371,7 @@ private:
   dlpg::EdgeTrigger *tEdgeTrigger;
   ISwitchControl *tBypassSwitch;
   ISwitchControl *tTrigSwitch;
+  ISwitchControl *tTrigHoldSnapSwitch;
   ISwitchControl *tSnapSwitch;
   ISwitchControl *tFlipSwitch;
   ISwitchControl *tTrigInputSwitch;

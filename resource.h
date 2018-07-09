@@ -74,11 +74,13 @@ instrument determined by PLUG _IS _INST
 #define DLPG_SUB_NOTE_KNOB_ID 118
 #define DLPG_OUTPUT_METER_OVERLAY_ID 119
 #define DLPG_SUB_WAVEFORM_SHAPE_SWITCH_ID 120
+#define DLPG_TRIG_HOLD_SNAP_SWITCH_ID 121
 
 // Image resource locations for this plug.
 #define DLPG_BACKGROUND_FN "resources/img/bg_reva.png"
 #define DLPG_BYPASS_SWITCH_FN "resources/img/switch_bypass.png"
 #define DLPG_TRIG_SWITCH_FN "resources/img/switch_trig.png"
+#define DLPG_TRIG_HOLD_SNAP_SWITCH_FN "resources/img/switch_generic.png"
 #define DLPG_SNAP_SWITCH_FN "resources/img/switch_snap_alt.png"
 #define DLPG_FLIP_SWITCH_FN "resources/img/switch_flip_alt2.png"
 #define DLPG_TRIG_INPUT_SWITCH_FN "resources/img/switch_trig_input.png"
