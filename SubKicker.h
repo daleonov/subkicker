@@ -43,7 +43,7 @@ DLPG_SWITCH_X_BASE,\
 #define DLPG_DEFAULT_SNAP_SWITCH_STATE 1
 #define DLPG_DEFAULT_FLIP_SWITCH_STATE 0
 #define DLPG_DEFAULT_TRIG_INPUT_SWITCH_STATE 0
-#define DLPG_DEFAULT_TRIG_INPMUTE_SWITCH_STATE 0
+#define DLPG_DEFAULT_IO_DRY_SWITCH_STATE 0
 #define DLPG_DEFAULT_SUB_SHAPE_SWITCH_STATE 0
 #define DLPG_DEFAULT_TRIG_HOLD_SNAP_SWITCH_STATE 1
 
@@ -285,7 +285,7 @@ enum EParams
   kFlipSwitch,
   kSubShapeSwitch,
   //kTrigInputSwitch,
-  kTrigInpMuteSwitch,
+  kIoDrySwitch,
   kEnvelopeAttackCurveSwitch,
   kEnvelopeReleaseCurveSwitch,
   kTrigNoteKnob,
@@ -410,7 +410,7 @@ private:
   ISwitchControl *tSnapSwitch;
   ISwitchControl *tFlipSwitch;
   //ISwitchControl *tTrigInputSwitch;
-  ISwitchControl *tTrigInpMuteSwitch;
+  ISwitchControl *tIoDrySwitch;
   ISwitchControl *tSubShapeSwitch;
   ISwitchControl *tEnvelopeAttackCurveSwitch;
   ISwitchControl *tEnvelopeReleaseCurveSwitch;

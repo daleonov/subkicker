@@ -72,9 +72,9 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   GetParam(kTrigInputSwitch)->SetDisplayText(0, "ch. 1-2");
   GetParam(kTrigInputSwitch)->SetDisplayText(1, "ch. 3-4");
   */
-  GetParam(kTrigInpMuteSwitch)->InitEnum("Input mute", DLPG_DEFAULT_TRIG_INPMUTE_SWITCH_STATE, DLPG_SWITCH_STATES);
-  GetParam(kTrigInpMuteSwitch)->SetDisplayText(0, "don't mute");
-  GetParam(kTrigInpMuteSwitch)->SetDisplayText(1, "mute");
+  GetParam(kIoDrySwitch)->InitEnum("Dry mix", DLPG_DEFAULT_IO_DRY_SWITCH_STATE, DLPG_SWITCH_STATES);
+  GetParam(kIoDrySwitch)->SetDisplayText(0, "mute");
+  GetParam(kIoDrySwitch)->SetDisplayText(1, "100%");
   GetParam(kSubShapeSwitch)->InitEnum("Sub | Waveform", DLPG_DEFAULT_SUB_SHAPE_SWITCH_STATE, DLPG_SWITCH_STATES);
   GetParam(kSubShapeSwitch)->SetDisplayText(0, "Sine");
   GetParam(kSubShapeSwitch)->SetDisplayText(1, "Triangle");
@@ -195,9 +195,9 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tBypassSwitch = new ISwitchControl(this, DLPG_SWITCH_POS(1, DLPG_SWITCH_IO_BASE), kBypassSwitch, &tBmp);
   pGraphics->AttachControl(tBypassSwitch);
 
-  tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_INPMUTE_SWITCH_ID, DLPG_TRIG_INPMUTE_SWITCH_FN, DLPG_SWITCH_STATES);
-  tTrigInpMuteSwitch = new ISwitchControl(this, DLPG_SWITCH_POS(2, DLPG_SWITCH_IO_BASE), kTrigInpMuteSwitch, &tBmp);
-  pGraphics->AttachControl(tTrigInpMuteSwitch);
+  tBmp = pGraphics->LoadIBitmap(DLPG_IO_DRY_SWITCH_ID, DLPG_IO_DRY_SWITCH_FN, DLPG_SWITCH_STATES);
+  tIoDrySwitch = new ISwitchControl(this, DLPG_SWITCH_POS(2, DLPG_SWITCH_IO_BASE), kIoDrySwitch, &tBmp);
+  pGraphics->AttachControl(tIoDrySwitch);
 
   // *** Switches - end
 
