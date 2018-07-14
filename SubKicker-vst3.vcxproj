@@ -373,6 +373,7 @@ if exist "%programfiles(x86)%" (copy /y "$(TargetPath)" "$(VST3_64_PATH)\SubKick
     <ClCompile Include="..\..\VST3_SDK\public.sdk\source\vst\vstparameters.cpp" />
     <ClCompile Include="..\..\VST3_SDK\public.sdk\source\vst\vstsinglecomponenteffect.cpp" />
     <ClCompile Include="..\..\WDL\IPlug\IPlugVST3.cpp" />
+    <ClCompile Include="DLPG\DLPG_EdgeTrigger.cpp" />
     <ClCompile Include="DLPG\DLPG_IControlExtras.cpp" />
     <ClCompile Include="DLPG\DLPG_WaveGenerator.cpp" />
     <ClCompile Include="DLPG\PLUG_IControlExtras.cpp" />

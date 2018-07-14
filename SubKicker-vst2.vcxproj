@@ -270,6 +270,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\WDL\IPlug\IPlugVST.cpp" />
+    <ClCompile Include="DLPG\DLPG_EdgeTrigger.cpp" />
+    <ClCompile Include="DLPG\DLPG_IControlExtras.cpp" />
+    <ClCompile Include="DLPG\DLPG_WaveGenerator.cpp" />
+    <ClCompile Include="DLPG\PLUG_IControlExtras.cpp" />
     <ClCompile Include="SubKicker.cpp" />
   </ItemGroup>
   <ItemGroup>

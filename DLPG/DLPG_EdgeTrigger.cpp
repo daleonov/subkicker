@@ -121,6 +121,7 @@ TriggerState_t EdgeTrigger::ProcessStereoSampleLinear(double fSampleLeftLinear, 
 bool EdgeTrigger::Reset(){
 	nHoldSampleCounter = nHoldSamples;
 	fPreviousSampleLinear = 0.;
+	return true;
 }
 
 } //namespace
