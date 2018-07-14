@@ -66,6 +66,14 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   GetParam(kFlipSwitch)->InitEnum("Sub | Phase flip", DLPG_DEFAULT_FLIP_SWITCH_STATE, DLPG_SWITCH_STATES);
   GetParam(kFlipSwitch)->SetDisplayText(0, "off");
   GetParam(kFlipSwitch)->SetDisplayText(1, "invert");
+  GetParam(kEnvelopeAttackCurveSwitch)->InitEnum("Envelope | Attack curve", DLPG_DEFAULT_ENVELOPE_ATTACK_CURVE_SWITCH_STATE, DLPG_ENVELOPE_CURVE_SWITCH_STATES);
+  GetParam(kEnvelopeAttackCurveSwitch)->SetDisplayText(0, "Linear");
+  GetParam(kEnvelopeAttackCurveSwitch)->SetDisplayText(1, "Log");
+  GetParam(kEnvelopeAttackCurveSwitch)->SetDisplayText(2, "Reverse log");
+  GetParam(kEnvelopeReleaseCurveSwitch)->InitEnum("Envelope | Release curve", DLPG_DEFAULT_ENVELOPE_RELEASE_CURVE_SWITCH_STATE, DLPG_ENVELOPE_CURVE_SWITCH_STATES);
+  GetParam(kEnvelopeReleaseCurveSwitch)->SetDisplayText(0, "Linear");
+  GetParam(kEnvelopeReleaseCurveSwitch)->SetDisplayText(1, "Log");
+  GetParam(kEnvelopeReleaseCurveSwitch)->SetDisplayText(2, "Reverse log");
   // Sidechain triggering - not yet implemented
   /*
   GetParam(kTrigInputSwitch)->InitEnum("Trigger (int) | Input source", DLPG_DEFAULT_TRIG_INPUT_SWITCH_STATE, DLPG_SWITCH_STATES);
@@ -574,8 +582,10 @@ bool SubKicker::UpdateWaveform(){
     DLPG_SUB_NOTE_KNOB_VALUE_TO_HZ(GetParam(kSubNoteKnob)->Int()) : \
     GetParam(kSubFreqKnob)->Value();
   dlpg::WaveForm_t eSubShape = GetParam(kSubShapeSwitch)->Bool() ? dlpg::kTriangle : dlpg::kSine;
-  dlpg::EnvelopeShape_t eEnvelopeAttackShape = DLPG_DEFAULT_ENVELOPE_ATTACK_SHAPE;
-  dlpg::EnvelopeShape_t eEnvelopeReleaseShape = DLPG_DEFAULT_ENVELOPE_RELEASE_SHAPE;
+  dlpg::EnvelopeShape_t eEnvelopeAttackShape = \
+    dlpg::EnvelopeCurveSwitchValueToEnvelopeShape(GetParam(kEnvelopeAttackCurveSwitch)->Int());
+  dlpg::EnvelopeShape_t eEnvelopeReleaseShape = \
+    dlpg::EnvelopeCurveSwitchValueToEnvelopeShape(GetParam(kEnvelopeReleaseCurveSwitch)->Int());
 
   // Delete old waveform
   vSubkickWaveform.clear();
@@ -849,6 +859,10 @@ void SubKicker::OnParamChange(int paramIdx)
         fKnobValue = GetParam(kTrigHoldKnob)->Value() / 1000.;
       }
       tEdgeTrigger->SetHoldTime(fKnobValue);
+    case kEnvelopeAttackCurveSwitch:
+    case kEnvelopeReleaseCurveSwitch:
+      UpdateWaveform();
+      break;
     default:
       break;
   }

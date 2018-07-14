@@ -46,6 +46,8 @@ DLPG_SWITCH_X_BASE,\
 #define DLPG_DEFAULT_IO_DRY_SWITCH_STATE 0
 #define DLPG_DEFAULT_SUB_SHAPE_SWITCH_STATE 0
 #define DLPG_DEFAULT_TRIG_HOLD_SNAP_SWITCH_STATE 1
+#define DLPG_DEFAULT_ENVELOPE_ATTACK_CURVE_SWITCH_STATE 1
+#define DLPG_DEFAULT_ENVELOPE_RELEASE_CURVE_SWITCH_STATE 2
 
 #define DLPG_STANDARD_KNOB_FRAMES 128
 #define DLPG_TRIG_CH_KNOB_FRAMES 17
@@ -89,6 +91,22 @@ DLPG_SWITCH_X_BASE,\
 #define DLPG_TRIG_SUBDIVISION_DEFAULT 2
 #define DLPG_TRIG_SUBDIVISION_KNOB_VALUE_TO_LABEL(v) (asSubdivisionNames[v])
 #define DLPG_TRIG_SUBDIVISION_KNOB_VALUE_TO_SECONDS(v, tempo) (SubdivisionToSeconds(v, tempo))
+
+// Envelope shapes
+namespace dlpg{
+inline EnvelopeShape_t EnvelopeCurveSwitchValueToEnvelopeShape(int nState){
+  switch(nState){
+    case 0:
+      return kLinear;
+    case 1:
+      return kLogarithmic;
+    case 2:
+      return kReverseLogarithmic;
+    default:
+      return kLinear;
+  }
+}
+}
 
 // Other knobs
 #define DLPG_TRIG_CH_RANGE 1, DLPG_TRIG_ANY_CH
