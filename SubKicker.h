@@ -18,15 +18,25 @@ when the trigger actually closes (potentially less safe)
 #define DLPG_LINEAR_TO_LOG(v) (20.*log10(v))
 
 #define DLPG_SWITCH_STATES 2
+#define DLPG_ENVELOPE_CURVE_SWITCH_STATES 3
 
-#define DLPG_SWITCH_X_BASE 565
+#define DLPG_SWITCH_X_BASE 790
 #define DLPG_SWITCH_X_STEP 110
 #define DLPG_SWITCH_Y_BASE 10
 #define DLPG_SWITCH_Y_STEP 36
 
+#define DLPG_SWITCH_TRIG_BASE 28
+#define DLPG_SWITCH_SUB_BASE 142
+#define DLPG_SWITCH_ENVELOPE_BASE 300
+#define DLPG_SWITCH_IO_BASE 418
+
 #define DLPG_SWITCH_GRID(row, col)\
 (DLPG_SWITCH_X_BASE + (col-1)*DLPG_SWITCH_X_STEP),\
 (DLPG_SWITCH_Y_BASE + (row-1)*DLPG_SWITCH_Y_STEP)
+
+#define DLPG_SWITCH_POS(row, offs)\
+DLPG_SWITCH_X_BASE,\
+(DLPG_SWITCH_Y_BASE + (row-1)*DLPG_SWITCH_Y_STEP + offs)
 
 #define DLPG_DEFAULT_BYPASS_SWITCH_STATE 0
 #define DLPG_DEFAULT_TRIG_SWITCH_STATE 1
@@ -109,7 +119,7 @@ when the trigger actually closes (potentially less safe)
 (DLPG_KNOB_X_BASE + (col-1)*DLPG_KNOB_X_STEP),\
 (DLPG_KNOB_Y_BASE + (row-1)*DLPG_KNOB_Y_STEP)
 
-#define DLPG_SCOPE_W 440
+#define DLPG_SCOPE_W 655
 #define DLPG_SCOPE_H 105
 
 #define DLPG_OUTPUT_METER_RANGE_MIN -60.
@@ -276,6 +286,8 @@ enum EParams
   kSubShapeSwitch,
   //kTrigInputSwitch,
   kTrigInpMuteSwitch,
+  kEnvelopeAttackCurveSwitch,
+  kEnvelopeReleaseCurveSwitch,
   kTrigNoteKnob,
   kTrigChKnob,
   kTrigHoldKnob,
@@ -321,7 +333,7 @@ enum ELayout
   kBugreporLabelX = 27,
   kBugreporLabelY = 501,
 
-  kOutputMeterX = 785,
+  kOutputMeterX = 905,
   kOutputMeterY = 10,
 
   kOutputMeterLabelX = kOutputMeterX,
@@ -400,6 +412,8 @@ private:
   //ISwitchControl *tTrigInputSwitch;
   ISwitchControl *tTrigInpMuteSwitch;
   ISwitchControl *tSubShapeSwitch;
+  ISwitchControl *tEnvelopeAttackCurveSwitch;
+  ISwitchControl *tEnvelopeReleaseCurveSwitch;
   IKnobMultiControl *tTrigNoteKnob;
   IKnobMultiControl *tTrigChKnob;
   IKnobMultiControl *tTrigHoldKnob;

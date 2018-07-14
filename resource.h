@@ -76,17 +76,23 @@ instrument determined by PLUG _IS _INST
 #define DLPG_SUB_WAVEFORM_SHAPE_SWITCH_ID 120
 #define DLPG_TRIG_HOLD_SNAP_SWITCH_ID 121
 #define DLPG_TRIG_SUBDIVISION_KNOB_ID 122
+#define DLPG_DRY_SWITCH_ID 123
+#define DLPG_ENVELOPE_ATTACK_CURVE_SWITCH_ID 124
+#define DLPG_ENVELOPE_RELEASE_CURVE_SWITCH_ID 125
 
 // Image resource locations for this plug.
-#define DLPG_BACKGROUND_FN "resources/img/bg_reva.png"
+#define DLPG_BACKGROUND_FN "resources/img/bg_revb.png"
 #define DLPG_BYPASS_SWITCH_FN "resources/img/switch_bypass.png"
 #define DLPG_TRIG_SWITCH_FN "resources/img/switch_trig.png"
-#define DLPG_TRIG_HOLD_SNAP_SWITCH_FN "resources/img/switch_generic.png"
+#define DLPG_TRIG_HOLD_SNAP_SWITCH_FN "resources/img/switch_trig_hold_snap.png"
 #define DLPG_SNAP_SWITCH_FN "resources/img/switch_snap_alt.png"
 #define DLPG_FLIP_SWITCH_FN "resources/img/switch_flip_alt2.png"
 //#define DLPG_TRIG_INPUT_SWITCH_FN "resources/img/switch_trig_input.png"
 #define DLPG_TRIG_INPMUTE_SWITCH_FN "resources/img/switch_trig_inpmute.png"
-#define DLPG_SUB_WAVEFORM_SHAPE_SWITCH_FN "resources/img/switch_generic.png"
+#define DLPG_SUB_WAVEFORM_SHAPE_SWITCH_FN "resources/img/switch_sub_shape.png"
+#define DLPG_DRY_SWITCH_FN "resources/img/switch_dry.png"
+#define DLPG_ENVELOPE_ATTACK_CURVE_SWITCH_FN "resources/img/switch_envelope_attack_curve_3.png"
+#define DLPG_ENVELOPE_RELEASE_CURVE_SWITCH_FN "resources/img/switch_envelope_release_curve_3.png"
 #define DLPG_TRIG_NOTE_KNOB_FN "resources/img/knob_trig_note_129.png"
 #define DLPG_TRIG_CH_KNOB_FN "resources/img/knob_trig_ch_17.png"
 #define DLPG_TRIG_THRESH_KNOB_FN "resources/img/knob_trig_thresh_128.png"
@@ -100,9 +106,8 @@ instrument determined by PLUG _IS _INST
 #define DLPG_ENVELOPE_RELEASE_KNOB_FN "resources/img/knob_envelope_release_128.png"
 #define DLPG_VOL_KNOB_FN "resources/img/knob_vol_128.png"
 #define DLPG_OUTPUT_METER_OVERLAY_FN "resources/img/overlay_out.png"
-
 // GUI default dimensions
-#define GUI_WIDTH 870
+#define GUI_WIDTH 990
 #define GUI_HEIGHT 520
 
 // on MSVC, you must define SA_API in the resource editor preprocessor macros as well as the c++ ones

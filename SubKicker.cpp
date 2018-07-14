@@ -161,38 +161,44 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   // *** Knobs - end
 
   // *** Switches - start
-  tBmp = pGraphics->LoadIBitmap(DLPG_BYPASS_SWITCH_ID, DLPG_BYPASS_SWITCH_FN, DLPG_SWITCH_STATES);
-  tBypassSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(1, 1), kBypassSwitch, &tBmp);
-  pGraphics->AttachControl(tBypassSwitch);
+  // Trig section
+  tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_SWITCH_ID, DLPG_TRIG_SWITCH_FN, DLPG_SWITCH_STATES);
+  tTrigSwitch = new ISwitchControl(this, DLPG_SWITCH_POS(1, DLPG_SWITCH_TRIG_BASE), kTrigSwitch, &tBmp);
+  pGraphics->AttachControl(tTrigSwitch);
+
+  tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_HOLD_SNAP_SWITCH_ID, DLPG_TRIG_HOLD_SNAP_SWITCH_FN, DLPG_SWITCH_STATES);
+  tTrigHoldSnapSwitch = new ISwitchControl(this, DLPG_SWITCH_POS(2, DLPG_SWITCH_TRIG_BASE), kTrigHoldSnapSwitch, &tBmp);
+  pGraphics->AttachControl(tTrigHoldSnapSwitch);
+
+  // Sub section
+  tBmp = pGraphics->LoadIBitmap(DLPG_SUB_WAVEFORM_SHAPE_SWITCH_ID, DLPG_SUB_WAVEFORM_SHAPE_SWITCH_FN, DLPG_SWITCH_STATES);
+  tSubShapeSwitch = new ISwitchControl(this, DLPG_SWITCH_POS(1, DLPG_SWITCH_SUB_BASE), kSubShapeSwitch, &tBmp);
+  pGraphics->AttachControl(tSubShapeSwitch);
   tBmp = pGraphics->LoadIBitmap(DLPG_SNAP_SWITCH_ID, DLPG_SNAP_SWITCH_FN, DLPG_SWITCH_STATES);
-  tSnapSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(2, 1), kSnapSwitch, &tBmp);
+  tSnapSwitch = new ISwitchControl(this, DLPG_SWITCH_POS(2, DLPG_SWITCH_SUB_BASE), kSnapSwitch, &tBmp);
   pGraphics->AttachControl(tSnapSwitch);
   tBmp = pGraphics->LoadIBitmap(DLPG_FLIP_SWITCH_ID, DLPG_FLIP_SWITCH_FN, DLPG_SWITCH_STATES);
-  tFlipSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(3, 1), kFlipSwitch, &tBmp);
+  tFlipSwitch = new ISwitchControl(this, DLPG_SWITCH_POS(3, DLPG_SWITCH_SUB_BASE), kFlipSwitch, &tBmp);
   pGraphics->AttachControl(tFlipSwitch);
 
-  tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_SWITCH_ID, DLPG_TRIG_SWITCH_FN, DLPG_SWITCH_STATES);
-  tTrigSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(1, 2), kTrigSwitch, &tBmp);
-  pGraphics->AttachControl(tTrigSwitch);
-  // Sidechain triggering - not yet implemented
-  /*
-  tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_INPUT_SWITCH_ID, DLPG_TRIG_INPUT_SWITCH_FN, DLPG_SWITCH_STATES);
-  tTrigInputSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(2, 2), kTrigInputSwitch, &tBmp);
-  pGraphics->AttachControl(tTrigInputSwitch);
-  tTrigInputSwitch->GrayOut(true);
-  tTrigInputSwitch->Hide(true);
-  */
+  // Envelope section
+  tBmp = pGraphics->LoadIBitmap(DLPG_ENVELOPE_ATTACK_CURVE_SWITCH_ID, DLPG_ENVELOPE_ATTACK_CURVE_SWITCH_FN, DLPG_ENVELOPE_CURVE_SWITCH_STATES);
+  tEnvelopeAttackCurveSwitch = new ISwitchControl(this, DLPG_SWITCH_POS(1, DLPG_SWITCH_ENVELOPE_BASE), kEnvelopeAttackCurveSwitch, &tBmp);
+  pGraphics->AttachControl(tEnvelopeAttackCurveSwitch);
+
+  tBmp = pGraphics->LoadIBitmap(DLPG_ENVELOPE_RELEASE_CURVE_SWITCH_ID, DLPG_ENVELOPE_RELEASE_CURVE_SWITCH_FN, DLPG_ENVELOPE_CURVE_SWITCH_STATES);
+  tEnvelopeReleaseCurveSwitch = new ISwitchControl(this, DLPG_SWITCH_POS(2, DLPG_SWITCH_ENVELOPE_BASE), kEnvelopeReleaseCurveSwitch, &tBmp);
+  pGraphics->AttachControl(tEnvelopeReleaseCurveSwitch);
+
+  // I/O section
+  tBmp = pGraphics->LoadIBitmap(DLPG_BYPASS_SWITCH_ID, DLPG_BYPASS_SWITCH_FN, DLPG_SWITCH_STATES);
+  tBypassSwitch = new ISwitchControl(this, DLPG_SWITCH_POS(1, DLPG_SWITCH_IO_BASE), kBypassSwitch, &tBmp);
+  pGraphics->AttachControl(tBypassSwitch);
+
   tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_INPMUTE_SWITCH_ID, DLPG_TRIG_INPMUTE_SWITCH_FN, DLPG_SWITCH_STATES);
-  tTrigInpMuteSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(3, 2), kTrigInpMuteSwitch, &tBmp);
+  tTrigInpMuteSwitch = new ISwitchControl(this, DLPG_SWITCH_POS(2, DLPG_SWITCH_IO_BASE), kTrigInpMuteSwitch, &tBmp);
   pGraphics->AttachControl(tTrigInpMuteSwitch);
-  tTrigInpMuteSwitch->GrayOut(true);
-  tTrigInpMuteSwitch->Hide(true);
-  tBmp = pGraphics->LoadIBitmap(DLPG_SUB_WAVEFORM_SHAPE_SWITCH_ID, DLPG_SUB_WAVEFORM_SHAPE_SWITCH_FN, DLPG_SWITCH_STATES);
-  tSubShapeSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(2, 2), kSubShapeSwitch, &tBmp);
-  pGraphics->AttachControl(tSubShapeSwitch);
-  tBmp = pGraphics->LoadIBitmap(DLPG_TRIG_HOLD_SNAP_SWITCH_ID, DLPG_TRIG_HOLD_SNAP_SWITCH_FN, DLPG_SWITCH_STATES);
-  tTrigHoldSnapSwitch = new ISwitchControl(this, DLPG_SWITCH_GRID(3, 2), kTrigHoldSnapSwitch, &tBmp);
-  pGraphics->AttachControl(tTrigHoldSnapSwitch);
+
   // *** Switches - end
 
   // Text label with current version of the plug
