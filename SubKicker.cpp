@@ -399,6 +399,11 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
   static double fPreviousTempo = 120.;
   double fCurrentTempo;
 
+  for(int i = 0; i < nFrames; i++){
+    pfOutL[i] = 0.;
+    pfOutR[i] = 0.;
+  }
+
   if(1){
     if(GetParam(kTrigHoldSnapSwitch)->Bool()){
       fCurrentTempo = GetTempo();
@@ -527,6 +532,7 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
     psOutputMeterLabelString = sOutputMeterLabelMinusInfString;
   }
   tOutputMeterLabel->SetTextFromPlug(psOutputMeterLabelString); 
+
 }
 
 void SubKicker::Reset()
