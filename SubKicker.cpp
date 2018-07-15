@@ -365,6 +365,10 @@ void SubKicker::ProcessMidiMsg(IMidiMsg* pMsg){
   int nStatusMsg = pMsg->StatusMsg();
   int nVelocity = pMsg->Velocity();
 
+  // Ignoring all incoming MIDI messages if internal trigger is enabled
+  if(GetParam(kTrigSwitch)->Bool())
+    return;
+
   switch (nStatusMsg)
   {
     case IMidiMsg::kNoteOn:
@@ -412,13 +416,28 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
   IMidiMsg tMidiMsg;
   static double fPreviousTempo = 120.;
   double fCurrentTempo;
+  double fCurrentWaveformSample;
 
-  for(int i = 0; i < nFrames; i++){
-    pfOutL[i] = 0.;
-    pfOutR[i] = 0.;
-  }
+  // Dry signal
+  if(GetParam(kIoDrySwitch)->Bool())
+    // Dry signal 100%
+    for(int i = 0; i < nFrames; i++){
+      pfOutL[i] = 0.;
+      pfOutR[i] = 0.;
+    }
+  else
+    // Dry signal bypassed
+    for(int i = 0; i < nFrames; i++){
+      pfOutL[i] = -pfInL[i];
+      pfOutR[i] = -pfInR[i];
+    }
 
-  if(1){
+  // Bypass
+  if(GetParam(kBypassSwitch)->Bool())
+    return;
+
+  // Internal trigger
+  if(GetParam(kTrigSwitch)->Bool()){
     if(GetParam(kTrigHoldSnapSwitch)->Bool()){
       fCurrentTempo = GetTempo();
       if(HasTempoChanged(fCurrentTempo, fPreviousTempo)){
@@ -427,7 +446,6 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
       }
       fPreviousTempo = fCurrentTempo;
     }
-    // Todo: Make sure the midi notes' offset is correct in the sample chunk
     for (int i = 0; i < nFrames; ++i, ++pfInR, ++pfInL){
       fCurrentRectifiedSampleLinear = (fabs(*pfInR) + fabs(*pfInL))/2;
       eTriggerState = tEdgeTrigger->ProcessMonoSampleLinear(fCurrentRectifiedSampleLinear);
@@ -452,6 +470,7 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
     }
   }
 
+  // Handling MIDI messages
   for (int nOffset = 0; nOffset < nFrames; ++nOffset, ++pfOutL, ++pfOutR){
     while (!tMidiQueue.Empty()){
       IMidiMsg* pMsg = tMidiQueue.Peek();
@@ -485,8 +504,16 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
     }
     if((nCurrentWaveformSample < vSubkickWaveform.size()) && bPlay){
       // Start or resume playback
-      *pfOutL = vSubkickWaveform[nCurrentWaveformSample] * fOutputGainLinear;
-      *pfOutR = *pfOutL;
+      fCurrentWaveformSample = vSubkickWaveform[nCurrentWaveformSample] * fOutputGainLinear;
+
+      /***********************************
+      **                                **
+      **   Signal output happens here   **
+      **                                **
+      ***********************************/
+      *pfOutL += fCurrentWaveformSample;
+      *pfOutR += fCurrentWaveformSample;
+
       if(nCurrentWaveformSample == 1)
         tScope->Highlight(true);
       nCurrentWaveformSample++;
