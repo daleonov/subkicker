@@ -353,6 +353,23 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   memset(abKeyStatus, 0, DLPG_MIDI_NOTES_TOTAL * sizeof(bool));
   nNumKeysPressed = 0;
 
+  // Demo related stuff
+
+  #if DLPG_DEMO
+  nDemoShots = DLPG_DEMO_SHOTS;
+    static IText tDemoLabelIText = IText(DLPG_DEMO_LABEL_STRING_SIZE);
+  tDemoLabelIText.mColor = tDemoLabelIColor;
+  tDemoLabelIText.mSize = DLPG_DEMO_LABEL_FONT_SIZE;
+  tDemoLabelIText.mAlign = tDemoLabelIText.DLPG_DEMO_LABEL_ALIGN;
+  tDemoLabel = new ITextControl(
+      this,
+      tDemoLabelIRect,
+      &tDemoLabelIText,
+      "Demo version! Shots left: 200"
+      );
+  pGraphics->AttachControl(tDemoLabel);
+  #endif //DLPG_DEMO
+
   //tScope->LoadWave(&vWaveform);
   //MakePreset("preset 1", ... );
   MakeDefaultPreset((char *) "-", kNumPrograms);

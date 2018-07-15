@@ -20,6 +20,16 @@ or have the meter to display evetything that comes out (true)
 */
 #define DLPG_DISPLAY_INPUT_SIGNAL_ON_METER true
 
+/*
+If set to true, adds some limitations, namely
+number of shots produced by this plug is limited
+*/
+#define DLPG_DEMO true
+
+#if DLPG_DEMO
+#define DLPG_DEMO_SHOTS 10
+#endif
+
 #define DLPG_LOG_TO_LINEAR(v) (pow(10, v/20.))
 #define DLPG_LINEAR_TO_LOG(v) (20.*log10(v))
 
@@ -283,6 +293,24 @@ const IColor tOutputMeterLabelIColor(
   DLPG_OUTPUT_METER_LABEL_COLOR_MONO
   );
 
+// Demo stuff
+#if DLPG_DEMO
+
+#ifdef _WIN32
+#define DLPG_DEMO_LABEL_FONT_SIZE 15
+#elif defined(__APPLE__)
+#define DLPG_DEMO_LABEL_FONT_SIZE 16
+#endif // PC/Mac
+
+#define DLPG_DEMO_LABEL_STRING_SIZE 64
+#define DLPG_DEMO_LABEL_ALIGN kAlignCenter
+#define DLPG_DEMO_LABEL_TEXT "Demo version! Shots left: %d"
+
+const IColor tDemoLabelIColor(255, 196, 0, 0);
+const IRECT tDemoLabelIRect(385, 126, 510, 155);
+
+#endif // DLPG_DEMO
+
 const double fEpsilon = std::numeric_limits<double>::epsilon();
 #define DLPG_TEMPO_CHANGE_DELTA_BPM .5
 inline bool HasTempoChanged(double fCurrentBpm, double fPreviousBpm){
@@ -474,6 +502,11 @@ private:
   // For switching from Hz mode to note snap mode of Sub Frequency knob
   inline int HzToSubNoteKnobValue(double fFrequency);
   double fOutputGainLinear;
+  // Demo stuff
+  #if DLPG_DEMO
+  ITextControl *tDemoLabel;
+  int nDemoShots;
+  #endif
 };
 
 #endif
