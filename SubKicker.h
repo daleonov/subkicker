@@ -14,6 +14,12 @@ when the trigger actually closes (potentially less safe)
 */
 #define DLPG_TRIG_INT_IMMEDIATE_NOTE_OFFS false
 
+/*
+Either display only generated signal on output meter(false)
+or have the meter to display evetything that comes out (true)
+*/
+#define DLPG_DISPLAY_INPUT_SIGNAL_ON_METER true
+
 #define DLPG_LOG_TO_LINEAR(v) (pow(10, v/20.))
 #define DLPG_LINEAR_TO_LOG(v) (20.*log10(v))
 
@@ -149,8 +155,8 @@ const IColor tOutputMeterFgIcolor(255, 0, 184, 67);
 
 // Output meter's LPF
 // Those are empirical values
-#define DLPG_OUTPUT_METER_FILTER_ATTACK 0.6
-#define DLPG_OUTPUT_METER_FILTER_DECAY 0.01
+#define DLPG_OUTPUT_METER_FILTER_ATTACK 1
+#define DLPG_OUTPUT_METER_FILTER_DECAY 0.1
 #define DLPG_OUTPUT_METER_FILTER_MAKEUP_GAIN_DB 0.1
 
 #define DLPG_VERSION_TEXT_LABEL_STRING_SIZE 96

@@ -517,13 +517,32 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
       if(nCurrentWaveformSample == 1)
         tScope->Highlight(true);
       nCurrentWaveformSample++;
-      fCurrentMeterPeakLinear = IPMAX(fCurrentMeterPeakLinear, (*pfOutL + *pfOutR)/2);
+      #if DLPG_DISPLAY_INPUT_SIGNAL_ON_METER
+      // Take input signal into account while metering the output
+      fCurrentMeterPeakLinear = \
+        GetParam(kIoDrySwitch)->Bool() ? \
+        IPMAX(fCurrentMeterPeakLinear, fCurrentWaveformSample + (pfInL[nOffset] + pfInR[nOffset])/2) : \
+        IPMAX(fCurrentMeterPeakLinear, fCurrentWaveformSample);
+      #else
+      // Meter displays only generated wave
+      fCurrentMeterPeakLinear = IPMAX(fCurrentMeterPeakLinear, fCurrentWaveformSample);
+      #endif
     }
     else{
       // Stop playback
       nCurrentWaveformSample = 0;
       bPlay = false;
       tScope->Highlight(false);
+      #if DLPG_DISPLAY_INPUT_SIGNAL_ON_METER
+      // Take input signal into account while metering the output
+      fCurrentMeterPeakLinear = \
+        GetParam(kIoDrySwitch)->Bool() ? \
+        IPMAX(fCurrentMeterPeakLinear, (pfInL[nOffset] + pfInR[nOffset])/2) : \
+        0.;
+      #else
+      // Meter displays only generated wave
+      fCurrentMeterPeakLinear = IPMAX(fCurrentMeterPeakLinear, fCurrentWaveformSample);
+      #endif
     }
   }
 
