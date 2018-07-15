@@ -670,7 +670,7 @@ void SubKicker::OnParamChange(int paramIdx)
   int nKnobValue;
   int nPreviewNote, nPreviewCh;
   IMidiMsg tMidiMsg;
-  static bool bIsInit = true;
+  static int nScopeIgnoreInit = 2;
   bool bSwitchState, bExtraSwitchState;
   double fKnobValue, fNormalizedKnobValue;
 
@@ -807,8 +807,15 @@ void SubKicker::OnParamChange(int paramIdx)
       tSubNoteLabel->Hide(!bSwitchState);
       break;
     case kScope:
-      // Do not send a note during startup
-      if(bIsInit) break;
+      /*
+      Ignore being triggered during startup.
+      TODO: This is a workaround, not a proper fix. If it's not done,
+      plug shoots a sample right after it loads, which is annoying.
+      */
+      if(nScopeIgnoreInit){
+        nScopeIgnoreInit--;
+        break;
+      }
       // Clicking a scope triggers the waveform output (for preview purposes)
       nKnobValue = GetParam(kTrigChKnob)->Int();
       nPreviewCh = (nKnobValue == DLPG_TRIG_ANY_CH) ? \
@@ -893,7 +900,4 @@ void SubKicker::OnParamChange(int paramIdx)
     default:
       break;
   }
-  /* All params are triggered during the startup, so the following
-  flag is a workaround against 'false' triggering */
-  bIsInit = false;
 }
