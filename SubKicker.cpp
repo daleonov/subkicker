@@ -39,13 +39,11 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   for(int i=0; i<DLPG_TRIG_SUBDIVISION_STATES; i++){
     sprintf(
       sEnumText,
-      DLPG_TRIG_SUBDIVISION_LABEL_STR,
-      DLPG_TRIG_SUBDIVISION_KNOB_VALUE_TO_LABEL(i),
-      DLPG_TRIG_SUBDIVISION_KNOB_VALUE_TO_SECONDS(i, GetTempo()) * 1000.
+      DLPG_TRIG_SUBDIVISION_GENERIC_UI_LABEL_STR,
+      DLPG_TRIG_SUBDIVISION_KNOB_VALUE_TO_LABEL(i)
       );
     GetParam(kTrigSubdivisionKnob)->SetDisplayText(i, sEnumText);
   }
-
 
   GetParam(kEnvelopeAttackKnob)->InitDouble("Envelope | Attack", DLPG_ENVELOPE_ATTACK_DEFAULT, DLPG_ENVELOPE_ATTACK_RANGE, 0.1, "ms");
   GetParam(kEnvelopeHoldKnob)->InitDouble("Envelope | Hold", DLPG_ENVELOPE_HOLD_DEFAULT, DLPG_ENVELOPE_HOLD_RANGE, 0.1, "ms");
@@ -165,6 +163,20 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tBmp = pGraphics->LoadIBitmap(DLPG_VOL_KNOB_ID, DLPG_VOL_KNOB_FN, DLPG_STANDARD_KNOB_FRAMES);
   tVolKnob = new IKnobMultiControl(this, DLPG_KNOB_GRID(2, 4), kVolKnob, &tBmp);
   pGraphics->AttachControl(tVolKnob);
+
+  // Knob gearing (speed)
+  tTrigNoteKnob->SetGearing(DLPG_TRIG_NOTE_KNOB_GEARING);
+  tTrigChKnob->SetGearing(DLPG_DEFAULT_KNOB_GEARING);
+  tTrigHoldKnob->SetGearing(DLPG_DEFAULT_KNOB_GEARING);
+  tTrigThreshKnob->SetGearing(DLPG_DEFAULT_KNOB_GEARING);
+  tTrigSubdivisionKnob->SetGearing(DLPG_TRIG_SUBDIVISION_KNOB_GEARING);
+  tSubFreqKnob->SetGearing(DLPG_DEFAULT_KNOB_GEARING);
+  tSubPhaseKnob->SetGearing(DLPG_DEFAULT_KNOB_GEARING);
+  tSubNoteKnob->SetGearing(DLPG_SUB_NOTE_KNOB_GEARING);
+  tEnvelopeAttackKnob->SetGearing(DLPG_DEFAULT_KNOB_GEARING);
+  tEnvelopeHoldKnob->SetGearing(DLPG_DEFAULT_KNOB_GEARING);
+  tEnvelopeReleaseKnob->SetGearing(DLPG_DEFAULT_KNOB_GEARING);
+  tVolKnob->SetGearing(DLPG_DEFAULT_KNOB_GEARING);
 
   // *** Knobs - end
 

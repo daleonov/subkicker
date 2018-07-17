@@ -24,7 +24,7 @@ or have the meter to display evetything that comes out (true)
 If set to true, adds some limitations, namely
 number of shots produced by this plug is limited
 */
-#define DLPG_DEMO true
+#define DLPG_DEMO false
 
 #if DLPG_DEMO
 #define DLPG_DEMO_SHOTS 200
@@ -55,7 +55,7 @@ DLPG_SWITCH_X_BASE,\
 (DLPG_SWITCH_Y_BASE + (row-1)*DLPG_SWITCH_Y_STEP + offs)
 
 #define DLPG_DEFAULT_BYPASS_SWITCH_STATE 0
-#define DLPG_DEFAULT_TRIG_SWITCH_STATE 1
+#define DLPG_DEFAULT_TRIG_SWITCH_STATE 0
 #define DLPG_DEFAULT_SNAP_SWITCH_STATE 1
 #define DLPG_DEFAULT_FLIP_SWITCH_STATE 0
 #define DLPG_DEFAULT_TRIG_INPUT_SWITCH_STATE 0
@@ -129,7 +129,7 @@ inline EnvelopeShape_t EnvelopeCurveSwitchValueToEnvelopeShape(int nState){
 #define DLPG_TRIG_CH_DEFAULT DLPG_TRIG_ANY_CH
 #define DLPG_TRIG_NOTE_RANGE 0, DLPG_TRIG_ANY_NOTE
 #define DLPG_TRIG_NOTE_DEFAULT DLPG_TRIG_ANY_NOTE
-#define DLPG_TRIG_HOLD_RANGE 0.1, 100.
+#define DLPG_TRIG_HOLD_RANGE 0.1, 1000.
 #define DLPG_TRIG_HOLD_DEFAULT 10.
 #define DLPG_TRIG_THRESH_RANGE -60., 0.
 #define DLPG_TRIG_THRESH_DEFAULT -6.
@@ -138,7 +138,7 @@ inline EnvelopeShape_t EnvelopeCurveSwitchValueToEnvelopeShape(int nState){
 #define DLPG_ENVELOPE_ATTACK_RANGE .1, 200.
 #define DLPG_ENVELOPE_ATTACK_DEFAULT 25.
 #define DLPG_ENVELOPE_HOLD_RANGE .1, 400.
-#define DLPG_ENVELOPE_HOLD_DEFAULT 100.
+#define DLPG_ENVELOPE_HOLD_DEFAULT 50.
 #define DLPG_ENVELOPE_RELEASE_RANGE .1, 200.
 #define DLPG_ENVELOPE_RELEASE_DEFAULT 100.
 #define DLPG_VOL_RANGE -60., 12.
@@ -152,6 +152,11 @@ inline EnvelopeShape_t EnvelopeCurveSwitchValueToEnvelopeShape(int nState){
 #define DLPG_KNOB_GRID(row, col)\
 (DLPG_KNOB_X_BASE + (col-1)*DLPG_KNOB_X_STEP),\
 (DLPG_KNOB_Y_BASE + (row-1)*DLPG_KNOB_Y_STEP)
+
+#define DLPG_DEFAULT_KNOB_GEARING 2.5
+#define DLPG_TRIG_SUBDIVISION_KNOB_GEARING 2.
+#define DLPG_TRIG_NOTE_KNOB_GEARING 4.5
+#define DLPG_SUB_NOTE_KNOB_GEARING 2.
 
 #define DLPG_SCOPE_W 655
 #define DLPG_SCOPE_H 105
@@ -242,6 +247,7 @@ IRECT(\
 #define DLPG_TRIG_HOLD_LABEL_STR DLPG_ENVELOPE_GENERIC_STR
 #define DLPG_TRIG_THRESH_LABEL_STR DLPG_LEVEL_GENERIC_STR
 #define DLPG_TRIG_SUBDIVISION_LABEL_STR "%s (%0.1f ms)"
+#define DLPG_TRIG_SUBDIVISION_GENERIC_UI_LABEL_STR "%s"
 #define DLPG_SUB_FREQ_LABEL_STR "%0.2f Hz"
 #define DLPG_SUB_PHASE_LABEL_STR "%+0.1f\xB0"
 #define DLPG_SUB_NOTE_LABEL_STR "%s (%0.2f Hz)"
