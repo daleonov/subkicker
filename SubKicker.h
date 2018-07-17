@@ -130,7 +130,7 @@ inline EnvelopeShape_t EnvelopeCurveSwitchValueToEnvelopeShape(int nState){
 #define DLPG_TRIG_NOTE_RANGE 0, DLPG_TRIG_ANY_NOTE
 #define DLPG_TRIG_NOTE_DEFAULT DLPG_TRIG_ANY_NOTE
 #define DLPG_TRIG_HOLD_RANGE 0.1, 1000.
-#define DLPG_TRIG_HOLD_DEFAULT 10.
+#define DLPG_TRIG_HOLD_DEFAULT 200.
 #define DLPG_TRIG_THRESH_RANGE -60., 0.
 #define DLPG_TRIG_THRESH_DEFAULT -6.
 #define DLPG_SUB_PHASE_RANGE -180., 180.
@@ -201,7 +201,7 @@ danielleonovplugs.com"
 
 #define DLPG_BUGREPORT_LABEL_STRING_SIZE 16
 #define DLPG_BUGREPORT_LABEL_COLOR_MONO 90
-#define DLPG_BUGREPORT_LABEL_W 100
+#define DLPG_BUGREPORT_LABEL_W 75
 #define DLPG_BUGREPORT_LABEL_H 16
 const IColor tBugreportLabelColor(
   255,
@@ -317,6 +317,12 @@ const IRECT tDemoLabelIRect(385, 126, 510, 155);
 
 #endif // DLPG_DEMO
 
+// Clickable area in the plug's info label will lead to this website
+#define DLPG_WEBSITE_LINK "https://danielleonovplugs.com"
+
+// "Report a bug" label will lead to this address
+#define DLPG_FEEDBACK_LINK "http://danielleonovplugs.com/feedback"
+
 const double fEpsilon = std::numeric_limits<double>::epsilon();
 #define DLPG_TEMPO_CHANGE_DELTA_BPM .5
 inline bool HasTempoChanged(double fCurrentBpm, double fPreviousBpm){
@@ -430,18 +436,34 @@ const IRECT tTextVersionIrect(
   kTextVersionX + DLPG_VERSION_TEXT_LABEL_W,
   kTextVersionY + DLPG_VERSION_TEXT_LABEL_H
   );
+
 const IRECT tBugreportLabelIrect(
   kBugreporLabelX,
   kBugreporLabelY,
   kBugreporLabelX + DLPG_BUGREPORT_LABEL_W,
   kBugreporLabelY + DLPG_BUGREPORT_LABEL_H
   );
+
 const IRECT PLUG_ScopeIrect(
   kScopeX,
   kScopeY,
   kScopeX + DLPG_SCOPE_W,
   kScopeY + DLPG_SCOPE_H
 );
+
+const IRECT tWebsiteLinkIRect(
+  kTextVersionX,
+  kTextVersionY + 25,
+  kTextVersionX + 120,
+  kTextVersionY + 38
+  );
+
+const IRECT tFeedbackLinkIRect(
+  kTextVersionX,
+  tBugreportLabelIrect.T - 5,
+  tBugreportLabelIrect.R,
+  tBugreportLabelIrect.B + 5
+  );
 
 class SubKicker : public IPlug
 {
@@ -513,6 +535,9 @@ private:
   ITextControl *tDemoLabel;
   int nDemoShots;
   #endif
+  // Clickable web links
+  IURLControl *tWebsiteLink;
+  IURLControl *tFeedbackLink;
 };
 
 #endif

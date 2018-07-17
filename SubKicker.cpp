@@ -14,6 +14,7 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   IBitmap tBmp;
   char sEnumText[DLPG_ENUM_CONTROL_STRING_SIZE];
 
+  // *** All controls - start
   //arguments are: name, defaultVal, minVal, maxVal, step, label
   GetParam(kTrigNoteKnob)->InitInt("Trigger (ext) | Midi note", DLPG_TRIG_ANY_NOTE, DLPG_TRIG_NOTE_RANGE, "");
   GetParam(kTrigChKnob)->InitInt("Trigger (ext) | Midi channel", DLPG_TRIG_ANY_CH, DLPG_TRIG_CH_RANGE, "");
@@ -346,10 +347,6 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tScope = new dlpg::IWavScopeControl(this, PLUG_ScopeIrect, kScope, vSubkickWaveform);
   pGraphics->AttachControl(tScope);
 
-  // Waveform stuff
-  tWaveGenerator = new dlpg::WaveGenerator();
-  tEnvelopeGenerator = new dlpg::EnvelopeGenerator();
-
   /*
   Those two knobs (and switches) are mutually exclusive, so we
   hide both of them and figure out later which one to show.
@@ -359,14 +356,7 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tSubFreqLabel->Hide(true);
   tSubNoteLabel->Hide(true);
 
-  AttachGraphics(pGraphics);
-
-  // Midi shenanigans
-  memset(abKeyStatus, 0, DLPG_MIDI_NOTES_TOTAL * sizeof(bool));
-  nNumKeysPressed = 0;
-
   // Demo related stuff
-
   #if DLPG_DEMO
   char sDemoString[DLPG_DEMO_LABEL_STRING_SIZE];
   nDemoShots = DLPG_DEMO_SHOTS;
@@ -383,6 +373,24 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
       );
   pGraphics->AttachControl(tDemoLabel);
   #endif //DLPG_DEMO
+
+  // Clickable area leading to a website
+  tWebsiteLink = new IURLControl(this, tWebsiteLinkIRect, DLPG_WEBSITE_LINK);
+  pGraphics->AttachControl(tWebsiteLink);
+  // Clickable area for bugreports
+  tFeedbackLink = new IURLControl(this, tFeedbackLinkIRect, DLPG_FEEDBACK_LINK);
+  pGraphics->AttachControl(tFeedbackLink);
+
+  // *** All controls - end
+  AttachGraphics(pGraphics);
+
+  // Waveform stuff
+  tWaveGenerator = new dlpg::WaveGenerator();
+  tEnvelopeGenerator = new dlpg::EnvelopeGenerator();
+
+  // Midi shenanigans
+  memset(abKeyStatus, 0, DLPG_MIDI_NOTES_TOTAL * sizeof(bool));
+  nNumKeysPressed = 0;
 
   //tScope->LoadWave(&vWaveform);
   //MakePreset("preset 1", ... );
