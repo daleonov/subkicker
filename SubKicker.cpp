@@ -754,7 +754,7 @@ void SubKicker::OnParamChange(int paramIdx)
   int nKnobValue;
   int nPreviewNote, nPreviewCh;
   IMidiMsg tMidiMsg;
-  static int nScopeIgnoreInit = 2;
+  static int nScopeIgnoreInit = 3;
   bool bSwitchState, bExtraSwitchState;
   double fKnobValue, fNormalizedKnobValue;
 
