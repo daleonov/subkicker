@@ -356,8 +356,10 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   // Demo related stuff
 
   #if DLPG_DEMO
+  char sDemoString[DLPG_DEMO_LABEL_STRING_SIZE];
   nDemoShots = DLPG_DEMO_SHOTS;
-    static IText tDemoLabelIText = IText(DLPG_DEMO_LABEL_STRING_SIZE);
+  sprintf(sDemoString, DLPG_DEMO_LABEL_TEXT, nDemoShots);
+  static IText tDemoLabelIText = IText(DLPG_DEMO_LABEL_STRING_SIZE);
   tDemoLabelIText.mColor = tDemoLabelIColor;
   tDemoLabelIText.mSize = DLPG_DEMO_LABEL_FONT_SIZE;
   tDemoLabelIText.mAlign = tDemoLabelIText.DLPG_DEMO_LABEL_ALIGN;
@@ -365,7 +367,7 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
       this,
       tDemoLabelIRect,
       &tDemoLabelIText,
-      "Demo version! Shots left: 200"
+      sDemoString
       );
   pGraphics->AttachControl(tDemoLabel);
   #endif //DLPG_DEMO
@@ -435,6 +437,10 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
   double fCurrentTempo;
   double fCurrentWaveformSample;
 
+  #if DLPG_DEMO
+  char sDemoString[DLPG_DEMO_LABEL_STRING_SIZE];
+  #endif
+
   // Dry signal
   if(GetParam(kIoDrySwitch)->Bool())
     // Dry signal 100%
@@ -452,6 +458,22 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
   // Bypass
   if(GetParam(kBypassSwitch)->Bool())
     return;
+
+  // Demo
+  #if DLPG_DEMO
+  /* We have to let the final sample to play until
+  the end, hence we're checking bPlay flag as well */
+  if(nDemoShots < 1 && !bPlay){
+    // Lock all the trigger knobs just to show it doesn't work anymore
+    tTrigNoteKnob->GrayOut(true);
+    tTrigChKnob->GrayOut(true);
+    tTrigHoldKnob->GrayOut(true);
+    tTrigThreshKnob->GrayOut(true);
+    tTrigSubdivisionKnob->GrayOut(true);
+    // ...and our job is done here
+    return;
+  }
+  #endif
 
   // Internal trigger
   if(GetParam(kTrigSwitch)->Bool()){
@@ -514,6 +536,12 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
           (nCurrentVelocity >= DLPG_REQUIRED_VELOCITY) \
           ){
           bPlay = true;
+          #if DLPG_DEMO
+          nDemoShots--;
+          if(nDemoShots < 0) nDemoShots = 0;
+          sprintf(sDemoString, DLPG_DEMO_LABEL_TEXT, nDemoShots);
+          tDemoLabel->SetTextFromPlug(sDemoString);
+          #endif
         }
       }
 
@@ -866,6 +894,14 @@ void SubKicker::OnParamChange(int paramIdx)
       tMidiQueue.Add(&tMidiMsg);
       tMidiMsg.MakeNoteOffMsg(nPreviewNote, 0, nPreviewCh);
       tMidiQueue.Add(&tMidiMsg);
+
+      // Demo
+      #ifdef DLPG_DEMO
+      // Previewing waveform is free
+      nDemoShots++; 
+      if(nDemoShots < 0) nDemoShots = 1;
+      #endif // DLPG_DEMO
+
       break;
     case kOutputMeter:
       // Clicking on the meter resets the notch

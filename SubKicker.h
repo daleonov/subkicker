@@ -27,7 +27,7 @@ number of shots produced by this plug is limited
 #define DLPG_DEMO true
 
 #if DLPG_DEMO
-#define DLPG_DEMO_SHOTS 10
+#define DLPG_DEMO_SHOTS 200
 #endif
 
 #define DLPG_LOG_TO_LINEAR(v) (pow(10, v/20.))
