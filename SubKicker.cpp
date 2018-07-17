@@ -896,7 +896,7 @@ void SubKicker::OnParamChange(int paramIdx)
       tMidiQueue.Add(&tMidiMsg);
 
       // Demo
-      #ifdef DLPG_DEMO
+      #if DLPG_DEMO
       // Previewing waveform is free
       nDemoShots++; 
       if(nDemoShots < 0) nDemoShots = 1;
