@@ -16,7 +16,7 @@ plug_build_date
 "\
 https://danielleonovplugs.com/feedback#\
 host_name=%s&\
-host_version=%s&\
+host_version=%d&\
 host_os=%s&\
 plug_architecture=%s&\
 plug_format=%s&\
@@ -31,9 +31,8 @@ plug_build_date=%s\
 */
 inline void PLUG_CLASS_NAME::MakeFeedbackUrl(char* sDest){
 	char sHostName[32];
-	char sHostVersion[16];
 	GetHostNameStr(GetHost(), sHostName);
-	GetHostVersionStr(sHostVersion);
+	int nHostVersion = GetHostVersion(true);
 
 	#ifdef OS_WIN
 	char sHostOs[] = "Windows";
@@ -53,7 +52,7 @@ inline void PLUG_CLASS_NAME::MakeFeedbackUrl(char* sDest){
 		sDest,
 		DLPG_FEEDBACK_URL_STR,
 		sHostName,
-		sHostVersion,
+		nHostVersion,
 		sHostOs,
 		sPlugArchitecture,
 		GetAPIString(),
