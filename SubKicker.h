@@ -465,6 +465,8 @@ const IRECT tFeedbackLinkIRect(
   tBugreportLabelIrect.B + 5
   );
 
+#define DLPG_FEEDBACK_URL_LENGTH 256
+
 class SubKicker : public IPlug
 {
 public:
@@ -538,6 +540,9 @@ private:
   // Clickable web links
   IURLControl *tWebsiteLink;
   IURLControl *tFeedbackLink;
+  // Feedback URL generator
+  void MakeFeedbackUrl(char* sDest);
+  char sFeedbackUrl[DLPG_FEEDBACK_URL_LENGTH];
 };
 
 #endif

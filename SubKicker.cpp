@@ -6,6 +6,7 @@
 #include "IPlug_include_in_plug_src.h"
 #include "IControl.h"
 #include "resource.h"
+#include "DLPG_FeedbackSender.h"
 
 SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   :	IPLUG_CTOR(kNumParams, kNumPrograms, instanceInfo), fOutputGainLinear(1.)
@@ -374,11 +375,13 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   pGraphics->AttachControl(tDemoLabel);
   #endif //DLPG_DEMO
 
+  // Feedback link
+  MakeFeedbackUrl(sFeedbackUrl);
   // Clickable area leading to a website
   tWebsiteLink = new IURLControl(this, tWebsiteLinkIRect, DLPG_WEBSITE_LINK);
   pGraphics->AttachControl(tWebsiteLink);
   // Clickable area for bugreports
-  tFeedbackLink = new IURLControl(this, tFeedbackLinkIRect, DLPG_FEEDBACK_LINK);
+  tFeedbackLink = new IURLControl(this, tFeedbackLinkIRect, sFeedbackUrl);
   pGraphics->AttachControl(tFeedbackLink);
 
   // *** All controls - end
@@ -395,6 +398,7 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   //tScope->LoadWave(&vWaveform);
   //MakePreset("preset 1", ... );
   MakeDefaultPreset((char *) "-", kNumPrograms);
+
 }
 
 SubKicker::~SubKicker() {}
