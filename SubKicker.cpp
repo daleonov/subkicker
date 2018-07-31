@@ -221,6 +221,10 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   tIoDrySwitch = new ISwitchControl(this, DLPG_SWITCH_POS(2, DLPG_SWITCH_IO_BASE), kIoDrySwitch, &tBmp);
   pGraphics->AttachControl(tIoDrySwitch);
 
+  #ifdef DLPG_TRIG_HOLD_SNAP_DISABLE
+  tTrigHoldSnapSwitch->GrayOut(true);
+  #endif
+
   // *** Switches - end
 
   // Text label with current version of the plug
@@ -398,7 +402,6 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
   //tScope->LoadWave(&vWaveform);
   //MakePreset("preset 1", ... );
   MakeDefaultPreset((char *) "-", kNumPrograms);
-
 }
 
 SubKicker::~SubKicker() {}
@@ -458,7 +461,6 @@ void SubKicker::ProcessDoubleReplacing(double** inputs, double** outputs, int nF
   dlpg::TriggerState_t eTriggerState;
   IMidiMsg tMidiMsg;
   static double fPreviousTempo = 120.;
-  double fCurrentTempo;
   double fCurrentWaveformSample;
 
   #if DLPG_DEMO
@@ -800,10 +802,14 @@ void SubKicker::OnParamChange(int paramIdx)
       fKnobValue = GetParam(kTrigHoldKnob)->Value();
       tEdgeTrigger->SetHoldTime(fKnobValue / 1000.);
       break;
+
+    #ifndef DLPG_TRIG_HOLD_SNAP_DISABLE
     case kTrigSubdivisionKnob:
       // Display knob's value with a text label ###
       nKnobValue = GetParam(kTrigSubdivisionKnob)->Int();
-      fKnobValue = DLPG_TRIG_SUBDIVISION_KNOB_VALUE_TO_SECONDS(nKnobValue, GetTempo());
+      // %%%
+      fKnobValue = DLPG_TRIG_SUBDIVISION_KNOB_VALUE_TO_SECONDS(nKnobValue, fCurrentTempo);
+
       sprintf(
         sKnobLabelString,
         DLPG_TRIG_SUBDIVISION_LABEL_STR,
@@ -812,8 +818,9 @@ void SubKicker::OnParamChange(int paramIdx)
         );
       tTrigSubdivisionLabel->SetTextFromPlug(sKnobLabelString);
       tEdgeTrigger->SetHoldTime(fKnobValue);
-      // 
       break;
+    #endif //DLPG_TRIG_HOLD_SNAP_DISABLE
+
     case kSubNoteKnob:
       // Display knob's value with a text label
       nKnobValue = GetParam(kSubNoteKnob)->Int();
@@ -969,6 +976,7 @@ void SubKicker::OnParamChange(int paramIdx)
 
       // Reset the trigger every time
       tEdgeTrigger->Reset();
+
     case kTrigHoldSnapSwitch:
       // Update controls 
       bSwitchState = GetParam(kTrigSwitch)->Bool();
@@ -977,18 +985,25 @@ void SubKicker::OnParamChange(int paramIdx)
       tTrigSubdivisionKnob->Hide(!(bSwitchState && bExtraSwitchState));
       tTrigHoldLabel->Hide(!(bSwitchState && !bExtraSwitchState));
       tTrigSubdivisionLabel->Hide(!(bSwitchState && bExtraSwitchState));
+
+      #ifndef DLPG_TRIG_HOLD_SNAP_DISABLE
       // Update trigger's hold time
       // If the tempo of the song changes, this control is getting SetDirty() from DSP thread
       if(bExtraSwitchState){
         // Is snapped to subdivision
         nKnobValue = GetParam(kTrigSubdivisionKnob)->Int();
-        fKnobValue = DLPG_TRIG_SUBDIVISION_KNOB_VALUE_TO_SECONDS(nKnobValue, GetTempo());
+        //%%%
+        fKnobValue = DLPG_TRIG_SUBDIVISION_KNOB_VALUE_TO_SECONDS(nKnobValue, fCurrentTempo);
       }
       else{
         // If not snapped (milliseconds)
         fKnobValue = GetParam(kTrigHoldKnob)->Value() / 1000.;
       }
+      #else
+        fKnobValue = GetParam(kTrigHoldKnob)->Value() / 1000.;
+      #endif //DLPG_TRIG_HOLD_SNAP_DISABLE
       tEdgeTrigger->SetHoldTime(fKnobValue);
+
     case kEnvelopeAttackCurveSwitch:
     case kEnvelopeReleaseCurveSwitch:
       UpdateWaveform();

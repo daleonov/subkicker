@@ -61,9 +61,13 @@ DLPG_SWITCH_X_BASE,\
 #define DLPG_DEFAULT_TRIG_INPUT_SWITCH_STATE 0
 #define DLPG_DEFAULT_IO_DRY_SWITCH_STATE 0
 #define DLPG_DEFAULT_SUB_SHAPE_SWITCH_STATE 0
-#define DLPG_DEFAULT_TRIG_HOLD_SNAP_SWITCH_STATE 1
 #define DLPG_DEFAULT_ENVELOPE_ATTACK_CURVE_SWITCH_STATE 1
 #define DLPG_DEFAULT_ENVELOPE_RELEASE_CURVE_SWITCH_STATE 2
+#ifdef DLPG_TRIG_HOLD_SNAP_DISABLE
+#define DLPG_DEFAULT_TRIG_HOLD_SNAP_SWITCH_STATE 0
+#else
+#define DLPG_DEFAULT_TRIG_HOLD_SNAP_SWITCH_STATE 1
+#endif
 
 #define DLPG_STANDARD_KNOB_FRAMES 128
 #define DLPG_TRIG_CH_KNOB_FRAMES 17
@@ -337,6 +341,17 @@ inline bool HasTempoChanged(double fCurrentBpm, double fPreviousBpm){
     return false;
 }
 
+#ifdef AAX_API
+/*
+TODO
+For some reason, calling GetTempo() from AAX plug
+causes Pro Tools to throw an AAE -30001/30002 error.
+Since there's no quick solution, the respective switch
+will be disabled in AAX edition.
+*/
+#define DLPG_TRIG_HOLD_SNAP_DISABLE
+#endif
+
 const int kNumPrograms = 1;
 
 enum EParams
@@ -529,6 +544,7 @@ private:
   IMidiQueue tMidiQueue;
   bool abKeyStatus[DLPG_MIDI_NOTES_TOTAL];
   int nNumKeysPressed;
+  double fCurrentTempo;
   // For switching from Hz mode to note snap mode of Sub Frequency knob
   inline int HzToSubNoteKnobValue(double fFrequency);
   double fOutputGainLinear;
