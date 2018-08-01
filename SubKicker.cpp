@@ -223,6 +223,8 @@ SubKicker::SubKicker(IPlugInstanceInfo instanceInfo)
 
   #ifdef DLPG_TRIG_HOLD_SNAP_DISABLE
   tTrigHoldSnapSwitch->GrayOut(true);
+  GetParam(kTrigHoldSnapSwitch)->SetCanAutomate(false);
+  GetParam(kTrigSubdivisionKnob)->SetCanAutomate(false);
   #endif
 
   // *** Switches - end
@@ -760,9 +762,14 @@ void SubKicker::OnParamChange(int paramIdx)
   int nKnobValue;
   int nPreviewNote, nPreviewCh;
   IMidiMsg tMidiMsg;
-  static int nScopeIgnoreInit = 3;
   bool bSwitchState, bExtraSwitchState;
   double fKnobValue, fNormalizedKnobValue;
+
+  #ifdef AAX_API
+  static int nScopeIgnoreInit = 4;
+  #else
+  static int nScopeIgnoreInit = 3;
+  #endif
 
   switch (paramIdx)
   {
@@ -971,8 +978,9 @@ void SubKicker::OnParamChange(int paramIdx)
       tTrigHoldLabel->Hide(!(bSwitchState && !bExtraSwitchState));
       tTrigSubdivisionLabel->Hide(!(bSwitchState && bExtraSwitchState));
       tTrigThreshLabel->Hide(!bSwitchState);
-
+      #ifndef DLPG_TRIG_HOLD_SNAP_DISABLE
       tTrigHoldSnapSwitch->GrayOut(!bSwitchState);
+      #endif
 
       // Reset the trigger every time
       tEdgeTrigger->Reset();
